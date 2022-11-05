@@ -6,6 +6,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool visible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: TextField(
+                    obscureText: visible,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       hintText: 'Password',
@@ -77,6 +79,17 @@ class _LoginPageState extends State<LoginPage> {
                         Icons.lock_outline,
                         color: Colors.grey[600],
                       ),
+                      suffixIcon: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            visible = !visible;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.remove_red_eye,
+                        ),
+                        color: Colors.grey[600],
+                      )
                     ),
                   ),
                 ),
