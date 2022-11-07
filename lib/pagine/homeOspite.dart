@@ -68,11 +68,13 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
               ),
             )
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(10.0),
             child: TextButton(
-              onPressed: null,
-              child: Text(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text(
                 'Log in',
                 style: TextStyle(
                   fontSize: 20.0,

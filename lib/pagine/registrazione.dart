@@ -149,9 +149,11 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                         width: 3.0,
                       ),
                     ),
-                    child: const TextButton(
-                      onPressed: null, //aggiungere navigazione alla Home
-                      child: Text(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/homeUtente');
+                      }, //aggiungere navigazione alla Home
+                      child: const Text(
                         'Registrati',
                         style: TextStyle(
                           fontSize: 20.0,
@@ -162,9 +164,11 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                   ),
                 ],
               ),
-              const TextButton(
-                onPressed: null,
-                child: Text(
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/homeOspite');
+                },
+                child: const Text(
                   'Join as Guest',
                   style: TextStyle(
                     fontSize: 20.0,

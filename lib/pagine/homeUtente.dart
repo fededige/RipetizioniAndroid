@@ -22,16 +22,18 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
+              children: <Widget>[
                 IconButton(
-                  onPressed: null,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/impostazioni');
+                  },
                   iconSize: 50.0,
-                  icon: Icon(
+                  icon: const Icon(
                     color: Colors.black,
                     Icons.settings,
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
                   child: Text(
                     style: TextStyle(
@@ -46,77 +48,79 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 3.0,
+                TextButton(
+                  onPressed: null,
+                  child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 3.0,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: const <Widget>[
-                          IconButton(
-                            iconSize: 50.0,
-                            icon: Icon(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 15.0),
+                        child: Column(
+                          children: const <Widget>[
+                            Icon(
                               color: Colors.black,
                               Icons.calendar_month,
+                              size: 50.0,
                             ),
-                            onPressed: null,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                            child: Text(
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                                'Calendario \n Prenotazioni',
+                                textAlign: TextAlign.center,
                               ),
-                              'Calendario \n Prenotazioni',
-                              textAlign: TextAlign.center,
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          ],
+                        ),
+                      )
+                  ),
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 3.0,
+                TextButton(
+                  onPressed: null,
+                  child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 3.0,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-                      child: Column(
-                        children: const <Widget>[
-                          IconButton(
-                            iconSize: 50.0,
-                            icon: Icon(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+                        child: Column(
+                          children: const <Widget>[
+                            Icon(
                               color: Colors.black,
                               Icons.menu_book,
+                              size: 50.0,
                             ),
-                            onPressed: null,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                            child: Text(
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                                'Ripetizioni \n Prenotate',
+                                textAlign: TextAlign.center,
                               ),
-                              'Ripetizioni \n Prenotate',
-                              textAlign: TextAlign.center,
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          ],
+                        ),
+                      )
+                  ),
                 ),
               ],
             ),

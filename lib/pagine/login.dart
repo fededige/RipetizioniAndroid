@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           Icons.remove_red_eye,
                         ),
                         color: Colors.grey[600],
-                      )
+                      ),
                     ),
                   ),
                 ),
@@ -107,9 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                       width: 3.0,
                     ),
                   ),
-                  child: const TextButton(
-                    onPressed: null, //aggiungere navigazione alla Home
-                    child: Text(
+                  child: TextButton(
+                    onPressed: () {
+                      //TODO: controlliamo se l'utente esiste
+                      Navigator.pushNamed(context, '/homeUtente');
+                    }, //aggiungere navigazione alla Home
+                    child: const Text(
                       'Log in',
                       style: TextStyle(
                         fontSize: 20.0,
@@ -122,10 +125,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 TextButton(
-                  onPressed: null,
-                  child: Text(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/registrazione');
+                  },
+                  child: const Text(
                     'Sign up',
                     style: TextStyle(
                       fontSize: 20.0,
@@ -134,8 +139,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: null,
-                  child: Text(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/homeOspite');
+                  },
+                  child: const Text(
                     'Join as Guest',
                     style: TextStyle(
                       fontSize: 20.0,
