@@ -6,10 +6,11 @@ import 'package:ripetizioni/pagine/homeUtente.dart';
 import 'package:ripetizioni/pagine/impostazioni.dart';
 import 'package:ripetizioni/pagine/cambioNomeUtente.dart';
 import 'package:ripetizioni/pagine/cambioPassword.dart';
+import 'pagine/ripetizioniDisp.dart';
 
 
 void main() => runApp(MaterialApp(
-    initialRoute: '/login',
+    initialRoute: '/ripetizioniDisp',
     routes: {
       '/login': (context) => LoginPage(),
       '/registrazione': (context) => PaginaRegistrazione(),
@@ -18,5 +19,6 @@ void main() => runApp(MaterialApp(
       '/impostazioni': (context) => PaginaImpostazioni(),
       '/cambioNomeUtente': (context) => PaginaCambioNomeU(),
       '/cambioPassword': (context) => PaginaCambioPassword(),
+      '/ripetizioniDisp': (context) => PaginaRipetizioni(),
     }
 ));
