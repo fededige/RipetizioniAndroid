@@ -6,7 +6,7 @@ class PaginaRipetizioni extends StatefulWidget {
   State<PaginaRipetizioni> createState() => _PaginaRipetizioniState();
 }
 
-List<String> list = <String> ["ciaociao", "nonono", "wasdwasdwas", "sdibvsidv"];
+List<String> list = <String>["ciaociao", "nonono", "wasdwasdwas", "sdibvsidv"];
 String dropdownValue = "ciaociao";
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
@@ -69,112 +69,210 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
               Column(
                 children: <Widget>[
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const <Widget>[
-                          Text(
-                            'L'
-                          ),
-                          Text(
-                              'M'
-                          ),
-                          Text(
-                              'M'
-                          ),
-                          Text(
-                              'G'
-                          ),
-                          Text(
-                              'V'
-                          ),
-                        ]
-                    ),
-                  ),
+                          Text('L'),
+                          Text('M'),
+                          Text('M'),
+                          Text('G'),
+                          Text('V'),
+                        ]),
+                  ),*/
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const <Widget>[
-                          Text(
-                              '15'
-                          ),
-                          SizedBox(
-                            height: 90.0,
-                          ),
-                          Text(
-                              '16'
-                          ),
-                          SizedBox(
-                            height: 90.0,
-                          ),
-                          Text(
-                              '17'
-                          ),
-                          SizedBox(
-                            height: 90.0,
-                          ),
-                          Text(
-                              '18'
-                          ),
-                        ],
-                      ),
                       Table(
-                        border: TableBorder.all(),
+                        /*border: const TableBorder(
+                          horizontalInside: BorderSide(
+                            color : Colors.black,
+                          ),
+                          verticalInside: BorderSide(
+                            color : Colors.black,
+                          ),
+                          right: BorderSide(
+                            color : Colors.black,
+                          ),
+                          /*bottom: BorderSide(
+                            color : Colors.black,
+                          )*/
+                        ),*/
                         columnWidths: const <int, TableColumnWidth>{
                           0: IntrinsicColumnWidth(),
                           1: IntrinsicColumnWidth(),
                           2: IntrinsicColumnWidth(),
                           3: IntrinsicColumnWidth(),
                           4: IntrinsicColumnWidth(),
+                          5: IntrinsicColumnWidth(),
                         },
-                        children: const [
-                          TableRow(
+                        children: [
+                          const TableRow(
                             children: [
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
+                                padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                child: Text(
+                                  ' ',
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Text(
+                                  'L',
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Text(
+                                  'M',
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Text(
+                                  'M',
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Text(
+                                  'G',
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Text(
+                                  'V',
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                child: Align(
                                   child: Text(
-                                    'Disp',
+                                    '15',
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      left: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      top: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      top: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      top: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      top: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      top: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
@@ -182,146 +280,350 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                           ),
                           TableRow(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      '16',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      left: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),TableRow(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-
                           TableRow(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      '17',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      left: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 30.0),
-                                child: TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    'Disp',
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Container(
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      '18',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        right: BorderSide(
+                                            color: Colors.black
+                                        ),
+                                        bottom: BorderSide(
+                                            color: Colors.black
+                                        ),
+                                        left: BorderSide(
+                                            color: Colors.black
+                                        )
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                      bottom: BorderSide(
+                                          color: Colors.black
+                                      ),
+                                    )
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Align(
+                                    child: Text(
+                                      'Disp',
+                                    ),
                                   ),
                                 ),
                               ),
