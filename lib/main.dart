@@ -10,7 +10,7 @@ import 'pagine/ripetizioniDisp.dart';
 
 
 void main() => runApp(MaterialApp(
-    initialRoute: '/ripetizioniDisp',
+    initialRoute: '/login',
     routes: {
       '/login': (context) => LoginPage(),
       '/registrazione': (context) => PaginaRegistrazione(),

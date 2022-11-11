@@ -49,7 +49,9 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 TextButton(
-                  onPressed: null,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/ripetizioniDisp");
+                  },
                   child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
