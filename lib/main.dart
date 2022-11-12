@@ -7,7 +7,6 @@ import 'package:ripetizioni/pagine/impostazioni.dart';
 import 'package:ripetizioni/pagine/cambioNomeUtente.dart';
 import 'package:ripetizioni/pagine/cambioPassword.dart';
 import 'pagine/ripetizioniDisp.dart';
-import 'pagine/temp.dart';
 
 
 void main() => runApp(MaterialApp(
@@ -21,6 +20,5 @@ void main() => runApp(MaterialApp(
       '/cambioNomeUtente': (context) => PaginaCambioNomeU(),
       '/cambioPassword': (context) => PaginaCambioPassword(),
       '/ripetizioniDisp': (context) => PaginaRipetizioni(),
-      '/temp': (context) => Temp(),
     }
 ));

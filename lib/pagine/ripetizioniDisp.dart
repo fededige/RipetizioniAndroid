@@ -35,7 +35,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     dropdownSearchDecoration: const InputDecoration(
                       constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
                       labelText: "Scegli Professore",
-                      hintText: "Prof. disponibili",
                     ),
                     popupItemDisabled: isItemDisabled,
                     onChanged: itemSelectionChanged,
@@ -158,120 +157,119 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      left: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Lunedì", "15:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    left: BorderSide(color: Colors.black),
+                                    right: BorderSide(color: Colors.black),
+                                    top: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      right: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      top: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Martedì", "15:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    top: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Mercoledì", "15:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Giovedì", "15:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Venerdì", "15:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      top: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
@@ -290,105 +288,113 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Lunedì", "16:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    left: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      left: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Martedì", "16:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Mercoledì", "16:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Giovedì", "16:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Venerdì", "16:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
@@ -407,105 +413,113 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Lunedì", "17:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                    left: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                      left: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Martedì", "17:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Mercoledì", "17:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Giovedì", "17:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Venerdì", "17:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
@@ -524,105 +538,112 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(
-                                            color: Colors.black
-                                        ),
-                                        bottom: BorderSide(
-                                            color: Colors.black
-                                        ),
-                                        left: BorderSide(
-                                            color: Colors.black
-                                        )
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Lunedì", "18:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          right: BorderSide(color: Colors.black),
+                                          bottom: BorderSide(color: Colors.black),
+                                          left: BorderSide(color: Colors.black))),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Martedì", "18:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                    right: BorderSide(color: Colors.black),
+                                    bottom: BorderSide(color: Colors.black),
+                                  )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Mercoledì", "18:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Giovedì", "18:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                          color: Colors.black
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    return confermaPrenotazione(context, "Venerdì", "18:00");
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    child: Align(
+                                      child: Text(
+                                        'Disp',
                                       ),
-                                      bottom: BorderSide(
-                                          color: Colors.black
-                                      ),
-                                    )
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      'Disp',
                                     ),
                                   ),
                                 ),
@@ -658,4 +679,127 @@ bool isItemDisabled(String s) {
 
 void itemSelectionChanged(String? s) {
   print(s);
+}
+
+void confermaPrenotazione(BuildContext context, String giorno, String ora) {
+  showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.center,
+      title: const Text('Riepilogo'),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            'Giorno: $giorno',
+            style: const TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            'Ora: $ora',
+            style: const TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          DropdownSearch<String>(
+            mode: Mode.MENU,
+            showSelectedItems: true,
+            items: list,
+            dropdownSearchDecoration: const InputDecoration(
+              constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
+              labelText: "Scegli Professore",
+            ),
+            popupItemDisabled: isItemDisabled,
+            onChanged: itemSelectionChanged,
+            //selectedItem: "",
+            showSearchBox: true,
+            searchFieldProps: const TextFieldProps(
+              cursorColor: Colors.blue,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          DropdownSearch<String>(
+            mode: Mode.MENU,
+            showSelectedItems: true,
+            items: list,
+            dropdownSearchDecoration: const InputDecoration(
+              constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
+              labelText: "Scegli Corso",
+            ),
+            popupItemDisabled: isItemDisabled,
+            onChanged: itemSelectionChanged,
+            //selectedItem: "",
+            showSearchBox: true,
+            searchFieldProps: const TextFieldProps(
+              cursorColor: Colors.blue,
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: Container(
+            width: 100.0,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+              border: Border.all(
+                color: Colors.black,
+                width: 3.0,
+              ),
+            ), //aggiungere navigazione alla Home
+            child: const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Align(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: Container(
+            width: 105.0,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+              border: Border.all(
+                color: Colors.black,
+                width: 3.0,
+              ),
+            ), //aggiungere navigazione alla Home
+            child: const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Align(
+                child: Text(
+                  'Conferma',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
