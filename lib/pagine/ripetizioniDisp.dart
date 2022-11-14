@@ -33,11 +33,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     showSelectedItems: true,
                     items: list,
                     dropdownSearchDecoration: const InputDecoration(
-                      constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
+                      constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                       labelText: "Scegli Professore",
+                      contentPadding: EdgeInsets.all(8.0),
                     ),
-                    popupItemDisabled: isItemDisabled,
-                    onChanged: itemSelectionChanged,
                     //selectedItem: "",
                     showSearchBox: true,
                     searchFieldProps: const TextFieldProps(
@@ -51,10 +50,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     dropdownSearchDecoration: const InputDecoration(
                       constraints: BoxConstraints(maxWidth: 170, maxHeight: 50),
                       labelText: "Scegli Materia",
-                      hintText: "Materie disponibili",
+                      contentPadding: EdgeInsets.all(8.0),
                     ),
-                    popupItemDisabled: isItemDisabled,
-                    onChanged: itemSelectionChanged,
                     //selectedItem: "",
                     showSearchBox: true,
                     searchFieldProps: const TextFieldProps(
@@ -64,7 +61,33 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 ],
               ),
               const SizedBox(
-                height: 50.0,
+                height: 5.0,
+              ),
+              TextButton(
+                onPressed: null,
+                child: Container(
+                  width: 100.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ), //aggiungere navigazione alla Home
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Align(
+                      child: Text(
+                        'Cerca',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5.0,
               ),
               Column(
                 children: <Widget>[
@@ -667,20 +690,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 }
 
-bool isItemDisabled(String s) {
-  //return s.startsWith('I');
-
-  if (s.startsWith('I')) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-void itemSelectionChanged(String? s) {
-  print(s);
-}
-
 void confermaPrenotazione(BuildContext context, String giorno, String ora) {
   showDialog<String>(
     context: context,
@@ -712,11 +721,10 @@ void confermaPrenotazione(BuildContext context, String giorno, String ora) {
             showSelectedItems: true,
             items: list,
             dropdownSearchDecoration: const InputDecoration(
-              constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
+              constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
               labelText: "Scegli Professore",
+              contentPadding: EdgeInsets.all(8.0),
             ),
-            popupItemDisabled: isItemDisabled,
-            onChanged: itemSelectionChanged,
             //selectedItem: "",
             showSearchBox: true,
             searchFieldProps: const TextFieldProps(
@@ -731,11 +739,10 @@ void confermaPrenotazione(BuildContext context, String giorno, String ora) {
             showSelectedItems: true,
             items: list,
             dropdownSearchDecoration: const InputDecoration(
-              constraints: BoxConstraints(maxWidth: 180, maxHeight: 50),
+              constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
               labelText: "Scegli Corso",
+              contentPadding: EdgeInsets.all(8.0),
             ),
-            popupItemDisabled: isItemDisabled,
-            onChanged: itemSelectionChanged,
             //selectedItem: "",
             showSearchBox: true,
             searchFieldProps: const TextFieldProps(

@@ -88,7 +88,9 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   ),
                 ),
                 TextButton(
-                  onPressed: null,
+                  onPressed: (){
+                    Navigator.pushNamed(context, "/ripetizioniPren");
+                  },
                   child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
