@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/pagine/login.dart';
 import 'package:ripetizioni/pagine/registrazione.dart';
@@ -10,17 +12,29 @@ import 'pagine/ripetizioniDisp.dart';
 import 'pagine/ripetizioniPren.dart';
 
 
-void main() => runApp(MaterialApp(
-    initialRoute: '/login',
-    routes: {
-      '/login': (context) => LoginPage(),
-      '/registrazione': (context) => PaginaRegistrazione(),
-      '/homeOspite': (context) => PaginaHomeOspite(),
-      '/homeUtente': (context) => PaginaHomeUtente(),
-      '/impostazioni': (context) => PaginaImpostazioni(),
-      '/cambioNomeUtente': (context) => PaginaCambioNomeU(),
-      '/cambioPassword': (context) => PaginaCambioPassword(),
-      '/ripetizioniDisp': (context) => PaginaRipetizioni(),
-      '/ripetizioniPren': (context) => PaginaRipetizioniPren(),
-    }
-));
+void main() {
+      HttpOverrides.global = MyHttpOverrides();
+      runApp(MaterialApp(
+          initialRoute: '/login',
+          routes: {
+                '/login': (context) => LoginPage(),
+                '/registrazione': (context) => PaginaRegistrazione(),
+                '/homeOspite': (context) => PaginaHomeOspite(),
+                '/homeUtente': (context) => PaginaHomeUtente(),
+                '/impostazioni': (context) => PaginaImpostazioni(),
+                '/cambioNomeUtente': (context) => PaginaCambioNomeU(),
+                '/cambioPassword': (context) => PaginaCambioPassword(),
+                '/ripetizioniDisp': (context) => PaginaRipetizioni(),
+                '/ripetizioniPren': (context) => PaginaRipetizioniPren(),
+          }
+      )
+      );
+}
+
+class MyHttpOverrides extends HttpOverrides{
+      @override
+      HttpClient createHttpClient(SecurityContext? context){
+            return super.createHttpClient(context)
+                  ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      }
+}

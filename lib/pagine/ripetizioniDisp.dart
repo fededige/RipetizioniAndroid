@@ -652,7 +652,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    return confermaPrenotazione(context, "Venerdì", "18:00");
+                                    confermaPrenotazione(context, "Venerdì", "18:00");
                                   });
                                 },
                                 child: Container(
