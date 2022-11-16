@@ -6,7 +6,6 @@ import 'package:ripetizioni/pagine/registrazione.dart';
 import 'package:ripetizioni/pagine/homeOspite.dart';
 import 'package:ripetizioni/pagine/homeUtente.dart';
 import 'package:ripetizioni/pagine/impostazioni.dart';
-import 'package:ripetizioni/pagine/cambioNomeUtente.dart';
 import 'package:ripetizioni/pagine/cambioPassword.dart';
 import 'pagine/ripetizioniDisp.dart';
 import 'pagine/ripetizioniPren.dart';
@@ -22,7 +21,6 @@ void main() {
                 '/homeOspite': (context) => PaginaHomeOspite(),
                 '/homeUtente': (context) => PaginaHomeUtente(),
                 '/impostazioni': (context) => PaginaImpostazioni(),
-                '/cambioNomeUtente': (context) => PaginaCambioNomeU(),
                 '/cambioPassword': (context) => PaginaCambioPassword(),
                 '/ripetizioniDisp': (context) => PaginaRipetizioni(),
                 '/ripetizioniPren': (context) => PaginaRipetizioniPren(),

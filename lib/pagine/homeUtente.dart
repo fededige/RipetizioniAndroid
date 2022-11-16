@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ripetizioni/model/utente.dart';
 
 class PaginaHomeUtente extends StatefulWidget {
   @override
@@ -6,8 +7,11 @@ class PaginaHomeUtente extends StatefulWidget {
 }
 
 class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
+  String? presentazione = '';
   @override
   Widget build(BuildContext context) {
+    Utente utente = ModalRoute.of(context)!.settings.arguments as Utente;
+    presentazione = utente.nomeutente;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -25,7 +29,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/impostazioni');
+                    Navigator.pushNamed(context, '/impostazioni', arguments: utente);
                   },
                   iconSize: 50.0,
                   icon: const Icon(
@@ -33,14 +37,14 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                     Icons.settings,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
                   child: Text(
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
-                    "Ciao Utente", //variabile
+                    'Ciao $presentazione' //variabile
                   ),
                 ),
               ],
@@ -55,7 +59,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                         border: Border.all(
                           color: Colors.black,
                           width: 3.0,
@@ -94,7 +98,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                         border: Border.all(
                           color: Colors.black,
                           width: 3.0,
