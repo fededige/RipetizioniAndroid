@@ -19,6 +19,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
           title: const Text(
             'Ripetizioni',
           ),
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

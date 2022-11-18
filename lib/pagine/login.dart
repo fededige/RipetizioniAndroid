@@ -7,8 +7,10 @@ import 'package:http/http.dart' as http;
 
 class AuthenticationAPI{
   Future<Utente> getAuthentication(String nomeutente, String password) async {
-    final url = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
+    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
+    final urlEmul = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
     final response = await http.get(Uri.parse(url));
+    print(response.body);
     if (response.statusCode == 200) {
       return Utente.fromJson(jsonDecode(response.body));
     } else {

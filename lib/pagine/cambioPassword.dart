@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 
 class CambioPasswordAPI{
   Future<bool> postCambioPassword(String nomeutente, String vecchiaPassword, String nuovaPassword, String confNuovaPassword) async {
-    final url = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletImpostazioni?nomeUtente=$nomeutente&vecchiaPassword=$vecchiaPassword&nuovaPassword=$nuovaPassword&confermaNuovaPassword=$confNuovaPassword';
+    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletImpostazioni?nomeUtente=$nomeutente&vecchiaPassword=$vecchiaPassword&nuovaPassword=$nuovaPassword&confermaNuovaPassword=$confNuovaPassword';
     final response = await http.post(Uri.parse(url));
+    print("12");
     print(response.body);
     if (response.statusCode == 200) {
       if(response.body == "true") {
@@ -34,23 +35,25 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
   final confnuovaPController = TextEditingController();
   final nuovaPController = TextEditingController();
   String errore = "";
-  bool transit = false;
+  Utente? user;
 
   void _callCambioPassword(String nomeutente, String vecchiaPassword, String nuovaPassword, String confNuovaPassword) {
     var api = CambioPasswordAPI();
     api.postCambioPassword(nomeutente, vecchiaPassword, nuovaPassword, confNuovaPassword).then((risultato) {
       if(risultato == true) {
-        setState(() {
-          errore = "";
-          transit = true;
-        });
+        final user = this.user;
+        if(user != null) {
+          user.password = nuovaPassword;
+          _showToast(context);
+          Navigator.pushNamed(context, "/homeUtente", arguments: user);
+        }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Utente utente = ModalRoute.of(context)!.settings.arguments as Utente;
+    user = ModalRoute.of(context)!.settings.arguments as Utente;
     return Scaffold(
       body: Center(
           child: Column(
@@ -155,7 +158,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                   border: Border.all(
                     color: Colors.black,
                     width: 3.0,
@@ -163,24 +166,21 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    if(transit) {
-                      Navigator.pushNamed(context, "/impostazioni", arguments: utente);
-                    } else if(vecchiaPController.text.isNotEmpty && nuovaPController.text.isNotEmpty &&  confnuovaPController.text.isNotEmpty){
-                      transit = false;
+                    if(vecchiaPController.text.isNotEmpty && nuovaPController.text.isNotEmpty &&  confnuovaPController.text.isNotEmpty){
                       if(nuovaPController.text == confnuovaPController.text){
-                        if(vecchiaPController.text == utente.password){
-                          if(utente.nomeutente != null) {
-                            _callCambioPassword(utente.nomeutente!, vecchiaPController.text,  nuovaPController.text,  confnuovaPController.text);
+                        if(vecchiaPController.text == user?.password){
+                          if(user?.nomeutente != null) {
+                            _callCambioPassword((user?.nomeutente)!, vecchiaPController.text,  nuovaPController.text,  confnuovaPController.text);
                           }
                         } else {
                           setState(() {
-                            errore = "Le due nuove password non corrispondono";
+                            errore = "Vecchia Password errata";
                           });
                         }
 
                       } else {
                         setState(() {
-                          errore = "Vecchia Password errata";
+                          errore = "Le due nuove password non corrispondono";
                         });
                       }
                     } else {
@@ -188,7 +188,6 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                         errore = "Campi incompleti";
                       });
                     }
-                    //Navigator.pushNamed(context, '/homeUtente');
                   },
                   child: const Text(
                     'Conferma',
@@ -204,4 +203,19 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
       ),
     );
   }
+}
+
+void _showToast(BuildContext context) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    const SnackBar(
+      content: Text('Password cambiata correttamente'),
+      backgroundColor: Colors.blue,
+      shape: StadiumBorder(),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(50),
+      elevation: 30,
+      duration: Duration(milliseconds: 2000),
+    ),
+  );
 }

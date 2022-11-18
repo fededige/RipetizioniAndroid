@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
+import 'package:http/http.dart' as http;
+
+class LogOutAPI{
+  Future<bool> postLogOut() async {
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletLogOut';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      if(response.body == "true") {
+        return true;
+      }
+      return false;
+    } else {
+      throw Exception('Failed to load utente');
+    }
+  }
+}
 
 class PaginaImpostazioni extends StatefulWidget {
   @override
@@ -8,6 +24,20 @@ class PaginaImpostazioni extends StatefulWidget {
 
 class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
   String? presentazione = '';
+
+  void _callLogOutAPI() {
+    var api = LogOutAPI();
+    api.postLogOut().then((res) {
+      if(res == true) {
+        print("sessione invalidata");
+      }
+    }, onError: (error) {
+      print("logout errore");
+    });
+}
+
+
+
   @override
   Widget build(BuildContext context) {
     Utente utente = ModalRoute.of(context)!.settings.arguments as Utente;
@@ -78,6 +108,7 @@ class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      _callLogOutAPI();
                       Navigator.pushNamed(context, '/login');
                     },
                     child: const Text(
