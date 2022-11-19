@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ripetizioni.dart';
+import '../model/ripetizioni.dart';
 
 class PaginaRipetizioniPren extends StatefulWidget {
 

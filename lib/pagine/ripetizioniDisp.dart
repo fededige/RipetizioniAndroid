@@ -1,17 +1,109 @@
+import 'dart:convert';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:ripetizioni/model/utente.dart';
+import '../model/insegnamenti.dart';
+import '../model/corso.dart';
+import '../model/docente.dart';
+import 'package:http/http.dart' as http;
+
+class CaricaInsegnamentiAPI{
+  Future<List<Insegnamenti>> getCaricaInsegnamenti() async {
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
+    print(url);
+    final response = await http.get(Uri.parse(url));
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print("ciao");
+      //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
+      List<dynamic> list = json.decode(response.body);
+      List<Insegnamenti> li = <Insegnamenti>[];
+      print("list: $list");
+      for(int i = 0; i < list.length; i++){
+        li.add(Insegnamenti.fromJson(list.elementAt(i)));
+      }
+      return li;
+    } else {
+      throw Exception('Failed to load utente');
+    }
+  }
+}
 
 class PaginaRipetizioni extends StatefulWidget {
   @override
   State<PaginaRipetizioni> createState() => _PaginaRipetizioniState();
 }
 
-List<String> list = <String>["ciaociao", "nonono", "wasdwasdwas", "sdibvsidv"];
+List<Corso> corsi = <Corso>[];
+List<String> corsiS = <String>[];
+List<Docente> docenti = <Docente>[];
+List<String> docentiS = <String>[];
 String dropdownValue = "ciaociao";
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
+
+  void _callCaricaInsegnamenti(){
+    var api = CaricaInsegnamentiAPI();
+    api.getCaricaInsegnamenti().then((list) {
+      if(list.isNotEmpty) {
+        print("list.isNotEmpty");
+        for(int i = 0; i < list.length; i++){
+          corsi.add(list.elementAt(i).corso);
+          docenti.add(list.elementAt(i).docente);
+        }
+        print(corsi.elementAt(0).titoloCorso);
+        convertStr(corsi, docenti);
+      } else {
+        /*setState(() {
+        errore = "non ci sono insegnamenti";
+      });*/
+      }
+    }, onError: (error) {
+      print('errore');
+    });
+  }
+
+  void convertStr(List<Corso> corsi, List<Docente> docenti){ //TODO: gestire solo corsi differenti
+    for(int i = 0; i < corsi.length; i++) {
+      if (corsiS.contains(corsi.elementAt(i).titoloCorso)) {
+        for (int j = 0; j < corsiS.length; j++) {
+          if (corsi.elementAt(i).titoloCorso == corsiS.elementAt(j)) {
+            corsiS.removeAt(j);
+            corsiS.insert(j, "${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}");
+          }
+        }
+      } else {
+        corsiS.add(corsi.elementAt(i).titoloCorso);
+      }
+    }
+    for(int i = 0; i < docenti.length; i++) {
+      if (docentiS.contains(docenti.elementAt(i).cognome)) {
+        for (int j = 0; j < docentiS.length; j++) {
+          if (docenti.elementAt(i).cognome == docentiS.elementAt(j)) {
+            docentiS.removeAt(j);
+            docentiS.insert(j, "${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}");
+          }
+        }
+      } else {
+        docentiS.add(docenti.elementAt(i).cognome);
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Utente utente = arg["utente"];
+    bool ricarica = arg["ricarica"];
+    if(ricarica == true){
+      setState((){
+        ricarica = false;
+        _callCaricaInsegnamenti();
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -26,12 +118,30 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0,0,25.0,0),
+                    child: IconButton(
+                      onPressed: () {
+                        //Navigator.pushNamed(context, '/impostazioni');
+                      },
+                      iconSize: 35.0,
+                      icon: const Icon(
+                        color: Colors.black,
+                        Icons.shopping_cart_sharp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   DropdownSearch<String>(
                     mode: Mode.MENU,
                     showSelectedItems: true,
-                    items: list,
+                    items: docentiS,
                     dropdownSearchDecoration: const InputDecoration(
                       constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                       labelText: "Scegli Professore",
@@ -46,7 +156,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   DropdownSearch<String>(
                     mode: Mode.MENU,
                     showSelectedItems: true,
-                    items: list,
+                    items: corsiS,
                     dropdownSearchDecoration: const InputDecoration(
                       constraints: BoxConstraints(maxWidth: 170, maxHeight: 50),
                       labelText: "Scegli Materia",
@@ -719,7 +829,7 @@ void confermaPrenotazione(BuildContext context, String giorno, String ora) {
           DropdownSearch<String>(
             mode: Mode.MENU,
             showSelectedItems: true,
-            items: list,
+            items: docentiS,
             dropdownSearchDecoration: const InputDecoration(
               constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
               labelText: "Scegli Professore",
@@ -737,7 +847,7 @@ void confermaPrenotazione(BuildContext context, String giorno, String ora) {
           DropdownSearch<String>(
             mode: Mode.MENU,
             showSelectedItems: true,
-            items: list,
+            items: corsiS,
             dropdownSearchDecoration: const InputDecoration(
               constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
               labelText: "Scegli Corso",

@@ -55,7 +55,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/ripetizioniDisp");
+                    Navigator.pushNamed(context, '/ripetizioniDisp', arguments: {"utente":utente, "ricarica":true});
                   },
                   child: Container(
                       decoration: BoxDecoration(
