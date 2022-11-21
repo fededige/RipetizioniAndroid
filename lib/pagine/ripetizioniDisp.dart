@@ -38,9 +38,9 @@ class PaginaRipetizioni extends StatefulWidget {
 
 List<Insegnamenti> insegnamenti = <Insegnamenti>[];
 List<Corso> corsi = <Corso>[];
-List<String> corsiS = [""];
+List<String> corsiS = ["Deseleziona Corso"];
 List<Docente> docenti = <Docente>[];
-List<String> docentiS = [""];
+List<String> docentiS = ["Deseleziona Docente"];
 String? docenteScelto;
 String? corsoScelto;
 bool nuovo = true;
@@ -70,30 +70,31 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     });
   }
 
+
   void convertStr(List<Corso> corsi, List<Docente> docenti){
     for(int i = 0; i < corsi.length; i++) {
       String temp = "${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}";
-      if (corsiS.contains(temp)) {
-        i++;
-      } else {
+      if (!corsiS.contains(temp)) {
         corsiS.add("${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}");
       }
     }
 
     for(int i = 0; i < docenti.length; i++) {
       String temp = "${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}";
-      if (docentiS.contains(temp)) {
-        i++;
-      } else {
+      if (!docentiS.contains(temp)) {
         docentiS.add("${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}");
       }
     }
+
+    print(corsiS);
+    print(docentiS);
   }
 
   void aggiornaCorsi(){
     print("aggiorna Corsi");
     if(docenteScelto != null ){
-      if(docenteScelto != "") {
+      print("!= null");
+      if(docenteScelto != "Deseleziona Docente") {
         setState(() {
           corsiS.removeRange(1, corsiS.length);
           for(int i = 0; i < insegnamenti.length; i++){
@@ -103,9 +104,15 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           }
         });
       }else {
+        print("spazio");
         setState(() {
           docenteScelto = null;
-          convertStr(corsi, docenti);
+          for(int i = 0; i < corsi.length; i++) {
+            String temp = "${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}";
+            if (!corsiS.contains(temp)) {
+              corsiS.add("${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}");
+            }
+          }
         });
       }
     }
@@ -114,7 +121,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void aggiornaDocenti(){
     print("aggiorna Docenti");
     if(corsoScelto != null ){
-      if(corsoScelto != "") {
+      if(corsoScelto != "Deseleziona Corso") {
         setState(() {
           docentiS.removeRange(1, docentiS.length);
           for(int i = 0; i < insegnamenti.length; i++){
@@ -126,7 +133,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       } else {
         setState(() {
           corsoScelto = null;
-          convertStr(corsi, docenti);
+          for(int i = 0; i < docenti.length; i++) {
+            String temp = "${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}";
+            if (!docentiS.contains(temp)) {
+              docentiS.add("${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}");
+            }
+          }
         });
       }
     }
@@ -154,6 +166,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          controller: ScrollController(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -181,6 +194,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   DropdownSearch<String>(
                     onChanged: (value) => {
                       docenteScelto = value,
+                      print("docente scelto $docenteScelto"),
                       aggiornaCorsi(),
                     },
                     mode: Mode.MENU,
@@ -199,7 +213,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   ),
                   DropdownSearch<String>(
                     onChanged: (value) => {
-                      print(docenteScelto),
+                      print("corso scelto $corsoScelto"),
                       corsoScelto = value,
                       aggiornaDocenti(),
                     },
