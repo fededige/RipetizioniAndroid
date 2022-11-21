@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
 import '../model/insegnamenti.dart';
 import '../model/corso.dart';
+import '../model/utente.dart';
 import '../model/docente.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,24 +32,60 @@ class CaricaInsegnamentiAPI{
   }
 }
 
+
+
+class CaricaPrenotazioneAPI{
+  Future<List<List<int>>> getCaricaPrenotazioni(int? c,int? doc,String? usr) async {
+    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
+    print(url);
+    final response = await http.get(Uri.parse(url));
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print("46");
+      List<dynamic> list = json.decode(response.body);
+      print("list: $list");
+      print(list.elementAt(0));
+      List<List<int>> liPrenotazione = <List<int>>[];
+
+      for(int j=0;j<5;j++){
+        List<int> temp=<int>[];
+        for(int i=0;i<5;i++){
+          temp.add(list.elementAt(j).elementAt(i).hashCode);
+        }
+        liPrenotazione.add(temp);
+      }
+      print("61 $liPrenotazione");
+      return liPrenotazione;
+    } else {
+      throw Exception('Failed to load utente');
+    }
+  }
+}
+
 class PaginaRipetizioni extends StatefulWidget {
   @override
   State<PaginaRipetizioni> createState() => _PaginaRipetizioniState();
 }
 
 List<Insegnamenti> insegnamenti = <Insegnamenti>[];
+List<List<int>>? prenotazioni;
 List<Corso> corsi = <Corso>[];
 List<String> corsiS = ["Deseleziona Corso"];
 List<Docente> docenti = <Docente>[];
 List<String> docentiS = ["Deseleziona Docente"];
 String? docenteScelto;
+int? matricolaDoce;
+int? codCorso;
 String? corsoScelto;
 bool nuovo = true;
 String dropdownValue = "ciaociao";
+Utente? utente;
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void _callCaricaInsegnamenti(){
+    print('_PaginaRipetizioniState._callCaricaInsegnamenti');
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti().then((list) {
       if(list.isNotEmpty) {
@@ -58,6 +95,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           corsi.add(list.elementAt(i).corso);
           docenti.add(list.elementAt(i).docente);
         }
+        print("corsi: ");
         print(corsi);
         convertStr(corsi, docenti);
       } else {
@@ -67,6 +105,27 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       }
     }, onError: (error) {
       print('errore');
+    });
+  }
+
+  void _callCaricaPrenotazione(){
+    matricolaDoce = int.parse(docenteScelto!.split(" ").first);
+    codCorso = int.parse(corsoScelto!.split(" ").first);
+    print("109 $matricolaDoce");
+    print("110 $codCorso");
+    var api = CaricaPrenotazioneAPI();
+    api.getCaricaPrenotazioni(codCorso,matricolaDoce,(utente!.nomeutente)).then((list) {
+      if(list.isNotEmpty) {
+        print("list.isNotEmpty in carica prenotazione");
+        prenotazioni = list;
+        print(prenotazioni);
+      } else {
+        /*setState(() {
+        errore = "non ci sono prenotazioni";
+      });*/
+      }
+    }, onError: (error) {
+      print('errore in _callPren');
     });
   }
 
@@ -86,8 +145,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       }
     }
 
-    print(corsiS);
-    print(docentiS);
+    print("crs $corsiS");
+    print("doc $docentiS");
   }
 
   void aggiornaCorsi(){
@@ -148,9 +207,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    Utente utente = arg["utente"];
+    utente = arg["utente"];
     bool ricarica = arg["ricarica"];
     if(ricarica == true && nuovo == true){
+      print("155 \n ");
       nuovo = false;
       setState((){
         _callCaricaInsegnamenti();
@@ -237,7 +297,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 height: 5.0,
               ),
               TextButton(
-                onPressed: null,
+                onPressed: () => setState(() {
+                  _callCaricaPrenotazione();
+                }),
                 child: Container(
                   width: 100.0,
                   decoration: const BoxDecoration(
