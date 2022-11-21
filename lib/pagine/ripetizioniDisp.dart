@@ -36,10 +36,14 @@ class PaginaRipetizioni extends StatefulWidget {
   State<PaginaRipetizioni> createState() => _PaginaRipetizioniState();
 }
 
+List<Insegnamenti> insegnamenti = <Insegnamenti>[];
 List<Corso> corsi = <Corso>[];
-List<String> corsiS = <String>[];
+List<String> corsiS = [""];
 List<Docente> docenti = <Docente>[];
-List<String> docentiS = <String>[];
+List<String> docentiS = [""];
+String? docenteScelto;
+String? corsoScelto;
+bool nuovo = true;
 String dropdownValue = "ciaociao";
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
@@ -48,12 +52,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti().then((list) {
       if(list.isNotEmpty) {
+        insegnamenti = list;
         print("list.isNotEmpty");
         for(int i = 0; i < list.length; i++){
           corsi.add(list.elementAt(i).corso);
           docenti.add(list.elementAt(i).docente);
         }
-        print(corsi.elementAt(0).titoloCorso);
+        print(corsi);
         convertStr(corsi, docenti);
       } else {
         /*setState(() {
@@ -65,29 +70,64 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     });
   }
 
-  void convertStr(List<Corso> corsi, List<Docente> docenti){ //TODO: gestire solo corsi differenti
+  void convertStr(List<Corso> corsi, List<Docente> docenti){
     for(int i = 0; i < corsi.length; i++) {
-      if (corsiS.contains(corsi.elementAt(i).titoloCorso)) {
-        for (int j = 0; j < corsiS.length; j++) {
-          if (corsi.elementAt(i).titoloCorso == corsiS.elementAt(j)) {
-            corsiS.removeAt(j);
-            corsiS.insert(j, "${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}");
-          }
-        }
+      String temp = "${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}";
+      if (corsiS.contains(temp)) {
+        i++;
       } else {
-        corsiS.add(corsi.elementAt(i).titoloCorso);
+        corsiS.add("${corsi.elementAt(i).codice} ${corsi.elementAt(i).titoloCorso}");
       }
     }
+
     for(int i = 0; i < docenti.length; i++) {
-      if (docentiS.contains(docenti.elementAt(i).cognome)) {
-        for (int j = 0; j < docentiS.length; j++) {
-          if (docenti.elementAt(i).cognome == docentiS.elementAt(j)) {
-            docentiS.removeAt(j);
-            docentiS.insert(j, "${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}");
-          }
-        }
+      String temp = "${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}";
+      if (docentiS.contains(temp)) {
+        i++;
       } else {
-        docentiS.add(docenti.elementAt(i).cognome);
+        docentiS.add("${docenti.elementAt(i).matricola} ${docenti.elementAt(i).cognome}");
+      }
+    }
+  }
+
+  void aggiornaCorsi(){
+    print("aggiorna Corsi");
+    if(docenteScelto != null ){
+      if(docenteScelto != "") {
+        setState(() {
+          corsiS.removeRange(1, corsiS.length);
+          for(int i = 0; i < insegnamenti.length; i++){
+            if("${insegnamenti.elementAt(i).docente.matricola} ${insegnamenti.elementAt(i).docente.cognome}" == docenteScelto){
+              corsiS.add("${insegnamenti.elementAt(i).corso.codice} ${insegnamenti.elementAt(i).corso.titoloCorso}");
+            }
+          }
+        });
+      }else {
+        setState(() {
+          docenteScelto = null;
+          convertStr(corsi, docenti);
+        });
+      }
+    }
+  }
+
+  void aggiornaDocenti(){
+    print("aggiorna Docenti");
+    if(corsoScelto != null ){
+      if(corsoScelto != "") {
+        setState(() {
+          docentiS.removeRange(1, docentiS.length);
+          for(int i = 0; i < insegnamenti.length; i++){
+            if("${insegnamenti.elementAt(i).corso.codice} ${insegnamenti.elementAt(i).corso.titoloCorso}" == corsoScelto){
+              docentiS.add("${insegnamenti.elementAt(i).docente.matricola} ${insegnamenti.elementAt(i).docente.cognome}");
+            }
+          }
+        });
+      } else {
+        setState(() {
+          corsoScelto = null;
+          convertStr(corsi, docenti);
+        });
       }
     }
   }
@@ -98,9 +138,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Utente utente = arg["utente"];
     bool ricarica = arg["ricarica"];
-    if(ricarica == true){
+    if(ricarica == true && nuovo == true){
+      nuovo = false;
       setState((){
-        ricarica = false;
         _callCaricaInsegnamenti();
       });
     }
@@ -139,6 +179,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   DropdownSearch<String>(
+                    onChanged: (value) => {
+                      docenteScelto = value,
+                      aggiornaCorsi(),
+                    },
                     mode: Mode.MENU,
                     showSelectedItems: true,
                     items: docentiS,
@@ -147,13 +191,18 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       labelText: "Scegli Professore",
                       contentPadding: EdgeInsets.all(8.0),
                     ),
-                    //selectedItem: "",
+
                     showSearchBox: true,
                     searchFieldProps: const TextFieldProps(
                       cursorColor: Colors.blue,
                     ),
                   ),
                   DropdownSearch<String>(
+                    onChanged: (value) => {
+                      print(docenteScelto),
+                      corsoScelto = value,
+                      aggiornaDocenti(),
+                    },
                     mode: Mode.MENU,
                     showSelectedItems: true,
                     items: corsiS,
