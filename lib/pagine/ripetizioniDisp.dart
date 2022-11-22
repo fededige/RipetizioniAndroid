@@ -67,6 +67,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         print(corsi);
         convertStr(corsi, docenti);
       } else {
+        print("errore, non ci sono insegnamenti");
         /*setState(() {
         errore = "non ci sono insegnamenti";
       });*/
@@ -276,36 +277,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 ),
                 Column(
                   children: <Widget>[
-                    /*Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const <Widget>[
-                            Text('L'),
-                            Text('M'),
-                            Text('M'),
-                            Text('G'),
-                            Text('V'),
-                          ]),
-                    ),*/
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Table(
-                          /*border: const TableBorder(
-                            horizontalInside: BorderSide(
-                              color : Colors.black,
-                            ),
-                            verticalInside: BorderSide(
-                              color : Colors.black,
-                            ),
-                            right: BorderSide(
-                              color : Colors.black,
-                            ),
-                            /*bottom: BorderSide(
-                              color : Colors.black,
-                            )*/
-                          ),*/
                           columnWidths: const <int, TableColumnWidth>{
                             0: IntrinsicColumnWidth(),
                             1: IntrinsicColumnWidth(),
@@ -368,8 +343,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Lunedì", "15:00");
+                                      return mostraConferma(context, "Lunedì", "15:00");
                                     });
                                   },
                                   child: Container(
@@ -394,8 +368,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Martedì", "15:00");
+                                      return mostraConferma(context, "Martedì", "15:00");
                                     });
                                   },
                                   child: Container(
@@ -419,8 +392,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Mercoledì", "15:00");
+                                      return mostraConferma(context, "Mercoledì", "15:00");
                                     });
                                   },
                                   child: Container(
@@ -444,8 +416,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Giovedì", "15:00");
+                                      return mostraConferma(context, "Giovedì", "15:00");
                                     });
                                   },
                                   child: Container(
@@ -469,8 +440,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Venerdì", "15:00");
+                                      return mostraConferma(context, "Venerdì", "15:00");
                                     });
                                   },
                                   child: Container(
@@ -508,8 +478,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Lunedì", "16:00");
+                                      return mostraConferma(context, "Lunedì", "16:00");
                                     });
                                   },
                                   child: Container(
@@ -533,8 +502,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Martedì", "16:00");
+                                      return mostraConferma(context, "Martedì", "16:00");
                                     });
                                   },
                                   child: Container(
@@ -557,8 +525,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Mercoledì", "16:00");
+                                      return mostraConferma(context, "Mercoledì", "16:00");
                                     });
                                   },
                                   child: Container(
@@ -581,8 +548,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Giovedì", "16:00");
+                                      return mostraConferma(context, "Giovedì", "16:00");
                                     });
                                   },
                                   child: Container(
@@ -605,8 +571,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Venerdì", "16:00");
+                                      return mostraConferma( context, "Venerdì", "16:00");
                                     });
                                   },
                                   child: Container(
@@ -643,8 +608,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Lunedì", "17:00");
+                                      return mostraConferma( context, "Lunedì", "17:00");
                                     });
                                   },
                                   child: Container(
@@ -668,8 +632,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Martedì", "17:00");
+                                      return mostraConferma(  context, "Martedì", "17:00");
                                     });
                                   },
                                   child: Container(
@@ -692,8 +655,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Mercoledì", "17:00");
+                                      return mostraConferma(context, "Mercoledì", "17:00");
                                     });
                                   },
                                   child: Container(
@@ -716,8 +678,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Giovedì", "17:00");
+                                      return mostraConferma( context, "Giovedì", "17:00");
                                     });
                                   },
                                   child: Container(
@@ -740,8 +701,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Venerdì", "17:00");
+                                      return mostraConferma( context, "Venerdì", "17:00");
                                     });
                                   },
                                   child: Container(
@@ -778,8 +738,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Lunedì", "18:00");
+                                      return mostraConferma( context, "Lunedì", "18:00");
                                     });
                                   },
                                   child: Container(
@@ -805,7 +764,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(context, "Martedì", "18:00");
+                                      return mostraConferma(context, "Martedì", "18:00");
                                     });
                                   },
                                   child: Container(
@@ -827,8 +786,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Mercoledì", "18:00");
+                                      return mostraConferma( context, "Mercoledì", "18:00");
                                     });
                                   },
                                   child: Container(
@@ -851,8 +809,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      return confermaPrenotazione(
-                                          context, "Giovedì", "18:00");
+                                      return mostraConferma(context, "Giovedì", "18:00");
                                     });
                                   },
                                   child: Container(
@@ -875,8 +832,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      confermaPrenotazione(
-                                          context, "Venerdì", "18:00");
+                                      mostraConferma(context, "Venerdì", "18:00");
                                     });
                                   },
                                   child: Container(
@@ -1070,125 +1026,477 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         }
     );
   }
-}
-
-void confermaPrenotazione(BuildContext context, String giorno, String ora) {
-  showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      actionsAlignment: MainAxisAlignment.center,
-      title: const Text('Riepilogo'),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            'Giorno: $giorno',
-            style: const TextStyle(
-              fontSize: 20.0,
+  void confermaPrenotazioneDocCor(BuildContext context, String giorno, String ora) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Text('Riepilogo'),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Giorno: $giorno',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Ora: $ora',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              docenteScelto!,
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              corsoScelto!,
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            'Ora: $ora',
-            style: const TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          DropdownSearch<String>(
-            mode: Mode.MENU,
-            showSelectedItems: true,
-            items: docentiS,
-            dropdownSearchDecoration: const InputDecoration(
-              constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-              labelText: "Scegli Professore",
-              contentPadding: EdgeInsets.all(8.0),
-            ),
-            //selectedItem: "",
-            showSearchBox: true,
-            searchFieldProps: const TextFieldProps(
-              cursorColor: Colors.blue,
-            ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          DropdownSearch<String>(
-            mode: Mode.MENU,
-            showSelectedItems: true,
-            items: corsiS,
-            dropdownSearchDecoration: const InputDecoration(
-              constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-              labelText: "Scegli Corso",
-              contentPadding: EdgeInsets.all(8.0),
-            ),
-            //selectedItem: "",
-            showSearchBox: true,
-            searchFieldProps: const TextFieldProps(
-              cursorColor: Colors.blue,
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 105.0,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Conferma',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: Container(
-            width: 100.0,
-            decoration: BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-              border: Border.all(
-                color: Colors.black,
-                width: 3.0,
+    );
+  }
+
+  void confermaPrenotazione(BuildContext context, String giorno, String ora) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Text('Riepilogo'),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Giorno: $giorno',
+              style: const TextStyle(
+                fontSize: 20.0,
               ),
-            ), //aggiungere navigazione alla Home
-            child: const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Ora: $ora',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DropdownSearch<String>(
+              mode: Mode.MENU,
+              showSelectedItems: true,
+              items: docentiS,
+              dropdownSearchDecoration: const InputDecoration(
+                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
+                labelText: "Scegli Professore",
+                contentPadding: EdgeInsets.all(8.0),
+              ),
+              //selectedItem: "",
+              showSearchBox: true,
+              searchFieldProps: const TextFieldProps(
+                cursorColor: Colors.blue,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DropdownSearch<String>(
+              mode: Mode.MENU,
+              showSelectedItems: true,
+              items: corsiS,
+              dropdownSearchDecoration: const InputDecoration(
+                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
+                labelText: "Scegli Corso",
+                contentPadding: EdgeInsets.all(8.0),
+              ),
+              //selectedItem: "",
+              showSearchBox: true,
+              searchFieldProps: const TextFieldProps(
+                cursorColor: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: Container(
-            width: 105.0,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-              border: Border.all(
-                color: Colors.black,
-                width: 3.0,
-              ),
-            ), //aggiungere navigazione alla Home
-            child: const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Align(
-                child: Text(
-                  'Conferma',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 105.0,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Conferma',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  void confermaPrenotazioneCor(BuildContext context, String giorno, String ora) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Text('Riepilogo'),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Giorno: $giorno',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Ora: $ora',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DropdownSearch<String>(
+              mode: Mode.MENU,
+              showSelectedItems: true,
+              items: docentiS,
+              dropdownSearchDecoration: const InputDecoration(
+                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
+                labelText: "Scegli Professore",
+                contentPadding: EdgeInsets.all(8.0),
+              ),
+              //selectedItem: "",
+              showSearchBox: true,
+              searchFieldProps: const TextFieldProps(
+                cursorColor: Colors.blue,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              corsoScelto!,
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 105.0,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Aggiungi al carrello',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void confermaPrenotazioneDoc(BuildContext context, String giorno, String ora) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Text('Riepilogo'),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Giorno: $giorno',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Ora: $ora',
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              docenteScelto!,
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            DropdownSearch<String>(
+              mode: Mode.MENU,
+              showSelectedItems: true,
+              items: corsiS,
+              dropdownSearchDecoration: const InputDecoration(
+                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
+                labelText: "Scegli Corso",
+                contentPadding: EdgeInsets.all(8.0),
+              ),
+              //selectedItem: "",
+              showSearchBox: true,
+              searchFieldProps: const TextFieldProps(
+                cursorColor: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Container(
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => {
+              Navigator.pop(context, 'Cancel'),
+            },
+            child: Container(
+              width: 105.0,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3.0,
+                ),
+              ), //aggiungere navigazione alla Home
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Align(
+                  child: Text(
+                    'Aggiungi al carrello',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  void mostraConferma(BuildContext context, String giorno, String ora){
+    if(docenteScelto != null && docenteScelto != "" && (corsoScelto == null || corsoScelto == "")) {
+      confermaPrenotazioneDoc(context, giorno, ora);
+    } else if(corsoScelto != null && corsoScelto != "" && (docenteScelto == null || docenteScelto == "")) {
+      confermaPrenotazioneCor(context, giorno, ora);
+    } else if(corsoScelto != null && corsoScelto != "" && docenteScelto != null  && docenteScelto != ""){
+      confermaPrenotazioneDocCor(context, giorno, ora);
+    }
+  }
 }
