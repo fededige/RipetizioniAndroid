@@ -73,6 +73,7 @@ List<String> corsiS = ["Deseleziona Corso"];
 List<Docente> docenti = <Docente>[];
 List<String> docentiS = ["Deseleziona Docente"];
 List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
+List<List<Color>> prenotazioniDispC = <List<Color>>[];
 String? docenteScelto;
 int? matricolaDoce;
 int? codCorso;
@@ -86,7 +87,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab(){
     for(int i=0;i<4;i++) {
       prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
-    }
+      prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
+  }
   }
 
   void _callCaricaInsegnamenti(){
@@ -114,14 +116,21 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _callCaricaPrenotazione(){
-    print("siamo in _calllllllllll");
-    matricolaDoce = int.parse(docenteScelto!.split(" ").first);
-    codCorso = int.parse(corsoScelto!.split(" ").first);
+    if(docenteScelto != null){
+      matricolaDoce = int.parse(docenteScelto!.split(" ").first);
+    }
+    if(corsoScelto != null) {
+      codCorso = int.parse(corsoScelto!.split(" ").first);
+    }
+    String? usr;
+    if(utente != null){
+      usr=(utente!.nomeutente);
+    }
     //print("109 $matricolaDoce");
     //print("110 $codCorso");
     var api = CaricaPrenotazioneAPI();
     print("122");
-    api.getCaricaPrenotazioni(codCorso,matricolaDoce,(utente!.nomeutente)).then((list) {
+    api.getCaricaPrenotazioni(codCorso,matricolaDoce,usr).then((list) {
       if(list.isNotEmpty) {
         print("list.isNotEmpty in carica prenotazione");
         prenotazioni = list;
@@ -188,24 +197,26 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
  void _PrenotazioniDisp() {
     print('188');
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
+    prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
     for(int i=0;i<4;i++) {
       List<String> temp= <String>[];
+      List<Color> tempC= <Color>[];
       for (int j = 0; j < 5; j++) {
-        /*print('192');
-        print(prenotazioni);
-        print('194');*/
         if(prenotazioni.elementAt(i).elementAt(j) == 0){
           temp.add("DISP");
+          tempC.add(Colors.green);
         }else if(prenotazioni.elementAt(i).elementAt(j) == 1){
           temp.add("DOCENTE NON DISP");
+          tempC.add(Colors.red);
         }else if(prenotazioni.elementAt(i).elementAt(j) == 2){
           temp.add("UTENTE NON DISP");
+          tempC.add(Colors.yellow);
         }
       }
       prenotazioniDisp.add(temp);
+      prenotazioniDispC.add(tempC);
     }
-    print("201");
-    print(prenotazioniDisp);
+    print("210 $prenotazioniDispC");
   }
 
   void aggiornaDocenti(){
@@ -454,8 +465,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                     color: prenotazioniDispC.elementAt(0).elementAt(0),
+                                      border: const Border(
                                     left: BorderSide(color: Colors.black),
                                     right: BorderSide(color: Colors.black),
                                     top: BorderSide(color: Colors.black),
@@ -479,8 +491,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(1),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     top: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
@@ -502,8 +515,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(2),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
@@ -525,8 +539,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(3),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
@@ -548,8 +563,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(4),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
@@ -585,8 +601,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(0),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     left: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
@@ -608,8 +625,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(1),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
@@ -630,8 +648,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(2),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -652,8 +671,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(3),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -674,8 +694,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(4),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -710,8 +731,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(0),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                     left: BorderSide(color: Colors.black),
@@ -733,8 +755,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(1),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -755,8 +778,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(2),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
@@ -777,8 +801,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(3),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -799,8 +824,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(4),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -835,8 +861,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(0),
+                                      border: const Border(
                                           right: BorderSide(color: Colors.black),
                                           bottom: BorderSide(color: Colors.black),
                                           left: BorderSide(color: Colors.black))),
@@ -857,8 +884,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(1),
+                                      border: const Border(
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
@@ -879,8 +907,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(2),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -901,8 +930,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration:  BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(3),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
@@ -923,8 +953,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(4),
+                                      border: const Border(
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
