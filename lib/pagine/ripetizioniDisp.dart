@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 class CaricaInsegnamentiAPI{
   Future<List<Insegnamenti>> getCaricaInsegnamenti() async {
     const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
-    print(url);
+    //print(url);
     final response = await http.get(Uri.parse(url));
     print(response.body);
     print(response.statusCode);
@@ -39,23 +39,21 @@ class CaricaPrenotazioneAPI{
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
     print(url);
     final response = await http.get(Uri.parse(url));
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       print("46");
       List<dynamic> list = json.decode(response.body);
-      print("list: $list");
-      print(list.elementAt(0));
+      /*print("list: $list");
+      print(list.elementAt(0));*/
       List<List<int>> liPrenotazione = <List<int>>[];
 
-      for(int j=0;j<5;j++){
+      for(int j=0;j<4;j++){
         List<int> temp=<int>[];
         for(int i=0;i<5;i++){
           temp.add(list.elementAt(j).elementAt(i).hashCode);
         }
         liPrenotazione.add(temp);
       }
-      print("61 $liPrenotazione");
+      print("56 $liPrenotazione");
       return liPrenotazione;
     } else {
       throw Exception('Failed to load utente');
@@ -69,11 +67,12 @@ class PaginaRipetizioni extends StatefulWidget {
 }
 
 List<Insegnamenti> insegnamenti = <Insegnamenti>[];
-List<List<int>>? prenotazioni;
+List<List<int>> prenotazioni = <List<int>>[];
 List<Corso> corsi = <Corso>[];
 List<String> corsiS = ["Deseleziona Corso"];
 List<Docente> docenti = <Docente>[];
 List<String> docentiS = ["Deseleziona Docente"];
+List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
 String? docenteScelto;
 int? matricolaDoce;
 int? codCorso;
@@ -84,19 +83,25 @@ Utente? utente;
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
+  void riempiTab(){
+    for(int i=0;i<4;i++) {
+      prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
+    }
+  }
+
   void _callCaricaInsegnamenti(){
     print('_PaginaRipetizioniState._callCaricaInsegnamenti');
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti().then((list) {
       if(list.isNotEmpty) {
         insegnamenti = list;
-        print("list.isNotEmpty");
+        //print("list.isNotEmpty");
         for(int i = 0; i < list.length; i++){
           corsi.add(list.elementAt(i).corso);
           docenti.add(list.elementAt(i).docente);
         }
-        print("corsi: ");
-        print(corsi);
+       // print("corsi: ");
+       // print(corsi);
         convertStr(corsi, docenti);
       } else {
         /*setState(() {
@@ -109,16 +114,20 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _callCaricaPrenotazione(){
+    print("siamo in _calllllllllll");
     matricolaDoce = int.parse(docenteScelto!.split(" ").first);
     codCorso = int.parse(corsoScelto!.split(" ").first);
-    print("109 $matricolaDoce");
-    print("110 $codCorso");
+    //print("109 $matricolaDoce");
+    //print("110 $codCorso");
     var api = CaricaPrenotazioneAPI();
+    print("122");
     api.getCaricaPrenotazioni(codCorso,matricolaDoce,(utente!.nomeutente)).then((list) {
       if(list.isNotEmpty) {
         print("list.isNotEmpty in carica prenotazione");
         prenotazioni = list;
-        print(prenotazioni);
+        setState((){
+          _PrenotazioniDisp();
+        });
       } else {
         /*setState(() {
         errore = "non ci sono prenotazioni";
@@ -127,7 +136,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     }, onError: (error) {
       print('errore in _callPren');
     });
-  }
+
+}
 
 
   void convertStr(List<Corso> corsi, List<Docente> docenti){
@@ -145,12 +155,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       }
     }
 
-    print("crs $corsiS");
-    print("doc $docentiS");
+    //print("crs $corsiS");
+    //print("doc $docentiS");
   }
 
   void aggiornaCorsi(){
-    print("aggiorna Corsi");
     if(docenteScelto != null ){
       print("!= null");
       if(docenteScelto != "Deseleziona Docente") {
@@ -163,7 +172,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           }
         });
       }else {
-        print("spazio");
         setState(() {
           docenteScelto = null;
           for(int i = 0; i < corsi.length; i++) {
@@ -175,6 +183,29 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         });
       }
     }
+  }
+
+ void _PrenotazioniDisp() {
+    print('188');
+    prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
+    for(int i=0;i<4;i++) {
+      List<String> temp= <String>[];
+      for (int j = 0; j < 5; j++) {
+        /*print('192');
+        print(prenotazioni);
+        print('194');*/
+        if(prenotazioni.elementAt(i).elementAt(j) == 0){
+          temp.add("DISP");
+        }else if(prenotazioni.elementAt(i).elementAt(j) == 1){
+          temp.add("DOCENTE NON DISP");
+        }else if(prenotazioni.elementAt(i).elementAt(j) == 2){
+          temp.add("UTENTE NON DISP");
+        }
+      }
+      prenotazioniDisp.add(temp);
+    }
+    print("201");
+    print(prenotazioniDisp);
   }
 
   void aggiornaDocenti(){
@@ -214,6 +245,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       nuovo = false;
       setState((){
         _callCaricaInsegnamenti();
+        riempiTab();
       });
     }
     return Scaffold(
@@ -429,12 +461,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     top: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                          prenotazioniDisp.elementAt(0).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -453,11 +485,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     top: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -476,11 +508,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -499,11 +531,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -522,11 +554,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -559,11 +591,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     left: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -581,11 +613,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -603,11 +635,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -625,11 +657,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -647,11 +679,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -684,11 +716,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     bottom: BorderSide(color: Colors.black),
                                     left: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -706,11 +738,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -728,11 +760,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -750,11 +782,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -772,11 +804,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child:  Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -808,11 +840,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                           right: BorderSide(color: Colors.black),
                                           bottom: BorderSide(color: Colors.black),
                                           left: BorderSide(color: Colors.black))),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -830,11 +862,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                     right: BorderSide(color: Colors.black),
                                     bottom: BorderSide(color: Colors.black),
                                   )),
-                                  child: const Padding(
+                                  child:  Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -852,11 +884,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -874,11 +906,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child:  Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -896,11 +928,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                         right: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(4),
                                       ),
                                     ),
                                   ),
