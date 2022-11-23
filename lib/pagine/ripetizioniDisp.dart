@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
 import '../model/insegnamenti.dart';
 import '../model/corso.dart';
-import '../model/utente.dart';
+//import 'package:ripetizioni/model/utente.dart';
 import '../model/docente.dart';
 import '../model/ripetizioni.dart';
 import 'package:http/http.dart' as http;
@@ -92,7 +92,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void riempiTab(){
     for(int i=0;i<4;i++) {
-      prenotazioniDisp.add(["Disponibile","disp","disp","disp","disp"]);
+      prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
       prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
   }
   }
@@ -358,7 +358,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
               TextButton(
                 onPressed: () => setState(() {
-                  _callCaricaPrenotazione();
+                  if((corsoScelto != null && corsoScelto != "") || (docenteScelto != null  && docenteScelto != "")) {
+                    _callCaricaPrenotazione();
+                  }
                 }),
                 child: Container(
                   width: 100.0,
@@ -453,23 +455,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Lunedì", "15:00");
-                                    return confermaPrenotazione(context, "Lunedì", "15:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    left: BorderSide(color: Colors.black),
-                                    right: BorderSide(color: Colors.black),
-                                    top: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(0),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
                                     padding:
-                                        EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -479,21 +481,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Martedì", "15:00");
-                                    return confermaPrenotazione(context, "Martedì", "15:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    top: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(1),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -503,21 +507,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Mercoledì", "15:00");
-                                    return confermaPrenotazione(context, "Mercoledì", "15:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(2),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -527,21 +533,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Giovedì", "15:00");
-                                    return confermaPrenotazione(context, "Giovedì", "15:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(3),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -551,21 +559,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Venerdì", "15:00");
-                                    return confermaPrenotazione(context, "Venerdì", "15:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(0).elementAt(4),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
                                         top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(0).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -589,21 +599,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Lunedì", "16:00");
-                                    return confermaPrenotazione(context, "Lunedì", "16:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    left: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(0),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -613,20 +625,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Martedì", "16:00");
-                                    return confermaPrenotazione(context, "Martedì", "16:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(1),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -636,20 +651,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Mercoledì", "16:00");
-                                    return confermaPrenotazione(context, "Mercoledì", "16:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(2),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -659,20 +677,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Giovedì", "16:00");
-                                    return confermaPrenotazione(context, "Giovedì", "16:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(3),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -682,20 +703,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Venerdì", "16:00");
-                                    return confermaPrenotazione(context, "Venerdì", "16:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(1).elementAt(4),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(1).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -723,17 +747,20 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                    left: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(0),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -743,20 +770,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Martedì", "17:00");
-                                    return confermaPrenotazione(context, "Martedì", "17:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(1),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -766,20 +796,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Mercoledì", "17:00");
-                                    return confermaPrenotazione(context, "Mercoledì", "17:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(2),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -789,20 +822,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Giovedì", "17:00");
-                                    return confermaPrenotazione(context, "Giovedì", "17:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(3),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -812,20 +848,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Venerdì", "17:00");
-                                    return confermaPrenotazione(context, "Venerdì", "17:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(2).elementAt(4),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(2).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -849,20 +888,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Lunedì", "18:00");
-                                    return confermaPrenotazione(context, "Lunedì", "18:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          right: BorderSide(color: Colors.black),
-                                          bottom: BorderSide(color: Colors.black),
-                                          left: BorderSide(color: Colors.black))),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(0),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(0),
                                       ),
                                     ),
                                   ),
@@ -872,20 +914,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Martedì", "18:00");
-                                    return confermaPrenotazione(context, "Martedì", "18:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                    right: BorderSide(color: Colors.black),
-                                    bottom: BorderSide(color: Colors.black),
-                                  )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(1),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
+                                        right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
+                                        bottom: BorderSide(color: Colors.black),
+                                      )),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(1),
                                       ),
                                     ),
                                   ),
@@ -895,20 +940,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Mercoledì", "18:00");
-                                    return confermaPrenotazione(context, "Mercoledì", "18:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(2),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(2),
                                       ),
                                     ),
                                   ),
@@ -918,20 +966,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Giovedì", "18:00");
-                                    return confermaPrenotazione(context, "Giovedì", "18:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(3),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(3),
                                       ),
                                     ),
                                   ),
@@ -941,20 +992,23 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                 onTap: () {
                                   setState(() {
                                     mostraConferma(context, "Venerdì", "18:00");
-                                    confermaPrenotazione(context, "Venerdì", "18:00");
                                   });
                                 },
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      border: Border(
+                                  decoration: BoxDecoration(
+                                      color: prenotazioniDispC.elementAt(3).elementAt(4),
+                                      border: const Border(
+                                        left: BorderSide(color: Colors.black),
                                         right: BorderSide(color: Colors.black),
+                                        top: BorderSide(color: Colors.black),
                                         bottom: BorderSide(color: Colors.black),
                                       )),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
                                     child: Align(
                                       child: Text(
-                                        'Disp',
+                                        prenotazioniDisp.elementAt(3).elementAt(4),
                                       ),
                                     ),
                                   ),
@@ -975,6 +1029,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           ),
         ),
       ),
+    ),
     );
   }
   Widget setupAlertDialoadContainer() {
