@@ -7,8 +7,8 @@ class Ripetizioni {
   String ora;
   Docente docente;
   Corso corso;
+  bool stato;
 
-
-  Ripetizioni({ required this.giorno, required this.ora, required this.docente, required this.corso });
+  Ripetizioni({ required this.giorno, required this.ora, required this.docente, required this.corso, required this.stato });
 
 }
