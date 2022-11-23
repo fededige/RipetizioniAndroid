@@ -86,7 +86,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void riempiTab(){
     for(int i=0;i<4;i++) {
-      prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
+      prenotazioniDisp.add(["Disponibile","disp","disp","disp","disp"]);
       prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
   }
   }
@@ -116,11 +116,17 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _callCaricaPrenotazione(){
+    print("119 $docenteScelto");
+    print("120 $corsoScelto");
     if(docenteScelto != null){
       matricolaDoce = int.parse(docenteScelto!.split(" ").first);
+    }else{
+      matricolaDoce= null;
     }
     if(corsoScelto != null) {
       codCorso = int.parse(corsoScelto!.split(" ").first);
+    }else{
+      codCorso=null;
     }
     String? usr;
     if(utente != null){
