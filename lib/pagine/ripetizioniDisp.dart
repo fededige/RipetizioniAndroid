@@ -15,13 +15,10 @@ class CaricaInsegnamentiAPI{
     const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
     //print(url);
     final response = await http.get(Uri.parse(url));
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
       List<dynamic> list = json.decode(response.body);
       List<Insegnamenti> li = <Insegnamenti>[];
-      print("list: $list");
       for(int i = 0; i < list.length; i++){
         li.add(Insegnamenti.fromJson(list.elementAt(i)));
       }
@@ -37,10 +34,8 @@ class CaricaInsegnamentiAPI{
 class CaricaPrenotazioneAPI{
   Future<List<List<int>>> getCaricaPrenotazioni(int? c,int? doc,String? usr) async {
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
-    print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      print("46");
       List<dynamic> list = json.decode(response.body);
       /*print("list: $list");
       print(list.elementAt(0));*/
@@ -53,7 +48,6 @@ class CaricaPrenotazioneAPI{
         }
         liPrenotazione.add(temp);
       }
-      print("56 $liPrenotazione");
       return liPrenotazione;
     } else {
       throw Exception('Failed to load utente');
@@ -98,7 +92,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _callCaricaInsegnamenti(){
-    print('_PaginaRipetizioniState._callCaricaInsegnamenti');
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti().then((list) {
       if(list.isNotEmpty) {
@@ -112,19 +105,15 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
        // print(corsi);
         convertStr(corsi, docenti);
       } else {
-        print("errore, non ci sono insegnamenti");
         /*setState(() {
         errore = "non ci sono insegnamenti";
       });*/
       }
     }, onError: (error) {
-      print('errore');
     });
   }
 
   void _callCaricaPrenotazione(){
-    print("119 $docenteScelto");
-    print("120 $corsoScelto");
     if(docenteScelto != null){
       matricolaDoce = int.parse(docenteScelto!.split(" ").first);
     }else{
@@ -142,10 +131,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     //print("109 $matricolaDoce");
     //print("110 $codCorso");
     var api = CaricaPrenotazioneAPI();
-    print("122");
     api.getCaricaPrenotazioni(codCorso,matricolaDoce,usr).then((list) {
       if(list.isNotEmpty) {
-        print("list.isNotEmpty in carica prenotazione");
         prenotazioni = list;
         setState((){
           _PrenotazioniDisp();
@@ -156,7 +143,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       });*/
       }
     }, onError: (error) {
-      print('errore in _callPren');
     });
 
 }
@@ -183,7 +169,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void aggiornaCorsi(){
     if(docenteScelto != null ){
-      print("!= null");
       if(docenteScelto != "Deseleziona Docente") {
         setState(() {
           corsiS.removeRange(1, corsiS.length);
@@ -208,7 +193,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
  void _PrenotazioniDisp() {
-    print('188');
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
     prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
     for(int i=0;i<4;i++) {
@@ -229,11 +213,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       prenotazioniDisp.add(temp);
       prenotazioniDispC.add(tempC);
     }
-    print("210 $prenotazioniDispC");
   }
 
   void aggiornaDocenti(){
-    print("aggiorna Docenti");
     if(corsoScelto != null ){
       if(corsoScelto != "Deseleziona Corso") {
         setState(() {
@@ -451,569 +433,62 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "15:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(0).elementAt(0),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(0).elementAt(0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "15:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(0).elementAt(1),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(0).elementAt(1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "15:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(0).elementAt(2),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(0).elementAt(2),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "15:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(0).elementAt(3),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(0).elementAt(3),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "15:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(0).elementAt(4),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(0).elementAt(4),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              tile(0, 0),
+                              tile(0, 1),
+                              tile(0, 2),
+                              tile(0, 3),
+                              tile(0, 4),
                             ],
                           ),
                           TableRow(
                             children: [
-                              Container(
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      '16',
-                                    ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                child: Align(
+                                  child: Text(
+                                    '16',
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "16:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(1).elementAt(0),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(1).elementAt(0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "16:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(1).elementAt(1),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(1).elementAt(1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "16:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(1).elementAt(2),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(1).elementAt(2),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "16:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(1).elementAt(3),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(1).elementAt(3),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "16:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(1).elementAt(4),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(1).elementAt(4),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              tile(1, 0),
+                              tile(1, 1),
+                              tile(1, 2),
+                              tile(1, 3),
+                              tile(1, 4),
                             ],
                           ),
                           TableRow(
                             children: [
-                              Container(
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      '17',
-                                    ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                child: Align(
+                                  child: Text(
+                                    '17',
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "17:00");
-                                    return confermaPrenotazione(context, "Lunedì", "17:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(2).elementAt(0),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(2).elementAt(0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "17:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(2).elementAt(1),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(2).elementAt(1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "17:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(2).elementAt(2),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(2).elementAt(2),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "17:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(2).elementAt(3),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(2).elementAt(3),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "17:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(2).elementAt(4),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(2).elementAt(4),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              tile(2, 0),
+                              tile(2, 1),
+                              tile(2, 2),
+                              tile(2, 3),
+                              tile(2, 4),
                             ],
                           ),
                           TableRow(
                             children: [
-                              Container(
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                  child: Align(
-                                    child: Text(
-                                      '18',
-                                    ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
+                                child: Align(
+                                  child: Text(
+                                    '18',
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "18:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(3).elementAt(0),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(3).elementAt(0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "18:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(3).elementAt(1),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(3).elementAt(1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "18:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(3).elementAt(2),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(3).elementAt(2),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "18:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(3).elementAt(3),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(3).elementAt(3),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "18:00");
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: prenotazioniDispC.elementAt(3).elementAt(4),
-                                      border: const Border(
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        bottom: BorderSide(color: Colors.black),
-                                      )),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                    child: Align(
-                                      child: Text(
-                                        prenotazioniDisp.elementAt(3).elementAt(4),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              tile(3, 0),
+                              tile(3, 1),
+                              tile(3, 2),
+                              tile(3, 3),
+                              tile(3, 4),
                             ],
                           ),
                         ],
@@ -1033,7 +508,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
   Widget setupAlertDialoadContainer() {
-    return Container(
+    return SizedBox(
       height: 400.0, // Change as per your requirement
       width: 400.0, // Change as per your requirement
       child: ListView(
@@ -1042,6 +517,77 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       ),
     );
   }
+
+  Widget tile(int x, y){
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          mostraConferma(context, indexToDay(x), indexToHour(y));
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: prenotazioniDispC.elementAt(x).elementAt(y),
+            border: const Border(
+              left: BorderSide(color: Colors.black),
+              right: BorderSide(color: Colors.black),
+              top: BorderSide(color: Colors.black),
+              bottom: BorderSide(color: Colors.black),
+            )),
+        child: Padding(
+          padding:
+          const EdgeInsets.fromLTRB(15, 45, 15, 45),
+          child: Align(
+            child: Text(
+              prenotazioniDisp.elementAt(x).elementAt(y),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String indexToDay(int indice){
+    String giorno = "";
+    switch(indice){
+      case 0:
+        giorno = "lunedì";
+        break;
+      case 1:
+        giorno =  "martedì";
+        break;
+      case 2:
+        giorno =  "mercoledì";
+        break;
+      case 3:
+        giorno = "giovedì";
+        break;
+      case 4:
+        giorno = "venerdì";
+        break;
+    }
+    return giorno;
+  }
+
+   String indexToHour(int indice){
+    String orario = "";
+    switch(indice){
+      case 0:
+        orario = "15:00:00";
+        break;
+      case 1:
+        orario =  "16:00:00";
+        break;
+      case 2:
+        orario =  "17:00:00";
+        break;
+      case 3:
+        orario = "18:00:00";
+        break;
+    }
+    return orario;
+  }
+
   Widget ripetizioneTemplate(ripetizione){
     return Card(
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
