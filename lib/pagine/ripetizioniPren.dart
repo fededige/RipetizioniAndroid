@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../model/docente.dart';
+import '../model/corso.dart';
 import '../model/ripetizioni.dart';
 
 class PaginaRipetizioniPren extends StatefulWidget {
@@ -9,10 +11,10 @@ class PaginaRipetizioniPren extends StatefulWidget {
 
 class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
   List<Ripetizioni> ripetizioni = [
-    Ripetizioni(giorno: "Lunedì", ora: "15:00", docente: "mario", corso: "informatica"),
-    Ripetizioni(giorno: "Martedì", ora: "18:00", docente: "luigi", corso: "informatica"),
-    Ripetizioni(giorno: "Giovedì", ora: "16:00", docente: "ciccio", corso: "informatica"),
-    Ripetizioni(giorno: "Lunedì", ora: "17:00", docente: "mario", corso: "informatica"),
+    Ripetizioni(giorno: "Lunedì", ora: "15:00", docente: Docente(matricola: 123, nome: 'mario', cognome: 'dth'), corso: Corso(codice: 123, titoloCorso: 'informatica')),
+    Ripetizioni(giorno: "Martedì", ora: "18:00", docente: Docente(matricola: 456, nome: 'divb', cognome: 'af'), corso: Corso(codice: 456, titoloCorso: 'matematica')),
+    Ripetizioni(giorno: "Giovedì", ora: "16:00", docente: Docente(matricola: 789, nome: 'ad', cognome: 'th'), corso: Corso(codice: 789, titoloCorso: 'inglese')),
+    Ripetizioni(giorno: "Lunedì", ora: "17:00", docente: Docente(matricola: 135, nome: 'av', cognome: 'ayn'), corso: Corso(codice: 135, titoloCorso: 'geometria')),
   ];
   @override
   Widget build(BuildContext context) {
@@ -68,13 +70,13 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      ripetizione.docente,
+                      ripetizione.docente.cognome,
                       style: const TextStyle(
                           fontSize: 20
                       ),
                     ),
                     Text(
-                      ripetizione.corso,
+                      ripetizione.corso.titoloCorso,
                       style: const TextStyle(
                           fontSize: 20
                       ),
