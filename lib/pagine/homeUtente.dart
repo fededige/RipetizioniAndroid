@@ -94,7 +94,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                 ),
                 TextButton(
                   onPressed: (){
-                    Navigator.pushNamed(context, "/ripetizioniPren",arguments: utente);
+                    Navigator.pushNamed(context, "/ripetizioniPren",arguments: {"utente":utente, "ricarica":true});
                   },
                   child: Container(
                       decoration: BoxDecoration(
