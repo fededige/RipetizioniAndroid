@@ -23,4 +23,16 @@ class Ripetizioni {
       effettuata: json['effettuata'],
     );
   }
+
+  Map<String, dynamic> toJson(){
+    return {
+      "giorno": giorno,
+      "ora": ora,
+      "docente": docente,
+      "corso": corso,
+      "utente": utente,
+      "stato":stato,
+      "effettuata":effettuata
+    };
+  }
 }

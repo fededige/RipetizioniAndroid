@@ -42,8 +42,7 @@ class PaginaRipetizioniPren extends StatefulWidget {
 
 class CaricaInsegnamentiAPI {
 Future<List<Ripetizioni>> getCaricaRipetizioni(String usr) async {
-  const url =
-      'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizionieff?utente=ema';
+  String url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizionieff?utente=$usr';
   print(url);
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -63,9 +62,48 @@ Future<List<Ripetizioni>> getCaricaRipetizioni(String usr) async {
 }
 }
 
+class RipetizioneEffettuataAPI {
+  Future<bool> postInserisciPrenotazioneEff(Ripetizioni r) async {
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioniEffettuate';
+    print(url);
+    String RipetEff = jsonEncode(r);
+    print("71 a");
+    print(RipetEff);
+    final response = await http.post(Uri.parse(url), headers: <String,String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: RipetEff
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load postInserisciPrenotazione');
+    }
+  }
+}
+
+class RipetizioneCancellataAPI {
+  Future<bool> postInserisciPrenotazioneCanc(Ripetizioni r) async {
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioneCancellata';
+    print(url);
+    String RipetEff = jsonEncode(r);
+    print("71 a");
+    print(RipetEff);
+    final response = await http.post(Uri.parse(url), headers: <String,String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+        body: RipetEff
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load postInserisciPrenotazione');
+    }
+  }
+}
+
 class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
-
-
 
 void _callCaricaRipetizioni() {
   print('_PaginaRipetizioniState._callCaricaRipetizioni');
@@ -105,6 +143,38 @@ void _callCaricaRipetizioni() {
    });
   }, onError: (error) {
     print('errore in _callCaricaRipetizioni');
+  });
+}
+
+void _callPostRipetizioneEff(Ripetizioni r) {
+  var api = RipetizioneEffettuataAPI();
+  api.postInserisciPrenotazioneEff(r).then((list) {
+    setState(() {
+      if (list == true) {
+        ripetizioni.remove(r);
+        ripetizioniEff.add(r);
+      } else {
+        print('errore in _callRipetizioneEff');
+      }
+    });
+  }, onError: (error) {
+    print('errore in _callPostRipetizione');
+  });
+}
+
+void _callPostRipetizioneCanc(Ripetizioni r) {
+  var api = RipetizioneCancellataAPI();
+  api.postInserisciPrenotazioneCanc(r).then((list) {
+    setState(() {
+      if (list == true) {
+        ripetizioni.remove(r);
+        ripetizioniCanc.add(r);
+      } else {
+        print('errore in _callRipetizioneEff');
+      }
+    });
+  }, onError: (error) {
+    print('errore in _callPostRipetizione');
   });
 }
 
@@ -196,7 +266,7 @@ void _callCaricaRipetizioni() {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 85,
+                width: 100,
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -238,8 +308,7 @@ void _callCaricaRipetizioni() {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    ripetizioni.remove(ripetizione);
-                    ripetizioniCanc.add(ripetizione);
+                    _callPostRipetizioneCanc(ripetizione);
                   });
                 },
                 icon: const Icon(
@@ -250,8 +319,7 @@ void _callCaricaRipetizioni() {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    ripetizioni.remove(ripetizione);
-                    ripetizioniEff.add(ripetizione);
+                    _callPostRipetizioneEff(ripetizione);
                   });
                 },
                 icon: const Icon(
@@ -273,7 +341,7 @@ void _callCaricaRipetizioni() {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 85,
+                width: 100,
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
