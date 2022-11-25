@@ -15,19 +15,31 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.black,
           title: const Text(
             'Ripetizioni',
           ),
           automaticallyImplyLeading: false,
         ),
+        backgroundColor: Colors.blueGrey,
         body: Column(
+
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
+                  child: Text(
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                      'Ciao $presentazione!' //variabile
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/impostazioni', arguments: utente);
@@ -36,16 +48,6 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   icon: const Icon(
                     color: Colors.black,
                     Icons.settings,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
-                  child: Text(
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    ),
-                    'Ciao $presentazione' //variabile
                   ),
                 ),
               ],
@@ -59,6 +61,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   },
                   child: Container(
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         shape: BoxShape.rectangle,
                         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                         border: Border.all(
@@ -98,6 +101,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   },
                   child: Container(
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         shape: BoxShape.rectangle,
                         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                         border: Border.all(

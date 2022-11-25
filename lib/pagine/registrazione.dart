@@ -191,7 +191,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                   Container(
                     width: 136.0,
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.black,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
@@ -236,7 +236,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                   'Join as Guest',
                   style: TextStyle(
                     fontSize: 20.0,
-                    color: Colors.blue,
+                    color: Colors.black,
                   ),
                 ),
               ),
