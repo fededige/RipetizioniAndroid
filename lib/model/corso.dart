@@ -13,4 +13,11 @@ class Corso {
     );
   }
 
+  Map<String, dynamic> toJson(){
+    return {
+      "codice": codice,
+      "titoloCorso": titoloCorso,
+    };
+  }
+
 }
