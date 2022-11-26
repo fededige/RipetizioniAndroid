@@ -128,6 +128,8 @@ String? messaggioInserimento;
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void riempiTab(){
+    prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
+    prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
     for(int i=0;i<4;i++) {
       prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
       prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
@@ -138,11 +140,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     var api = InserisciPrenotazioniAPI();
     api.postInserisciPrenotazioni(prenotazioni).then((flag){
       if(flag) {
-        _showToast(context);
         messaggioInserimento = "prenotazioni confermate";
       } else {
         messaggioInserimento = "prenotazione non andata a buonfine riprova";
       }
+      _showToast(context, messaggioInserimento!);
       ripetizioni.removeRange(0, ripetizioni.length);
       if((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) || (docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0)) {
         setState(() {
@@ -341,13 +343,15 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     setState(() {
       bool flag = true;
       for(int j = 0; j < ripetizioni.length; j++){
-        if(ripetizioni.elementAt(j).corso.codice == r.corso.codice && ripetizioni.elementAt(j).docente.matricola == r.docente.matricola){
+        if(ripetizioni.elementAt(j).corso.codice == r.corso.codice && ripetizioni.elementAt(j).docente.matricola == r.docente.matricola && ripetizioni.elementAt(j).giorno == r.giorno && ripetizioni.elementAt(j).ora == r.ora){
           flag = false;
           break;
         }
       }
       if(flag){
         ripetizioni.add(r);
+      } else {
+        _showToast(context, "Ripetizione già inserita nel carrello");
       }
     });
     Navigator.pop(context, 'Cancel');
@@ -360,7 +364,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     utente = arg["utente"];
     bool ricarica = arg["ricarica"];
+    print("ricarica: $ricarica");
+    print("nuovo: $nuovo");
     if (ricarica == true && nuovo == true) {
+      print("sono entrato");
       nuovo = false;
       _callCaricaInsegnamenti();
       setState(() {
@@ -373,6 +380,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         backgroundColor: Colors.blue,
         title: const Text(
           'Ripetizioni Disponibili',
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => {
+            print("backbutton"),
+            nuovo = true,
+            Navigator.pop(context, false),
+            },
         ),
       ),
       body: Center(
@@ -1209,17 +1224,17 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 }
 
-void _showToast(BuildContext context) {
+void _showToast(BuildContext context, String str) {
   final scaffold = ScaffoldMessenger.of(context);
   scaffold.showSnackBar(
-    const SnackBar(
-      content: Text('Ripetizioni prenotate correttamente'),
+    SnackBar(
+      content: Text(str),
       backgroundColor: Colors.blue,
-      shape: StadiumBorder(),
+      shape: const StadiumBorder(),
       behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.all(50),
+      margin: const EdgeInsets.all(50),
       elevation: 30,
-      duration: Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 2000),
     ),
   );
 }
