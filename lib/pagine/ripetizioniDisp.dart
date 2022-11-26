@@ -29,11 +29,50 @@ class CaricaInsegnamentiAPI{
   }
 }
 
+class InserisciPrenotazioniAPI{
+  Future<bool> postInserisciPrenotazioni(List<Ripetizioni> prenotazioni) async{
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInserimentoRipetizioni';
+    String jsonP = jsonEncode(prenotazioni.map((el) => el.toJson()).toList()).toString();
+    print(jsonP);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonP,
+    );
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to insert ripetizioni in cart.');
+    }
+  }
+}
 
+class CaricaDocentiAPI{
+  Future<List<Docente>> getCaricaDocenti(int corso, String giorno, String ora) async {
+    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletDocentiDisp?corso=$corso&giorno=$giorno&ora=$ora';
+    print(url);
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      List<dynamic> list = json.decode(response.body);
+      List<Docente> doc = <Docente>[];
+      for(int i = 0; i < list.length; i++){
+        doc.add(Docente.fromJson(list.elementAt(i)));
+      }
+      return doc;
+    } else {
+      throw Exception('Failed to load utente');
+    }
+  }
+}
 
 class CaricaPrenotazioneAPI{
   Future<List<List<int>>> getCaricaPrenotazioni(int? c,int? doc,String? usr) async {
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
+    print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
@@ -66,25 +105,25 @@ List<Insegnamenti> insegnamenti = <Insegnamenti>[];
 List<List<int>> prenotazioni = <List<int>>[];
 List<Corso> corsi = <Corso>[];
 List<Corso> corsiL = <Corso>[];
+List<Corso> corsiNonOccu = <Corso>[];
 List<Docente> docenti = <Docente>[];
 List<Docente> docentiL = <Docente>[];
+List<Docente> docentiNonOccu = <Docente>[];
 List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
 List<List<Color>> prenotazioniDispC = <List<Color>>[];
-List<Ripetizioni> ripetizioni = [
-  Ripetizioni(giorno: "Lunedì", ora: "15:00", docente: Docente(matricola: 123, nome: 'mario', cognome: 'dth'), corso: Corso(codice: 123, titoloCorso: 'informatica')),
-  Ripetizioni(giorno: "Martedì", ora: "18:00", docente: Docente(matricola: 456, nome: 'divb', cognome: 'af'), corso: Corso(codice: 456, titoloCorso: 'matematica')),
-  Ripetizioni(giorno: "Giovedì", ora: "16:00", docente: Docente(matricola: 789, nome: 'ad', cognome: 'th'), corso: Corso(codice: 789, titoloCorso: 'inglese')),
-  Ripetizioni(giorno: "Lunedì", ora: "17:00", docente: Docente(matricola: 135, nome: 'av', cognome: 'ayn'), corso: Corso(codice: 135, titoloCorso: 'geometria')),
-];
-String? docenteScelto;
+List<Ripetizioni> ripetizioni = [];
+
+
 Docente? docenteSceltoTmp;
+Docente? docenteToCart;
 int? matricolaDoce;
 int? codCorso;
-String? corsoScelto;
 Corso? corsoSceltoTmp;
+Corso? corsoToCart;
 bool nuovo = true;
 String dropdownValue = "ciaociao";
 Utente? utente;
+String? messaggioInserimento;
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
@@ -93,6 +132,42 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
       prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
     }
+  }
+
+  void _callInserisciPrenotazioni(List<Ripetizioni> prenotazioni){
+    var api = InserisciPrenotazioniAPI();
+    api.postInserisciPrenotazioni(prenotazioni).then((flag){
+      if(flag) {
+        _showToast(context);
+        messaggioInserimento = "prenotazioni confermate";
+      } else {
+        messaggioInserimento = "prenotazione non andata a buonfine riprova";
+      }
+      ripetizioni.removeRange(0, ripetizioni.length);
+      if((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) || (docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0)) {
+        setState(() {
+          _callCaricaPrenotazione();
+        });
+      }
+    });
+  }
+
+  void _callCaricaDocenti(int corso, String giorno, String ora){
+    var api = CaricaDocentiAPI();
+    if(docentiNonOccu.isNotEmpty) {
+      docentiNonOccu.removeRange(0, docentiNonOccu.length);
+    }
+    api.getCaricaDocenti(corso, giorno, ora).then((list){
+      if(list.isNotEmpty) {
+        print("ciao");
+        setState(() {
+          for (var element in list) {docentiNonOccu.add(element);}
+        });
+        docentiNonOccu.forEach((element) {print(element.matricola);});
+        mostraConferma(context, giorno, ora);
+      }
+    }
+    );
   }
 
   void _callCaricaInsegnamenti(){
@@ -257,6 +332,26 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       prenotazioniDisp.add(temp);
       prenotazioniDispC.add(tempC);
     }
+  }
+
+  void pushToCart(BuildContext context, String giorno, String ora, Corso corso, Docente docente){
+    corsoToCart = null;
+    docenteToCart = null;
+    Ripetizioni r = Ripetizioni(giorno: giorno, ora: ora, docente: docente, corso: corso, utente: (utente!.nomeutente)!, stato: true);
+    setState(() {
+      bool flag = true;
+      for(int j = 0; j < ripetizioni.length; j++){
+        if(ripetizioni.elementAt(j).corso.codice == r.corso.codice && ripetizioni.elementAt(j).docente.matricola == r.docente.matricola){
+          flag = false;
+          break;
+        }
+      }
+      if(flag){
+        ripetizioni.add(r);
+      }
+    });
+    Navigator.pop(context, 'Cancel');
+
   }
 
 
@@ -534,12 +629,16 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
 
-  Widget tile(int x, y){
+  Widget tile(int x, int y){
     return GestureDetector(
       onTap: () {
         if(prenotazioni.elementAt(x).elementAt(y) == 0) {
           setState(() {
-            mostraConferma(context, indexToDay(x), indexToHour(y));
+            if(docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0) {
+              mostraConferma(context, indexToDay(y), indexToHour(x));
+            }else if(corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) {
+              _callCaricaDocenti(corsoSceltoTmp!.codice, indexToDay(x), indexToHour(y));
+            }
           });
         }
       },
@@ -666,7 +765,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               onPressed: () {
                 setState(() {
                   ripetizioni.remove(ripetizione);
-                  Navigator.pop(context, 'Cancel');
+                  Navigator.pop(context, 'Cancel'); //TODO: a che serve???
                   carrelloPrenotazioni(context);
                 });
               },
@@ -721,7 +820,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 ),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
+                onPressed: () => {
+                  _callInserisciPrenotazioni(ripetizioni),
+                  Navigator.pop(context, 'Cancel'),
+                },
                 child: Container(
                   width: 105.0,
                   decoration: BoxDecoration(
@@ -732,7 +834,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       color: Colors.black,
                       width: 3.0,
                     ),
-                  ), //aggiungere navigazione alla Home
+                  ),
                   child: const Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Align(
@@ -827,12 +929,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: ((){
-              setState(() {
-                ripetizioni.add(Ripetizioni(giorno: giorno, ora: ora, docente: Docente(matricola: 123, nome: 'mario', cognome: 'dth '), corso: Corso(codice: 123, titoloCorso: 'informatica')));
-              });
-              Navigator.pop(context, 'Cancel');
-            }),
+            onPressed: () => pushToCart(context, giorno, ora, corsoSceltoTmp!, docenteSceltoTmp!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -849,130 +946,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 child: Align(
                   child: Text(
                     'Aggiungi al carrello',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void confermaPrenotazione(BuildContext context, String giorno, String ora) {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        actionsAlignment: MainAxisAlignment.center,
-        title: const Text('Riepilogo'),
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'Giorno: $giorno',
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Ora: $ora',
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DropdownSearch<String>(
-              mode: Mode.MENU,
-              showSelectedItems: true,
-              items:  docentiL.map((el)=>"${el.matricola} ${el.cognome}").toList(),
-              dropdownSearchDecoration: const InputDecoration(
-                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-                labelText: "Scegli Professore",
-                contentPadding: EdgeInsets.all(8.0),
-              ),
-              //selectedItem: "",
-              showSearchBox: true,
-              searchFieldProps: const TextFieldProps(
-                cursorColor: Colors.blue,
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DropdownSearch<String>(
-              mode: Mode.MENU,
-              showSelectedItems: true,
-              items: corsiL.map((el)=>"${el.codice} ${el.titoloCorso}").toList(),
-              dropdownSearchDecoration: const InputDecoration(
-                constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-                labelText: "Scegli Corso",
-                contentPadding: EdgeInsets.all(8.0),
-              ),
-              //selectedItem: "",
-              showSearchBox: true,
-              searchFieldProps: const TextFieldProps(
-                cursorColor: Colors.blue,
-              ),
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Container(
-              width: 100.0,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.rectangle,
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3.0,
-                ),
-              ), //aggiungere navigazione alla Home
-              child: const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Align(
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Container(
-              width: 105.0,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.rectangle,
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3.0,
-                ),
-              ), //aggiungere navigazione alla Home
-              child: const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Align(
-                  child: Text(
-                    'Aggiungi al Carrello',
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
@@ -1017,9 +990,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               height: 10.0,
             ),
             DropdownSearch<String>(
+              onChanged: (value) => {
+                docenteToCart = docentiL.firstWhere((element) => element.matricola == int.parse(value!.split(" ").first)),
+              },
               mode: Mode.MENU,
               showSelectedItems: true,
-              items:  docentiL.map((el)=>"${el.matricola} ${el.cognome}").toList(),
+              items:  docentiNonOccu.map((el)=>"${el.matricola} ${el.cognome}").toList(),
               dropdownSearchDecoration: const InputDecoration(
                 constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                 labelText: "Scegli Professore",
@@ -1074,7 +1050,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => pushToCart(context, giorno, ora, corsoSceltoTmp!, docenteToCart!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1144,6 +1120,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               height: 10.0,
             ),
             DropdownSearch<String>(
+              onChanged: (value) => {
+                corsoToCart = corsiL.firstWhere((element) => element.codice == int.parse(value!.split(" ").first)),
+              },
               mode: Mode.MENU,
               showSelectedItems: true,
               items:  corsiL.map((el)=>"${el.codice} ${el.titoloCorso}").toList(),
@@ -1189,9 +1168,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => {
-              Navigator.pop(context, 'Cancel'),
-            },
+            onPressed: () => pushToCart(context, giorno, ora, corsoToCart!, docenteSceltoTmp!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1230,4 +1207,19 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       confermaPrenotazioneDocCor(context, giorno, ora);
     }
   }
+}
+
+void _showToast(BuildContext context) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    const SnackBar(
+      content: Text('Ripetizioni prenotate correttamente'),
+      backgroundColor: Colors.blue,
+      shape: StadiumBorder(),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(50),
+      elevation: 30,
+      duration: Duration(milliseconds: 2000),
+    ),
+  );
 }
