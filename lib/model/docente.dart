@@ -15,4 +15,12 @@ class Docente {
     );
   }
 
+  Map<String, dynamic> toJson(){
+    return {
+      "cognome": cognome,
+      "matricola": matricola,
+      "nome": nome,
+    };
+  }
+
 }

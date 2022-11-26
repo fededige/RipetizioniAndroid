@@ -22,6 +22,7 @@ class CaricaInsegnamentiAPI{
       for(int i = 0; i < list.length; i++){
         li.add(Insegnamenti.fromJson(list.elementAt(i)));
       }
+      print(li);
       return li;
     } else {
       throw Exception('Failed to load utente');
@@ -69,10 +70,10 @@ List<String> docentiS = ["Deseleziona Docente"];
 List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
 List<List<Color>> prenotazioniDispC = <List<Color>>[];
 List<Ripetizioni> ripetizioni = [
-  Ripetizioni(giorno: "Lunedì", ora: "15:00", docente: Docente(matricola: 123, nome: 'mario', cognome: 'dth'), corso: Corso(codice: 123, titoloCorso: 'informatica')),
-  Ripetizioni(giorno: "Martedì", ora: "18:00", docente: Docente(matricola: 456, nome: 'divb', cognome: 'af'), corso: Corso(codice: 456, titoloCorso: 'matematica')),
-  Ripetizioni(giorno: "Giovedì", ora: "16:00", docente: Docente(matricola: 789, nome: 'ad', cognome: 'th'), corso: Corso(codice: 789, titoloCorso: 'inglese')),
-  Ripetizioni(giorno: "Lunedì", ora: "17:00", docente: Docente(matricola: 135, nome: 'av', cognome: 'ayn'), corso: Corso(codice: 135, titoloCorso: 'geometria')),
+  Ripetizioni(giorno: "Lunedì", ora: "15:00", docente: Docente(matricola: 123, nome: 'mario', cognome: 'dth'), corso: Corso(codice: 123, titoloCorso: 'informatica'), stato: true,effettuata: true,utente:'ema'),
+  Ripetizioni(giorno: "Martedì", ora: "18:00", docente: Docente(matricola: 456, nome: 'divb', cognome: 'af'), corso: Corso(codice: 456, titoloCorso: 'matematica'), stato: true,effettuata: true,utente:'ema'),
+  Ripetizioni(giorno: "Giovedì", ora: "16:00", docente: Docente(matricola: 789, nome: 'ad', cognome: 'th'), corso: Corso(codice: 789, titoloCorso: 'inglese'), stato: true,effettuata: true,utente:'ema'),
+  Ripetizioni(giorno: "Lunedì", ora: "17:00", docente: Docente(matricola: 135, nome: 'av', cognome: 'ayn'), corso: Corso(codice: 135, titoloCorso: 'geometria'), stato: true,effettuata: true,utente:'ema'),
 ];
 String? docenteScelto;
 int? matricolaDoce;
