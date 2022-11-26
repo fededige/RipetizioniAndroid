@@ -6,6 +6,7 @@ class Ripetizioni {
   String giorno;
   String ora;
   Docente docente;
+  String utente;
   Corso corso;
   bool stato;
   bool effettuata;

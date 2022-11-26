@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class CambioPasswordAPI{
   Future<bool> postCambioPassword(String nomeutente, String vecchiaPassword, String nuovaPassword, String confNuovaPassword) async {
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletImpostazioni?nomeUtente=$nomeutente&vecchiaPassword=$vecchiaPassword&nuovaPassword=$nuovaPassword&confermaNuovaPassword=$confNuovaPassword';
-    final response = await http.post(Uri.parse(url));
+    final response = await http.get(Uri.parse(url));
     print("12");
     print(response.body);
     if (response.statusCode == 200) {
