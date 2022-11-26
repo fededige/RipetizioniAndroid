@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
+import 'package:ripetizioni/pagine/ripetizioniPren.dart';
 import '../model/docente.dart';
 import '../model/corso.dart';
 import '../model/ripetizioni.dart';
@@ -184,6 +185,9 @@ void _callPostRipetizioneCanc(Ripetizioni r) {
     user = arg["utente"];
     bool ricarica = arg["ricarica"];
     if(ricarica == true && nuovo == true){
+      ripetizioni.removeRange(0, ripetizioni.length);
+      ripetizioniCanc.removeRange(0, ripetizioniCanc.length);
+      ripetizioniEff.removeRange(0, ripetizioniEff.length);
       nuovo=false;
       _callCaricaRipetizioni();
     }
@@ -193,6 +197,14 @@ void _callPostRipetizioneCanc(Ripetizioni r) {
         title: const Text('Ripetizioni Prenotate'),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => {
+            print("backbutton"),
+            nuovo = true,
+            Navigator.pop(context, false),
+          },
+        ),
       ),
       body: ListView(
         //_widgetOptions[_selectedIndex],
