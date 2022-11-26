@@ -266,7 +266,7 @@ void _callPostRipetizioneCanc(Ripetizioni r) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 100,
+                width: 110,
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -341,7 +341,7 @@ void _callPostRipetizioneCanc(Ripetizioni r) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 100,
+                width: 110,
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

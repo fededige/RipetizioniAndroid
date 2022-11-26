@@ -104,11 +104,11 @@ class PaginaRipetizioni extends StatefulWidget {
 
 List<Insegnamenti> insegnamenti = <Insegnamenti>[];
 List<List<int>> prenotazioni = <List<int>>[];
-List<Corso> corsi = <Corso>[];
-List<Corso> corsiL = <Corso>[];
+List<Corso> corsi = <Corso>[Corso(codice: 0, titoloCorso: "Deseleziona corso")];
+List<Corso> corsiL = <Corso>[Corso(codice: 0, titoloCorso: "Deseleziona corso")];
 List<Corso> corsiNonOccu = <Corso>[];
-List<Docente> docenti = <Docente>[];
-List<Docente> docentiL = <Docente>[];
+List<Docente> docenti = <Docente>[Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")];
+List<Docente> docentiL = <Docente>[Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")];
 List<Docente> docentiNonOccu = <Docente>[];
 List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
 List<List<Color>> prenotazioniDispC = <List<Color>>[];
@@ -178,10 +178,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     api.getCaricaInsegnamenti().then((list) {
       if(list.isNotEmpty) {
         insegnamenti = list; //TODO: mettere nella dichiarazione
-        docenti.add(Docente(cognome: "Deseleziona docente", matricola: 0, nome: ""));
-        docentiL.add(Docente(cognome: "Deseleziona docente", matricola: 0, nome: ""));
-        corsi.add(Corso(codice: 0, titoloCorso: "Deseleziona corso"));
-        corsiL.add(Corso(codice: 0, titoloCorso: "Deseleziona corso"));
         setState(() {
           for(int i = 0; i < list.length; i++){
             bool flag = true;
@@ -340,7 +336,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void pushToCart(BuildContext context, String giorno, String ora, Corso corso, Docente docente){
     corsoToCart = null;
     docenteToCart = null;
-    Ripetizioni r = Ripetizioni(giorno: giorno, ora: ora, docente: docente, corso: corso, utente: (utente!.nomeutente)!, stato: true);
+    Ripetizioni r = Ripetizioni(giorno: giorno, ora: ora, docente: docente, corso: corso, utente: (utente!.nomeutente)!, stato: true, effettuata: false);
     setState(() {
       bool flag = true;
       for(int j = 0; j < ripetizioni.length; j++){
@@ -369,6 +365,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     print("nuovo: $nuovo");
     if (ricarica == true && nuovo == true) {
       print("sono entrato");
+      docenti.removeRange(1, docenti.length);
+      corsi.removeRange(1, corsi.length);
+      docentiL.removeRange(1, docentiL.length);
+      corsiL.removeRange(1, corsiL.length);
       nuovo = false;
       _callCaricaInsegnamenti();
       setState(() {
@@ -730,7 +730,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: 85,
+              width: 110,
               color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -837,7 +837,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
               TextButton(
                 onPressed: () => {
-                  _callInserisciPrenotazioni(ripetizioni),
+                  if(ripetizioni.isNotEmpty){
+                    _callInserisciPrenotazioni(ripetizioni),
+                  } else {
+                    _showToast(context, "Non ci sono prenotazioni nel carrello"),
+                  },
                   Navigator.pop(context, 'Cancel'),
                 },
                 child: Container(
