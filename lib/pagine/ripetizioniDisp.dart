@@ -88,6 +88,7 @@ String? corsoScelto;
 bool nuovo = true;
 String dropdownValue = "ciaociao";
 Utente? utente;
+bool _isVisibile = true;
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
@@ -267,6 +268,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     bool ricarica = arg["ricarica"];
     if (ricarica == true && nuovo == true) {
       nuovo = false;
+      if(utente!.nomeutente == ""){
+        _isVisibile = false;
+      }
       setState(() {
         _callCaricaInsegnamenti();
         riempiTab();
@@ -291,18 +295,22 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            carrelloPrenotazioni(context);
-                          });
-                        },
-                        iconSize: 35.0,
-                        icon: const Icon(
-                          color: Colors.black,
-                          Icons.shopping_cart_sharp,
+                    Visibility(
+                      visible: _isVisibile,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              carrelloPrenotazioni(context);
+                            });
+                          },
+                          iconSize: 35.0,
+                          icon: const Icon(
+                            color: Colors.black,
+                            Icons.shopping_cart_sharp,
+                          ),
+                          
                         ),
                       ),
                     ),
@@ -454,9 +462,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "15:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Lunedì", "15:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -480,9 +490,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "15:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Martedì", "15:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -506,9 +518,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "15:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Mercoledì", "15:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -532,9 +546,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "15:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Giovedì", "15:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -558,9 +574,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "15:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Venerdì", "15:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -598,9 +616,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "16:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Lunedì", "16:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -624,9 +644,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "16:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Martedì", "16:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -650,9 +672,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "16:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Mercoledì", "16:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -676,9 +700,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "16:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Giovedì", "16:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -702,9 +728,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "16:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Venerdì", "16:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -742,10 +770,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "17:00");
-                                    return confermaPrenotazione(context, "Lunedì", "17:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(context, "Lunedì", "17:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -769,9 +798,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "17:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Martedì", "17:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -795,9 +827,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "17:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Mercoledì", "17:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -821,9 +856,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "17:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Giovedì", "17:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -847,9 +885,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "17:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Venerdì", "17:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -887,9 +928,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Lunedì", "18:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Lunedì", "18:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -913,9 +957,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Martedì", "18:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Martedì", "18:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -939,9 +986,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Mercoledì", "18:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Mercoledì", "18:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -965,9 +1015,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Giovedì", "18:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Giovedì", "18:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -991,9 +1044,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    mostraConferma(context, "Venerdì", "18:00");
-                                  });
+                                  if(_isVisibile == true) {
+                                    setState(() {
+                                      mostraConferma(
+                                          context, "Venerdì", "18:00");
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
