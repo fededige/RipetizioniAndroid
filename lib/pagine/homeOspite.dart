@@ -9,9 +9,9 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
   String? presentazione = '';
   @override
   Widget build(BuildContext context) {
-    usr!.nomeutente="";
-    usr!.password="";
-    usr!.stato=false;
+    usr.nomeutente="";
+    usr.password="";
+    usr.stato=false;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
