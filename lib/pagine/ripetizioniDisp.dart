@@ -124,6 +124,7 @@ Corso? corsoToCart;
 bool nuovo = true;
 String dropdownValue = "ciaociao";
 Utente? utente;
+bool _isVisibile = true;
 String? messaggioInserimento;
 
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
@@ -370,8 +371,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       docentiL.removeRange(1, docentiL.length);
       corsiL.removeRange(1, corsiL.length);
       nuovo = false;
-      _callCaricaInsegnamenti();
+      if(utente!.nomeutente == ""){
+        _isVisibile = false;
+      }
       setState(() {
+        _callCaricaInsegnamenti();
         riempiTab();
       });
     }
@@ -402,18 +406,22 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            carrelloPrenotazioni(context);
-                          });
-                        },
-                        iconSize: 35.0,
-                        icon: const Icon(
-                          color: Colors.black,
-                          Icons.shopping_cart_sharp,
+                    Visibility(
+                      visible: _isVisibile,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              carrelloPrenotazioni(context);
+                            });
+                          },
+                          iconSize: 35.0,
+                          icon: const Icon(
+                            color: Colors.black,
+                            Icons.shopping_cart_sharp,
+                          ),
+                          
                         ),
                       ),
                     ),
@@ -648,7 +656,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   Widget tile(int x, int y){
     return GestureDetector(
       onTap: () {
-        if(prenotazioni.elementAt(x).elementAt(y) == 0) {
+        if(prenotazioni.elementAt(x).elementAt(y) == 0 && _isVisibile == true) {
           setState(() {
             if(docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0) {
               mostraConferma(context, indexToDay(y), indexToHour(x));

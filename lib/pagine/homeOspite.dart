@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-
+import 'package:ripetizioni/model/utente.dart';
 class PaginaHomeOspite extends StatefulWidget {
   @override
   State<PaginaHomeOspite> createState() => _PaginaHomeOspiteState();
 }
-
+Utente usr= new Utente(stato:false);
 class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
+  String? presentazione = '';
   @override
   Widget build(BuildContext context) {
+    usr!.nomeutente="";
+    usr!.password="";
+    usr!.stato=false;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -34,7 +38,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/ripetizioniDisp");
+              Navigator.pushNamed(context, "/ripetizioniDisp",   arguments: {"utente":usr, "ricarica":true});
             },
             child: Container(
               decoration: BoxDecoration(
