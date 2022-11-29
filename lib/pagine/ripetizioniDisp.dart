@@ -371,7 +371,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       docentiL.removeRange(1, docentiL.length);
       corsiL.removeRange(1, corsiL.length);
       nuovo = false;
-      if(utente!.nomeutente == ""){
+      if(utente!.nomeutente == "" || utente!.ruolo == 'admin'){
         _isVisibile = false;
       }
       setState(() {

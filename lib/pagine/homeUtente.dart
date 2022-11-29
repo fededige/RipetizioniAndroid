@@ -97,88 +97,43 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                       )
                   ),
                 ),
-                Visibility(
-                  visible: _isClient,
-                  child: TextButton(
-                    onPressed: (){
-                      Navigator.pushNamed(context, "/ripetizioniPren",arguments: {"utente":utente, "ricarica":true});
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
+                TextButton(
+                  onPressed: (){
+                    Navigator.pushNamed(context, "/ripetizioniPren",arguments: {"utente":utente, "ricarica":true});
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 3.0,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                color: Colors.black,
-                                Icons.menu_book,
-                                size: 50.0,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                  ),
-                                  'Ripetizioni \n Prenotate',
-                                  textAlign: TextAlign.center,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+                        child: Column(
+                          children: const <Widget>[
+                            Icon(
+                              color: Colors.black,
+                              Icons.menu_book,
+                              size: 50.0,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  color: Colors.black,
                                 ),
+                                'Ripetizioni \n Prenotate',
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          ),
-                        )
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: _isAdmin,
-                  child: TextButton(
-                    onPressed: (){
-                      Navigator.pushNamed(context, "/ripetizioniTot",arguments: {"utente":utente, "ricarica":true});
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
+                            ),
+                          ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                color: Colors.black,
-                                Icons.menu_book_sharp,
-                                size: 50.0,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                  ),
-                                  'Ripetizioni \n Totali',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                    ),
+                      )
                   ),
                 ),
               ],
