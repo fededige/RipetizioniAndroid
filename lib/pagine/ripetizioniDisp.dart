@@ -124,7 +124,8 @@ List<Docente> docentiL = <Docente>[
   Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")
 ];
 List<Docente> docentiNonOccu = <Docente>[];
-List<List<String>> prenotazioniDisp =<List<String>>[]; // tab che riempie tabella
+List<List<String>> prenotazioniDisp =
+    <List<String>>[]; // tab che riempie tabella
 
 List<String> ripetizioniDispLun = <String>[];
 List<String> ripetizioniDispMar = <String>[];
@@ -134,8 +135,8 @@ List<String> ripetizioniDispVen = <String>[];
 
 List<List<Color>> prenotazioniDispC = <List<Color>>[];
 List<Ripetizioni> ripetizioni = [];
-List<Ripetizioni> ripetizioniDisponibili =[];
-List<String> visualizza = <String>[];
+List<Ripetizioni> ripetizioniDisponibili = [];
+List<String> visualizza = ["prova"];
 
 Docente? docenteSceltoTmp;
 Docente? docenteToCart;
@@ -148,7 +149,7 @@ String dropdownValue = "ciaociao";
 Utente? utente;
 bool _isVisibile = true;
 String? messaggioInserimento;
-
+String giornoScelto="";
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
@@ -250,6 +251,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _callCaricaPrenotazione() {
+    ripetizioniDispLun = [];
+    ripetizioniDispMar = [];
+    ripetizioniDispMer = [];
+    ripetizioniDispGio = [];
+    ripetizioniDispVen = [];
+
     if (docenteSceltoTmp != null) {
       matricolaDoce = docenteSceltoTmp!.matricola;
     } else {
@@ -351,54 +358,51 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _PrenotazioniDisp() {
-    List<String> ripetizioniDispLun = <String>[];
-    String ora='';
+    String ora = '';
     for (int i = 0; i < 4; i++) {
-      ora='';
+      ora = '';
       for (int j = 0; j < 5; j++) {
         if (prenotazioni.elementAt(i).elementAt(j) == 0) {
-          switch(i){
+          switch (i) {
             case 0:
-              ora='15:00:00';
+              ora = '15:00:00';
               break;
             case 1:
-              ora='16:00:00';
+              ora = '16:00:00';
               break;
             case 2:
-              ora='17:00:00';
+              ora = '17:00:00';
               break;
             case 3:
-              ora='18:00:00';
+              ora = '18:00:00';
+              break;
+          }
+          switch (j) {
+            case 0:
+              ripetizioniDispLun.add(ora);
+              break;
+            case 1:
+              ripetizioniDispMar.add(ora);
+              break;
+            case 2:
+              ripetizioniDispMer.add(ora);
+              break;
+            case 3:
+              ripetizioniDispGio.add(ora);
+              break;
+            case 4:
+              ripetizioniDispVen.add(ora);
               break;
           }
         }
-        switch(j){
-          case 0:
-            ripetizioniDispLun.add(ora);
-            break;
-          case 1:
-            ripetizioniDispMar.add(ora);
-            break;
-          case 2:
-            ripetizioniDispMer.add(ora);
-            break;
-          case 3:
-            ripetizioniDispGio.add(ora);
-            break;
-          case 4:
-            ripetizioniDispVen.add(ora);
-            break;
-        }
       }
     }
-    print("okjasdbjakjsd");
-    print(ripetizioniDispVen.length);
-    print(ripetizioniDispGio.length);
-    print(ripetizioniDispLun.length);
+    // print(ripetizioniDispVen.length);
+    // print(ripetizioniDispGio.length);
+    // print(ripetizioniDispLun.length);
   }
 
-  Widget creaCard(giorno ,ripetizioni){
-    print('siamo in crea crdddd');
+  Widget creaCard(ripetizione) {
     return Card(
       color: Colors.grey[200],
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
@@ -415,11 +419,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        giorno,
+                        giornoScelto,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      const Text(
-                        'gvahh',
+                      Text(
+                        ripetizione,
                         style: const TextStyle(fontSize: 20),
                       ),
                     ],
@@ -433,21 +437,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   children: <Widget>[
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
+                      children: const <Widget>[
+                         Text(
                           "Docente: ",
                           style: const TextStyle(fontSize: 20),
                         ),
-                        const Text(
+                         Text(
                           "Corso: ",
                           style: const TextStyle(fontSize: 20),
-                        ),
-                        Visibility(
-                          visible: true,
-                          child:const Text(
-                            "Utente: ",
-                            style: const TextStyle(fontSize: 20),
-                          ),
                         ),
                       ],
                     ),
@@ -455,19 +452,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'aaa',
+                          docenteSceltoTmp!.cognome,
                           style: const TextStyle(fontSize: 20),
                         ),
                         Text(
-                         'aaaa',
+                          corsoSceltoTmp!.titoloCorso,
                           style: const TextStyle(fontSize: 20),
-                        ),
-                        Visibility(
-                          visible: true,
-                          child: Text(
-                            'bbbb',
-                            style: const TextStyle(fontSize: 20),
-                          ),
                         ),
                       ],
                     ),
@@ -481,30 +471,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
               Visibility(
                 visible: true,
-                child: IconButton(
+                child: TextButton(
                   onPressed: () {
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: true,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.done_outline_sharp,
-                    color: Colors.green,
-                  ),
+                 child: const Text(
+                   'Aggiungi al carrello',
+                 ),
                 ),
               ),
             ],
@@ -549,8 +522,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     utente = arg["utente"];
     bool ricarica = arg["ricarica"];
-    print("ricarica: $ricarica");
-    print("nuovo: $nuovo");
     if (ricarica == true && nuovo == true) {
       print("sono entrato");
       docenti.removeRange(1, docenti.length);
@@ -558,6 +529,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       docentiL.removeRange(1, docentiL.length);
       corsiL.removeRange(1, corsiL.length);
       nuovo = false;
+      visualizza = ripetizioniDispLun;
       if (utente!.nomeutente == "" || utente!.ruolo == 'admin') {
         _isVisibile = false;
       } else {
@@ -578,7 +550,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => {
-            print("backbutton"),
             nuovo = true,
             Navigator.pop(context, false),
           },
@@ -662,7 +633,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
             TextButton(
               onPressed: () => setState(() {
-                if((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) || (docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0)) {
+                if ((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) ||
+                    (docenteSceltoTmp != null &&
+                        docenteSceltoTmp!.matricola != 0)) {
                   _callCaricaPrenotazione();
                 }
               }),
@@ -698,14 +671,16 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                         onPressed: () {
                           setState(() {
                             //ripetizioniDispLun.map((ripetizione) => creaCard('Lun',ripetizione)).toList(),
-                            visualizza=ripetizioniDispLun;
+                            visualizza = ripetizioniDispLun;
+                            giornoScelto= "Lunedì";
                           });
                         }),
                     TextButton(
                       onPressed: () {
                         setState(() {
                           //ripetizioniDispMar.map((ripetizione) => creaCard('Mar',ripetizione)).toList();
-                          visualizza=ripetizioniDispMar;
+                          visualizza = ripetizioniDispMar;
+                          giornoScelto= "Martedì";
                         });
                       },
                       child: Text('Mar'),
@@ -714,7 +689,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           //ripetizioniDispMer.map((ripetizione) => creaCard('Mer',ripetizione)).toList();
-                          visualizza=ripetizioniDispMer;
+                          visualizza = ripetizioniDispMer;
+                          giornoScelto= "Mercoledì";
                         });
                       },
                       child: Text('Mer'),
@@ -723,7 +699,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           //ripetizioniDispGio.map((ripetizione) => creaCard('Gio',ripetizione)).toList();
-                          visualizza=ripetizioniDispGio;
+                          visualizza = ripetizioniDispGio;
+                          giornoScelto= "Giovedì";
                         });
                       },
                       child: Text('Gio'),
@@ -732,7 +709,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           //ripetizioniDispVen.map((ripetizione) => creaCard('Ven',ripetizione)).toList();
-                          visualizza=ripetizioniDispVen;
+                          visualizza = ripetizioniDispVen;
+                          giornoScelto= "Venerdì";
                         });
                       },
                       child: Text('Ven'),
@@ -741,10 +719,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 ),
               ],
             ),
-            Column(
-              children:
-                visualizza.map((ripetizione) => creaCard('lun',ripetizione)).toList(),
-            )
+            SizedBox(
+              height: 400.0, // Change as per your requirement
+              width: 800.0, // Change as per your requirement
+              child: ListView(
+                shrinkWrap: true,
+                children: visualizza.map((ripetizione) => creaCard(ripetizione)).toList(),
+              ),
+            ),
           ],
         ),
       ),
@@ -799,9 +781,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       ),
     );
   }
-  Widget metodoPRova(){
+
+  Widget metodoPRova() {
     return Text('ookkok');
   }
+
   String indexToDay(int indice) {
     String giorno = "";
     switch (indice) {
