@@ -149,7 +149,9 @@ String dropdownValue = "ciaociao";
 Utente? utente;
 bool _isVisibile = true;
 String? messaggioInserimento;
-String giornoScelto="";
+String giornoScelto = "";
+double larghezzaSchermo=0;
+double altezzaSchermo=0;
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
@@ -282,7 +284,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       } else {
         print("non ci sono prenotazioni");
       }
-
     }, onError: (error) {});
   }
 
@@ -401,91 +402,100 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     visualizza = ripetizioniDispLun;
   }
 
-  Widget creaCard(ripetizione,context) {
+  Widget creaCard(ripetizione, context) {
     return GestureDetector(
       onTap: () {
-          mostraConferma(context,giornoScelto,ripetizione);
+        mostraConferma(context, giornoScelto, ripetizione);
       },
       child: Card(
         color: Colors.grey[200],
-        margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 110,
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          giornoScelto,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                        Text(
-                          ripetizione,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 0.1 * larghezzaSchermo,
+                    color: Colors.blue,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         children: <Widget>[
-                           Visibility(
-                             visible: docenteSceltoTmp != null,
-                             child: Text(
-                               docenteSceltoTmp!=null ? "Docente" : "",
-                              style: const TextStyle(fontSize: 20),
-                             ),
-                           ),
-                          Visibility(
-                            visible: corsoSceltoTmp!=null,
-                            child: Text(
-                                corsoSceltoTmp!=null ? "Corso" : "",
-                                style: const TextStyle(fontSize: 20),
+                          Text(
+                            giornoScelto,
+                            style: TextStyle(
+                                fontSize: 0.03 * larghezzaSchermo ),
+                          ),
+                          Text(
+                            ripetizione, //ora della ripetizione
+                            style: TextStyle(
+                                fontSize: 0.03 * larghezzaSchermo
                             ),
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Visibility(
-                            visible: docenteSceltoTmp != null,
-                            child: Text(
-                              docenteSceltoTmp!=null ? docenteSceltoTmp!.cognome : "",
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          Visibility(
-                            visible:  corsoSceltoTmp!=null,
-                            child: Text(
-                              corsoSceltoTmp!=null ? corsoSceltoTmp!.titoloCorso : "",
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
-                        ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: larghezzaSchermo  * 0.15,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Visibility(
+                        visible: docenteSceltoTmp != null,
+                        child: Text(
+                          docenteSceltoTmp != null ? "Docente" : "",
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Visibility(
+                        visible: docenteSceltoTmp != null,
+                        child: Text(
+                          docenteSceltoTmp!=null ? docenteSceltoTmp!.cognome : "",
+                          style: const TextStyle(fontSize: 20),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                const Expanded(
-                  child: SizedBox(
-                    width: 0,
+                ],
+              ),
+              SizedBox(
+                width: larghezzaSchermo  * 0.15 ,
+              ),
+              Column(
+                children: <Widget>[
+                  Visibility(
+                    visible: corsoSceltoTmp != null,
+                    child: Text(
+                      corsoSceltoTmp != null ? "Corso" : "",
+                      style: const TextStyle(fontSize: 20),
+                    ),
                   ),
-                ),
-              ],
-            )
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Visibility(
+                    visible:  corsoSceltoTmp!=null,
+                    child: Text(
+                      corsoSceltoTmp!=null ? corsoSceltoTmp!.titoloCorso : "",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -528,13 +538,16 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     utente = arg["utente"];
     bool ricarica = arg["ricarica"];
+    altezzaSchermo = MediaQuery.of(context).size.height;
+    larghezzaSchermo = MediaQuery.of(context).size.width;
     if (ricarica == true && nuovo == true) {
+
       docenti.removeRange(1, docenti.length);
       corsi.removeRange(1, corsi.length);
       docentiL.removeRange(1, docentiL.length);
       corsiL.removeRange(1, corsiL.length);
       nuovo = false;
-      giornoScelto="lunedi";
+      giornoScelto = "Lunedì";
       visualizza = ripetizioniDispLun;
       if (utente!.nomeutente == "" || utente!.ruolo == 'admin') {
         _isVisibile = false;
@@ -547,6 +560,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       });
     }
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue,
@@ -676,14 +690,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                         onPressed: () {
                           setState(() {
                             visualizza = ripetizioniDispLun;
-                            giornoScelto= "Lunedì";
+                            giornoScelto = "Lunedì";
                           });
                         }),
                     TextButton(
                       onPressed: () {
                         setState(() {
                           visualizza = ripetizioniDispMar;
-                          giornoScelto= "Martedì";
+                          giornoScelto = "Martedì";
                         });
                       },
                       child: Text('Mar'),
@@ -692,7 +706,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           visualizza = ripetizioniDispMer;
-                          giornoScelto= "Mercoledì";
+                          giornoScelto = "Mercoledì";
                         });
                       },
                       child: Text('Mer'),
@@ -701,7 +715,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           visualizza = ripetizioniDispGio;
-                          giornoScelto= "Giovedì";
+                          giornoScelto = "Giovedì";
                         });
                       },
                       child: Text('Gio'),
@@ -710,7 +724,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       onPressed: () {
                         setState(() {
                           visualizza = ripetizioniDispVen;
-                          giornoScelto= "Venerdì";
+                          giornoScelto = "Venerdì";
                         });
                       },
                       child: Text('Ven'),
@@ -720,11 +734,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ],
             ),
             SizedBox(
-              //height: 400.0, // Change as per your requirement
-              width: 800.0, // Change as per your requirement
+              height: 0.6 * altezzaSchermo, // Change as per your requirement
+              width: 0.8 * larghezzaSchermo, // Change as per your requirement
               child: ListView(
                 shrinkWrap: true,
-                children: visualizza.map((ripetizione) => creaCard(ripetizione,context)).toList(),
+                children: visualizza
+                    .map((ripetizione) => creaCard(ripetizione, context))
+                    .toList(),
               ),
             ),
           ],
@@ -1361,7 +1377,3 @@ void _showToast(BuildContext context, String str) {
     ),
   );
 }
-
-/*void mostraprendisp(giorno){
-
-}*/
