@@ -15,10 +15,8 @@ class CaricaInsegnamentiAPI {
   Future<List<Insegnamenti>> getCaricaInsegnamenti() async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
-    //print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
       List<dynamic> list = json.decode(response.body);
       List<Insegnamenti> li = <Insegnamenti>[];
       for (int i = 0; i < list.length; i++) {
@@ -152,20 +150,11 @@ String? messaggioInserimento;
 String giornoScelto = "";
 double larghezzaSchermo=0;
 double altezzaSchermo=0;
+String schermo='';
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
     prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
-    /*for (int i = 0; i < 4; i++) {
-      prenotazioniDisp.add(["disp", "disp", "disp", "disp", "disp"]);
-      prenotazioniDispC.add([
-        Colors.white,
-        Colors.white,
-        Colors.white,
-        Colors.white,
-        Colors.white
-      ]);
-    }*/
   }
 
   void _callInserisciPrenotazioni(List<Ripetizioni> prenotazioni) {
@@ -418,7 +407,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 0.1 * larghezzaSchermo,
+                    width: 0.30 * larghezzaSchermo,
                     color: Colors.blue,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -427,12 +416,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                           Text(
                             giornoScelto,
                             style: TextStyle(
-                                fontSize: 0.03 * larghezzaSchermo ),
+                                fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                            ),
                           ),
                           Text(
                             ripetizione, //ora della ripetizione
                             style: TextStyle(
-                                fontSize: 0.03 * larghezzaSchermo
+                              fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
                             ),
                           ),
                         ],
@@ -453,7 +443,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                         visible: docenteSceltoTmp != null,
                         child: Text(
                           docenteSceltoTmp != null ? "Docente" : "",
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -463,7 +455,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                         visible: docenteSceltoTmp != null,
                         child: Text(
                           docenteSceltoTmp!=null ? docenteSceltoTmp!.cognome : "",
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                          ),
                         ),
                       ),
                     ],
@@ -479,7 +473,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     visible: corsoSceltoTmp != null,
                     child: Text(
                       corsoSceltoTmp != null ? "Corso" : "",
-                      style: const TextStyle(fontSize: 20),
+                      style:  TextStyle(
+                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -489,7 +485,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     visible:  corsoSceltoTmp!=null,
                     child: Text(
                       corsoSceltoTmp!=null ? corsoSceltoTmp!.titoloCorso : "",
-                      style: const TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                      ),
                     ),
                   ),
                 ],
@@ -541,7 +539,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     altezzaSchermo = MediaQuery.of(context).size.height;
     larghezzaSchermo = MediaQuery.of(context).size.width;
     if (ricarica == true && nuovo == true) {
-
       docenti.removeRange(1, docenti.length);
       corsi.removeRange(1, corsi.length);
       docentiL.removeRange(1, docentiL.length);
@@ -558,6 +555,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         _callCaricaInsegnamenti();
         riempiTab();
       });
+      builder:(context,constraints){
+        if(constraints.maxWidth < 600){
+          schermo = 'mobile';
+        }else{
+          schermo = 'pc';
+        }
+      };
     }
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -735,7 +739,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
             SizedBox(
               height: 0.6 * altezzaSchermo, // Change as per your requirement
-              width: 0.8 * larghezzaSchermo, // Change as per your requirement
+              width: 0.85 * larghezzaSchermo, // Change as per your requirement
               child: ListView(
                 shrinkWrap: true,
                 children: visualizza
