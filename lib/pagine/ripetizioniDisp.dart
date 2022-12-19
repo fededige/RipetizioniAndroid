@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
 import '../model/insegnamenti.dart';
 import '../model/corso.dart';
+
 //import 'package:ripetizioni/model/utente.dart';
 import '../model/docente.dart';
 import '../model/ripetizioni.dart';
 import 'package:http/http.dart' as http;
 
-class CaricaInsegnamentiAPI{
+class CaricaInsegnamentiAPI {
   Future<List<Insegnamenti>> getCaricaInsegnamenti() async {
-    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
-    //print(url);
+    const url =
+        'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
       List<dynamic> list = json.decode(response.body);
       List<Insegnamenti> li = <Insegnamenti>[];
-      for(int i = 0; i < list.length; i++){
+      for (int i = 0; i < list.length; i++) {
         li.add(Insegnamenti.fromJson(list.elementAt(i)));
       }
       print(li);
@@ -30,10 +30,12 @@ class CaricaInsegnamentiAPI{
   }
 }
 
-class InserisciPrenotazioniAPI{
-  Future<bool> postInserisciPrenotazioni(List<Ripetizioni> prenotazioni) async{
-    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletInserimentoRipetizioni';
-    String jsonP = jsonEncode(prenotazioni.map((el) => el.toJson()).toList()).toString();
+class InserisciPrenotazioniAPI {
+  Future<bool> postInserisciPrenotazioni(List<Ripetizioni> prenotazioni) async {
+    const url =
+        'http://localhost:8081/Ripetizioni_war_exploded/ServletInserimentoRipetizioni';
+    String jsonP =
+        jsonEncode(prenotazioni.map((el) => el.toJson()).toList()).toString();
     print(jsonP);
     final response = await http.post(
       Uri.parse(url),
@@ -52,15 +54,17 @@ class InserisciPrenotazioniAPI{
   }
 }
 
-class CaricaDocentiAPI{
-  Future<List<Docente>> getCaricaDocenti(int corso, String giorno, String ora) async {
-    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletDocentiDisp?corso=$corso&giorno=$giorno&ora=$ora';
+class CaricaDocentiAPI {
+  Future<List<Docente>> getCaricaDocenti(
+      int corso, String giorno, String ora) async {
+    final url =
+        'http://localhost:8081/Ripetizioni_war_exploded/ServletDocentiDisp?corso=$corso&giorno=$giorno&ora=$ora';
     print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       List<Docente> doc = <Docente>[];
-      for(int i = 0; i < list.length; i++){
+      for (int i = 0; i < list.length; i++) {
         doc.add(Docente.fromJson(list.elementAt(i)));
       }
       return doc;
@@ -70,9 +74,11 @@ class CaricaDocentiAPI{
   }
 }
 
-class CaricaPrenotazioneAPI{
-  Future<List<List<int>>> getCaricaPrenotazioni(int? c,int? doc,String? usr) async {
-    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
+class CaricaPrenotazioneAPI {
+  Future<List<List<int>>> getCaricaPrenotazioni(
+      int? c, int? doc, String? usr) async {
+    final url =
+        'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
     print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -81,9 +87,9 @@ class CaricaPrenotazioneAPI{
       print(list.elementAt(0));*/
       List<List<int>> liPrenotazione = <List<int>>[];
 
-      for(int j=0;j<4;j++){
-        List<int> temp=<int>[];
-        for(int i=0;i<5;i++){
+      for (int j = 0; j < 4; j++) {
+        List<int> temp = <int>[];
+        for (int i = 0; i < 5; i++) {
           temp.add(list.elementAt(j).elementAt(i).hashCode);
         }
         liPrenotazione.add(temp);
@@ -105,15 +111,30 @@ class PaginaRipetizioni extends StatefulWidget {
 List<Insegnamenti> insegnamenti = <Insegnamenti>[];
 List<List<int>> prenotazioni = <List<int>>[];
 List<Corso> corsi = <Corso>[Corso(codice: 0, titoloCorso: "Deseleziona corso")];
-List<Corso> corsiL = <Corso>[Corso(codice: 0, titoloCorso: "Deseleziona corso")];
+List<Corso> corsiL = <Corso>[
+  Corso(codice: 0, titoloCorso: "Deseleziona corso")
+];
 List<Corso> corsiNonOccu = <Corso>[];
-List<Docente> docenti = <Docente>[Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")];
-List<Docente> docentiL = <Docente>[Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")];
+List<Docente> docenti = <Docente>[
+  Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")
+];
+List<Docente> docentiL = <Docente>[
+  Docente(cognome: "Deseleziona docente", matricola: 0, nome: "")
+];
 List<Docente> docentiNonOccu = <Docente>[];
-List<List<String>> prenotazioniDisp = <List<String>>[]; // tab che riempie tabella
+List<List<String>> prenotazioniDisp =
+    <List<String>>[]; // tab che riempie tabella
+
+List<String> ripetizioniDispLun = <String>[];
+List<String> ripetizioniDispMar = <String>[];
+List<String> ripetizioniDispMer = <String>[];
+List<String> ripetizioniDispGio = <String>[];
+List<String> ripetizioniDispVen = <String>[];
+
 List<List<Color>> prenotazioniDispC = <List<Color>>[];
 List<Ripetizioni> ripetizioni = [];
-
+List<Ripetizioni> ripetizioniDisponibili = [];
+List<String> visualizza = ["prova"];
 
 Docente? docenteSceltoTmp;
 Docente? docenteToCart;
@@ -126,29 +147,28 @@ String dropdownValue = "ciaociao";
 Utente? utente;
 bool _isVisibile = true;
 String? messaggioInserimento;
-
+String giornoScelto = "";
+double larghezzaSchermo=0;
+double altezzaSchermo=0;
+String schermo='';
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
-
-  void riempiTab(){
+  void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
     prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
-    for(int i=0;i<4;i++) {
-      prenotazioniDisp.add(["disp","disp","disp","disp","disp"]);
-      prenotazioniDispC.add([Colors.white,Colors.white,Colors.white,Colors.white,Colors.white]);
-    }
   }
 
-  void _callInserisciPrenotazioni(List<Ripetizioni> prenotazioni){
+  void _callInserisciPrenotazioni(List<Ripetizioni> prenotazioni) {
     var api = InserisciPrenotazioniAPI();
-    api.postInserisciPrenotazioni(prenotazioni).then((flag){
-      if(flag) {
+    api.postInserisciPrenotazioni(prenotazioni).then((flag) {
+      if (flag) {
         messaggioInserimento = "prenotazioni confermate";
       } else {
         messaggioInserimento = "prenotazione non andata a buonfine riprova";
       }
       _showToast(context, messaggioInserimento!);
       ripetizioni.removeRange(0, ripetizioni.length);
-      if((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) || (docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0)) {
+      if ((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) ||
+          (docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0)) {
         setState(() {
           _callCaricaPrenotazione();
         });
@@ -156,121 +176,133 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     });
   }
 
-  void _callCaricaDocenti(int corso, String giorno, String ora){
+  void _callCaricaDocenti(int corso, String giorno, String ora) {
     var api = CaricaDocentiAPI();
-    if(docentiNonOccu.isNotEmpty) {
+    if (docentiNonOccu.isNotEmpty) {
       docentiNonOccu.removeRange(0, docentiNonOccu.length);
     }
-    api.getCaricaDocenti(corso, giorno, ora).then((list){
-      if(list.isNotEmpty) {
+    api.getCaricaDocenti(corso, giorno, ora).then((list) {
+      if (list.isNotEmpty) {
         print("ciao");
         setState(() {
-          for (var element in list) {docentiNonOccu.add(element);}
+          for (var element in list) {
+            docentiNonOccu.add(element);
+          }
         });
-        docentiNonOccu.forEach((element) {print(element.matricola);});
+        docentiNonOccu.forEach((element) {
+          print(element.matricola);
+        });
         mostraConferma(context, giorno, ora);
       }
-    }
-    );
+    });
   }
 
-  void _callCaricaInsegnamenti(){
+  void _callCaricaInsegnamenti() {
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti().then((list) {
-      if(list.isNotEmpty) {
+      if (list.isNotEmpty) {
         insegnamenti = list; //TODO: mettere nella dichiarazione
         setState(() {
-          for(int i = 0; i < list.length; i++){
+          for (int i = 0; i < list.length; i++) {
             bool flag = true;
-            for(int j = 1; j < docenti.length; j++){
-              if(docenti.elementAt(j).matricola == list.elementAt(i).docente.matricola){
+            for (int j = 1; j < docenti.length; j++) {
+              if (docenti.elementAt(j).matricola ==
+                  list.elementAt(i).docente.matricola) {
                 flag = false;
                 break;
               }
             }
 
-            if(flag){
+            if (flag) {
               docenti.add(list.elementAt(i).docente);
             }
 
             flag = true;
-            for(int j = 1; j < corsi.length; j++){
-              if(corsi.elementAt(j).codice == list.elementAt(i).corso.codice){
+            for (int j = 1; j < corsi.length; j++) {
+              if (corsi.elementAt(j).codice == list.elementAt(i).corso.codice) {
                 flag = false;
                 break;
               }
             }
-            if(flag){
+            if (flag) {
               corsi.add(list.elementAt(i).corso);
             }
           }
-          for(int k = 1; k < corsi.length; k++){
+          for (int k = 1; k < corsi.length; k++) {
             corsiL.add(corsi.elementAt(k));
           }
-          for(int k = 1; k < docenti.length; k++){
+          for (int k = 1; k < docenti.length; k++) {
             docentiL.add(docenti.elementAt(k));
           }
         });
       } else {
         print("non ci sono insegnamenti");
       }
-    }, onError: (error) {
-    });
+    }, onError: (error) {});
   }
 
-  void _callCaricaPrenotazione(){
-    if(docenteSceltoTmp != null){
+  void _callCaricaPrenotazione() {
+    ripetizioniDispLun = [];
+    ripetizioniDispMar = [];
+    ripetizioniDispMer = [];
+    ripetizioniDispGio = [];
+    ripetizioniDispVen = [];
+
+    if (docenteSceltoTmp != null) {
       matricolaDoce = docenteSceltoTmp!.matricola;
-    }else{
-      matricolaDoce= null;
+    } else {
+      matricolaDoce = null;
     }
-    if(corsoSceltoTmp != null) {
+    if (corsoSceltoTmp != null) {
       codCorso = corsoSceltoTmp!.codice;
-    }else{
-      codCorso=null;
+    } else {
+      codCorso = null;
     }
     String? usr;
-    if(utente != null){
-      usr=(utente!.nomeutente);
+    if (utente != null) {
+      usr = (utente!.nomeutente);
     }
     var api = CaricaPrenotazioneAPI();
-    api.getCaricaPrenotazioni(codCorso,matricolaDoce,usr).then((list) {
-      if(list.isNotEmpty) {
+    api.getCaricaPrenotazioni(codCorso, matricolaDoce, usr).then((list) {
+      if (list.isNotEmpty) {
         prenotazioni = list;
-        setState((){
+        setState(() {
+          print("oraaaaa");
           _PrenotazioniDisp();
         });
       } else {
         print("non ci sono prenotazioni");
       }
-    }, onError: (error) {
-    });
+    }, onError: (error) {});
+  }
 
-}
-
-  void aggiornaCorsi(){
-    if(docenteSceltoTmp != null ){
-      if(docenteSceltoTmp!.matricola != 0) {
+  void aggiornaCorsi() {
+    if (docenteSceltoTmp != null) {
+      if (docenteSceltoTmp!.matricola != 0) {
         setState(() {
           corsiL.removeRange(1, corsiL.length);
-          for(int i = 0; i < insegnamenti.length; i++){
-            if(insegnamenti.elementAt(i).docente.matricola == docenteSceltoTmp!.matricola){
-              corsiL.add(Corso(codice: insegnamenti.elementAt(i).corso.codice, titoloCorso: insegnamenti.elementAt(i).corso.titoloCorso));
+          for (int i = 0; i < insegnamenti.length; i++) {
+            if (insegnamenti.elementAt(i).docente.matricola ==
+                docenteSceltoTmp!.matricola) {
+              corsiL.add(Corso(
+                  codice: insegnamenti.elementAt(i).corso.codice,
+                  titoloCorso: insegnamenti.elementAt(i).corso.titoloCorso));
             }
           }
         });
-      }else {
+      } else {
         setState(() {
           docenteSceltoTmp = null;
-          for(int i = 0; i < corsi.length; i++) {
+          for (int i = 0; i < corsi.length; i++) {
             bool flag = true;
-            for(int j = 0; j < corsiL.length; j++){
-              if(corsiL.elementAt(j).codice == insegnamenti.elementAt(i).corso.codice){
+            for (int j = 0; j < corsiL.length; j++) {
+              if (corsiL.elementAt(j).codice ==
+                  insegnamenti.elementAt(i).corso.codice) {
                 flag = false;
                 break;
               }
             }
-            if(flag){
+            if (flag) {
               corsiL.add(insegnamenti.elementAt(i).corso);
             }
           }
@@ -279,30 +311,35 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     }
   }
 
-  void aggiornaDocenti(){
-    if(corsoSceltoTmp != null ){
-      if(corsoSceltoTmp!.codice != 0) {
+  void aggiornaDocenti() {
+    if (corsoSceltoTmp != null) {
+      if (corsoSceltoTmp!.codice != 0) {
         setState(() {
           docentiL.removeRange(1, docentiL.length);
-          for(int i = 0; i < insegnamenti.length; i++){
-            if(insegnamenti.elementAt(i).corso.codice == corsoSceltoTmp!.codice){
-              docentiL.add(Docente(cognome: insegnamenti.elementAt(i).docente.cognome, matricola: insegnamenti.elementAt(i).docente.matricola, nome: insegnamenti.elementAt(i).docente.nome));
+          for (int i = 0; i < insegnamenti.length; i++) {
+            if (insegnamenti.elementAt(i).corso.codice ==
+                corsoSceltoTmp!.codice) {
+              docentiL.add(Docente(
+                  cognome: insegnamenti.elementAt(i).docente.cognome,
+                  matricola: insegnamenti.elementAt(i).docente.matricola,
+                  nome: insegnamenti.elementAt(i).docente.nome));
             }
           }
         });
       } else {
         setState(() {
           corsoSceltoTmp = null;
-          for(int i = 0; i < docenti.length; i++) {
+          for (int i = 0; i < docenti.length; i++) {
             print("docente: ${docenti.elementAt(i).matricola}");
             bool flag = true;
-            for(int j = 0; j < docentiL.length; j++){
-              if(docentiL.elementAt(j).matricola == insegnamenti.elementAt(i).docente.matricola){
+            for (int j = 0; j < docentiL.length; j++) {
+              if (docentiL.elementAt(j).matricola ==
+                  insegnamenti.elementAt(i).docente.matricola) {
                 flag = false;
                 break;
               }
             }
-            if(flag){
+            if (flag) {
               docentiL.add(insegnamenti.elementAt(i).docente);
             }
           }
@@ -311,75 +348,223 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     }
   }
 
- void _PrenotazioniDisp() {
-    prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
-    prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
-    for(int i=0;i<4;i++) {
-      List<String> temp= <String>[];
-      List<Color> tempC= <Color>[];
+  void _PrenotazioniDisp() {
+    String ora = '';
+    for (int i = 0; i < 4; i++) {
+      ora = '';
       for (int j = 0; j < 5; j++) {
-        if(prenotazioni.elementAt(i).elementAt(j) == 0){
-          temp.add("DISP");
-          tempC.add(Colors.green);
-        }else if(prenotazioni.elementAt(i).elementAt(j) == 1){
-          temp.add("DOCENTE NON DISP");
-          tempC.add(Colors.red);
-        }else if(prenotazioni.elementAt(i).elementAt(j) == 2){
-          temp.add("UTENTE NON DISP");
-          tempC.add(Colors.yellow);
+        if (prenotazioni.elementAt(i).elementAt(j) == 0) {
+          switch (i) {
+            case 0:
+              ora = '15:00:00';
+              break;
+            case 1:
+              ora = '16:00:00';
+              break;
+            case 2:
+              ora = '17:00:00';
+              break;
+            case 3:
+              ora = '18:00:00';
+              break;
+          }
+          switch (j) {
+            case 0:
+              ripetizioniDispLun.add(ora);
+              break;
+            case 1:
+              ripetizioniDispMar.add(ora);
+              break;
+            case 2:
+              ripetizioniDispMer.add(ora);
+              break;
+            case 3:
+              ripetizioniDispGio.add(ora);
+              break;
+            case 4:
+              ripetizioniDispVen.add(ora);
+              break;
+          }
         }
       }
-      prenotazioniDisp.add(temp);
-      prenotazioniDispC.add(tempC);
     }
+    visualizza = ripetizioniDispLun;
   }
 
-  void pushToCart(BuildContext context, String giorno, String ora, Corso corso, Docente docente){
+  Widget creaCard(ripetizione, context) {
+    return GestureDetector(
+      onTap: () {
+        mostraConferma(context, giornoScelto, ripetizione);
+      },
+      child: Card(
+        color: Colors.grey[200],
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 0.30 * larghezzaSchermo,
+                    color: Colors.blue,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            giornoScelto,
+                            style: TextStyle(
+                                fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                            ),
+                          ),
+                          Text(
+                            ripetizione, //ora della ripetizione
+                            style: TextStyle(
+                              fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: larghezzaSchermo  * 0.15,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Visibility(
+                        visible: docenteSceltoTmp != null,
+                        child: Text(
+                          docenteSceltoTmp != null ? "Docente" : "",
+                          style: TextStyle(
+                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Visibility(
+                        visible: docenteSceltoTmp != null,
+                        child: Text(
+                          docenteSceltoTmp!=null ? docenteSceltoTmp!.cognome : "",
+                          style: TextStyle(
+                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: larghezzaSchermo  * 0.15 ,
+              ),
+              Column(
+                children: <Widget>[
+                  Visibility(
+                    visible: corsoSceltoTmp != null,
+                    child: Text(
+                      corsoSceltoTmp != null ? "Corso" : "",
+                      style:  TextStyle(
+                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Visibility(
+                    visible:  corsoSceltoTmp!=null,
+                    child: Text(
+                      corsoSceltoTmp!=null ? corsoSceltoTmp!.titoloCorso : "",
+                      style: TextStyle(
+                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void pushToCart(BuildContext context, String giorno, String ora, Corso corso,
+      Docente docente) {
     corsoToCart = null;
     docenteToCart = null;
-    Ripetizioni r = Ripetizioni(giorno: giorno, ora: ora, docente: docente, corso: corso, utente: (utente!.nomeutente)!, stato: true, effettuata: false);
+    Ripetizioni r = Ripetizioni(
+        giorno: giorno,
+        ora: ora,
+        docente: docente,
+        corso: corso,
+        utente: (utente!.nomeutente)!,
+        stato: true,
+        effettuata: false);
     setState(() {
       bool flag = true;
-      for(int j = 0; j < ripetizioni.length; j++){
-        if(ripetizioni.elementAt(j).corso.codice == r.corso.codice && ripetizioni.elementAt(j).docente.matricola == r.docente.matricola && ripetizioni.elementAt(j).giorno == r.giorno && ripetizioni.elementAt(j).ora == r.ora){
+      for (int j = 0; j < ripetizioni.length; j++) {
+        if (ripetizioni.elementAt(j).corso.codice == r.corso.codice &&
+            ripetizioni.elementAt(j).docente.matricola == r.docente.matricola &&
+            ripetizioni.elementAt(j).giorno == r.giorno &&
+            ripetizioni.elementAt(j).ora == r.ora) {
           flag = false;
           break;
         }
       }
-      if(flag){
+      if (flag) {
         ripetizioni.add(r);
       } else {
         _showToast(context, "Ripetizione già inserita nel carrello");
       }
     });
     Navigator.pop(context, 'Cancel');
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     utente = arg["utente"];
     bool ricarica = arg["ricarica"];
-    print("ricarica: $ricarica");
-    print("nuovo: $nuovo");
+    altezzaSchermo = MediaQuery.of(context).size.height;
+    larghezzaSchermo = MediaQuery.of(context).size.width;
     if (ricarica == true && nuovo == true) {
-      print("sono entrato");
       docenti.removeRange(1, docenti.length);
       corsi.removeRange(1, corsi.length);
       docentiL.removeRange(1, docentiL.length);
       corsiL.removeRange(1, corsiL.length);
       nuovo = false;
-      if(utente!.nomeutente == ""){
+      giornoScelto = "Lunedì";
+      visualizza = ripetizioniDispLun;
+      if (utente!.nomeutente == "" || utente!.ruolo == 'admin') {
         _isVisibile = false;
+      } else {
+        _isVisibile = true;
       }
       setState(() {
         _callCaricaInsegnamenti();
         riempiTab();
       });
+      builder:(context,constraints){
+        if(constraints.maxWidth < 600){
+          schermo = 'mobile';
+        }else{
+          schermo = 'pc';
+        }
+      };
     }
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue,
@@ -389,279 +574,209 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => {
-            print("backbutton"),
             nuovo = true,
             Navigator.pop(context, false),
-            },
+          },
         ),
       ),
       body: Center(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Visibility(
-                      visible: _isVisibile,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              carrelloPrenotazioni(context);
-                            });
-                          },
-                          iconSize: 35.0,
-                          icon: const Icon(
-                            color: Colors.black,
-                            Icons.shopping_cart_sharp,
-                          ),
-                          
-                        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: _isVisibile,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          carrelloPrenotazioni(context);
+                        });
+                      },
+                      iconSize: 35.0,
+                      icon: const Icon(
+                        color: Colors.black,
+                        Icons.shopping_cart_sharp,
                       ),
                     ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                DropdownSearch<String>(
+                  onChanged: (value) => {
+                    docenteSceltoTmp = docentiL.firstWhere((element) =>
+                        element.matricola ==
+                        int.parse(value!.split(" ").first)),
+                    aggiornaCorsi(),
+                  },
+                  mode: Mode.MENU,
+                  showSelectedItems: true,
+                  items: docentiL
+                      .map((el) => "${el.matricola} ${el.cognome}")
+                      .toList(),
+                  dropdownSearchDecoration: const InputDecoration(
+                    constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
+                    labelText: "Scegli Professore",
+                    contentPadding: EdgeInsets.all(8.0),
+                  ),
+                  showSearchBox: true,
+                  searchFieldProps: const TextFieldProps(
+                    cursorColor: Colors.blue,
+                  ),
+                ),
+                DropdownSearch<String>(
+                  onChanged: (value) => {
+                    corsoSceltoTmp = corsiL.firstWhere((element) =>
+                        element.codice == int.parse(value!.split(" ").first)),
+                    aggiornaDocenti(),
+                  },
+                  mode: Mode.MENU,
+                  showSelectedItems: true,
+                  items: corsiL
+                      .map((el) => "${el.codice} ${el.titoloCorso}")
+                      .toList(),
+                  dropdownSearchDecoration: const InputDecoration(
+                    constraints: BoxConstraints(maxWidth: 170, maxHeight: 50),
+                    labelText: "Scegli Materia",
+                    contentPadding: EdgeInsets.all(8.0),
+                  ),
+                  //selectedItem: "",
+                  showSearchBox: true,
+                  searchFieldProps: const TextFieldProps(
+                    cursorColor: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () => setState(() {
+                if ((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) ||
+                    (docenteSceltoTmp != null &&
+                        docenteSceltoTmp!.matricola != 0)) {
+                  _callCaricaPrenotazione();
+                }
+              }),
+              child: Container(
+                width: 100.0,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                ), //aggiungere navigazione alla Home
+                child: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Align(
+                    child: Text(
+                      'Cerca',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    DropdownSearch<String>(
-                      onChanged: (value) => {
-                        docenteSceltoTmp = docentiL.firstWhere((element) => element.matricola == int.parse(value!.split(" ").first)),
-                        aggiornaCorsi(),
+                    TextButton(
+                        child: Text('Lun'),
+                        onPressed: () {
+                          setState(() {
+                            visualizza = ripetizioniDispLun;
+                            giornoScelto = "Lunedì";
+                          });
+                        }),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          visualizza = ripetizioniDispMar;
+                          giornoScelto = "Martedì";
+                        });
                       },
-                      mode: Mode.MENU,
-                      showSelectedItems: true,
-                      items: docentiL.map((el)=>"${el.matricola} ${el.cognome}").toList(),
-                      dropdownSearchDecoration: const InputDecoration(
-                        constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-                        labelText: "Scegli Professore",
-                        contentPadding: EdgeInsets.all(8.0),
-                      ),
-
-                    showSearchBox: true,
-                    searchFieldProps: const TextFieldProps(
-                      cursorColor: Colors.blue,
+                      child: Text('Mar'),
                     ),
-                  ),
-                  DropdownSearch<String>(
-                    onChanged: (value) => {
-                      corsoSceltoTmp = corsiL.firstWhere((element) => element.codice == int.parse(value!.split(" ").first)),
-                      aggiornaDocenti(),
-                    },
-                    mode: Mode.MENU,
-                    showSelectedItems: true,
-                    items: corsiL.map((el)=>"${el.codice} ${el.titoloCorso}").toList(),
-                    dropdownSearchDecoration: const InputDecoration(
-                      constraints: BoxConstraints(maxWidth: 170, maxHeight: 50),
-                      labelText: "Scegli Materia",
-                      contentPadding: EdgeInsets.all(8.0),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          visualizza = ripetizioniDispMer;
+                          giornoScelto = "Mercoledì";
+                        });
+                      },
+                      child: Text('Mer'),
                     ),
-                    //selectedItem: "",
-                    showSearchBox: true,
-                    searchFieldProps: const TextFieldProps(
-                      cursorColor: Colors.blue,
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          visualizza = ripetizioniDispGio;
+                          giornoScelto = "Giovedì";
+                        });
+                      },
+                      child: Text('Gio'),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              TextButton(
-                onPressed: () => setState(() {
-                  if((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) || (docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0)) {
-                    _callCaricaPrenotazione();
-                  }
-                }),
-                child: Container(
-                  width: 100.0,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  ), //aggiungere navigazione alla Home
-                  child: const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Align(
-                      child: Text(
-                        'Cerca',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                        ),
-                      ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          visualizza = ripetizioniDispVen;
+                          giornoScelto = "Venerdì";
+                        });
+                      },
+                      child: Text('Ven'),
                     ),
-                  ),
+                  ],
                 ),
+              ],
+            ),
+            SizedBox(
+              height: 0.6 * altezzaSchermo, // Change as per your requirement
+              width: 0.85 * larghezzaSchermo, // Change as per your requirement
+              child: ListView(
+                shrinkWrap: true,
+                children: visualizza
+                    .map((ripetizione) => creaCard(ripetizione, context))
+                    .toList(),
               ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Table(
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: IntrinsicColumnWidth(),
-                          1: IntrinsicColumnWidth(),
-                          2: IntrinsicColumnWidth(),
-                          3: IntrinsicColumnWidth(),
-                          4: IntrinsicColumnWidth(),
-                          5: IntrinsicColumnWidth(),
-                        },
-                        children: [
-                          const TableRow(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                child: Text(
-                                  ' ',
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Text(
-                                  'L',
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Text(
-                                  'M',
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Text(
-                                  'M',
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Text(
-                                  'G',
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Text(
-                                  'V',
-                                ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                child: Align(
-                                  child: Text(
-                                    '15',
-                                  ),
-                                ),
-                              ),
-                              tile(0, 0),
-                              tile(0, 1),
-                              tile(0, 2),
-                              tile(0, 3),
-                              tile(0, 4),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                child: Align(
-                                  child: Text(
-                                    '16',
-                                  ),
-                                ),
-                              ),
-                              tile(1, 0),
-                              tile(1, 1),
-                              tile(1, 2),
-                              tile(1, 3),
-                              tile(1, 4),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                child: Align(
-                                  child: Text(
-                                    '17',
-                                  ),
-                                ),
-                              ),
-                              tile(2, 0),
-                              tile(2, 1),
-                              tile(2, 2),
-                              tile(2, 3),
-                              tile(2, 4),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(15, 45, 15, 45),
-                                child: Align(
-                                  child: Text(
-                                    '18',
-                                  ),
-                                ),
-                              ),
-                              tile(3, 0),
-                              tile(3, 1),
-                              tile(3, 2),
-                              tile(3, 3),
-                              tile(3, 4),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    ),
     );
   }
+
   Widget setupAlertDialoadContainer() {
     return SizedBox(
       height: 400.0, // Change as per your requirement
       width: 400.0, // Change as per your requirement
       child: ListView(
         shrinkWrap: true,
-        children: ripetizioni.map((ripetizione) => ripetizioneTemplate(ripetizione)).toList(),
+        children: ripetizioni
+            .map((ripetizione) => ripetizioneTemplate(ripetizione))
+            .toList(),
       ),
     );
   }
 
-  Widget tile(int x, int y){
+  Widget tile(int x, int y) {
     return GestureDetector(
       onTap: () {
-        if(prenotazioni.elementAt(x).elementAt(y) == 0 && _isVisibile == true) {
+        if (prenotazioni.elementAt(x).elementAt(y) == 0 &&
+            _isVisibile == true) {
           setState(() {
-            if(docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0) {
+            if (docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0) {
               mostraConferma(context, indexToDay(y), indexToHour(x));
-            }else if(corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) {
-              _callCaricaDocenti(corsoSceltoTmp!.codice, indexToDay(x), indexToHour(y));
+            } else if (corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) {
+              _callCaricaDocenti(
+                  corsoSceltoTmp!.codice, indexToDay(x), indexToHour(y));
             }
           });
         }
@@ -676,8 +791,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               bottom: BorderSide(color: Colors.black),
             )),
         child: Padding(
-          padding:
-          const EdgeInsets.fromLTRB(15, 45, 15, 45),
+          padding: const EdgeInsets.fromLTRB(15, 45, 15, 45),
           child: Align(
             child: Text(
               prenotazioniDisp.elementAt(x).elementAt(y),
@@ -688,17 +802,17 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
 
-  String indexToDay(int indice){
+  String indexToDay(int indice) {
     String giorno = "";
-    switch(indice){
+    switch (indice) {
       case 0:
         giorno = "lunedì";
         break;
       case 1:
-        giorno =  "martedì";
+        giorno = "martedì";
         break;
       case 2:
-        giorno =  "mercoledì";
+        giorno = "mercoledì";
         break;
       case 3:
         giorno = "giovedì";
@@ -710,17 +824,17 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     return giorno;
   }
 
-   String indexToHour(int indice){
+  String indexToHour(int indice) {
     String orario = "";
-    switch(indice){
+    switch (indice) {
       case 0:
         orario = "15:00:00";
         break;
       case 1:
-        orario =  "16:00:00";
+        orario = "16:00:00";
         break;
       case 2:
-        orario =  "17:00:00";
+        orario = "17:00:00";
         break;
       case 3:
         orario = "18:00:00";
@@ -729,7 +843,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     return orario;
   }
 
-  Widget ripetizioneTemplate(ripetizione){
+  Widget ripetizioneTemplate(ripetizione) {
     return Card(
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
       child: Padding(
@@ -746,15 +860,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   children: <Widget>[
                     Text(
                       ripetizione.giorno,
-                      style: const TextStyle(
-                          fontSize: 20
-                      ),
+                      style: const TextStyle(fontSize: 20),
                     ),
                     Text(
                       ripetizione.ora,
-                      style: const TextStyle(
-                          fontSize: 20
-                      ),
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ],
                 ),
@@ -767,15 +877,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 children: <Widget>[
                   Text(
                     ripetizione.docente.cognome,
-                    style: const TextStyle(
-                        fontSize: 20
-                    ),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   Text(
                     ripetizione.corso.titoloCorso,
-                    style: const TextStyle(
-                        fontSize: 20
-                    ),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ],
               ),
@@ -789,7 +895,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               onPressed: () {
                 setState(() {
                   ripetizioni.remove(ripetizione);
-                  Navigator.pop(context, 'Cancel'); //TODO: a che serve???
+                  Navigator.pop(context, 'Cancel');
                   carrelloPrenotazioni(context);
                 });
               },
@@ -803,6 +909,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       ),
     );
   }
+
   void carrelloPrenotazioni(BuildContext context) {
     showDialog(
         context: context,
@@ -845,11 +952,15 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
               TextButton(
                 onPressed: () => {
-                  if(ripetizioni.isNotEmpty){
-                    _callInserisciPrenotazioni(ripetizioni),
-                  } else {
-                    _showToast(context, "Non ci sono prenotazioni nel carrello"),
-                  },
+                  if (ripetizioni.isNotEmpty)
+                    {
+                      _callInserisciPrenotazioni(ripetizioni),
+                    }
+                  else
+                    {
+                      _showToast(
+                          context, "Non ci sono prenotazioni nel carrello"),
+                    },
                   Navigator.pop(context, 'Cancel'),
                 },
                 child: Container(
@@ -879,10 +990,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               ),
             ],
           );
-        }
-    );
+        });
   }
-  void confermaPrenotazioneDocCor(BuildContext context, String giorno, String ora) {
+
+  void confermaPrenotazioneDocCor(
+      BuildContext context, String giorno, String ora) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -957,7 +1069,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(context, giorno, ora, corsoSceltoTmp!, docenteSceltoTmp!),
+            onPressed: () => pushToCart(
+                context, giorno, ora, corsoSceltoTmp!, docenteSceltoTmp!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -988,7 +1101,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
 
-  void confermaPrenotazioneCor(BuildContext context, String giorno, String ora) {
+  void confermaPrenotazioneCor(
+      BuildContext context, String giorno, String ora) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -1019,11 +1133,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
             DropdownSearch<String>(
               onChanged: (value) => {
-                docenteToCart = docentiL.firstWhere((element) => element.matricola == int.parse(value!.split(" ").first)),
+                docenteToCart = docentiL.firstWhere((element) =>
+                    element.matricola == int.parse(value!.split(" ").first)),
               },
               mode: Mode.MENU,
               showSelectedItems: true,
-              items:  docentiNonOccu.map((el)=>"${el.matricola} ${el.cognome}").toList(),
+              items: docentiNonOccu
+                  .map((el) => "${el.matricola} ${el.cognome}")
+                  .toList(),
               dropdownSearchDecoration: const InputDecoration(
                 constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                 labelText: "Scegli Professore",
@@ -1078,7 +1195,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(context, giorno, ora, corsoSceltoTmp!, docenteToCart!),
+            onPressed: () => pushToCart(
+                context, giorno, ora, corsoSceltoTmp!, docenteToCart!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1109,7 +1227,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
 
-  void confermaPrenotazioneDoc(BuildContext context, String giorno, String ora) {
+  void confermaPrenotazioneDoc(
+      BuildContext context, String giorno, String ora) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -1149,11 +1268,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
             DropdownSearch<String>(
               onChanged: (value) => {
-                corsoToCart = corsiL.firstWhere((element) => element.codice == int.parse(value!.split(" ").first)),
+                corsoToCart = corsiL.firstWhere((element) =>
+                    element.codice == int.parse(value!.split(" ").first)),
               },
               mode: Mode.MENU,
               showSelectedItems: true,
-              items:  corsiL.map((el)=>"${el.codice} ${el.titoloCorso}").toList(),
+              items:
+                  corsiL.map((el) => "${el.codice} ${el.titoloCorso}").toList(),
               dropdownSearchDecoration: const InputDecoration(
                 constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                 labelText: "Scegli Corso",
@@ -1196,7 +1317,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(context, giorno, ora, corsoToCart!, docenteSceltoTmp!),
+            onPressed: () => pushToCart(
+                context, giorno, ora, corsoToCart!, docenteSceltoTmp!),
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1226,12 +1348,20 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       ),
     );
   }
-  void mostraConferma(BuildContext context, String giorno, String ora){
-    if(docenteSceltoTmp != null && docenteSceltoTmp!.matricola != 0 && (corsoSceltoTmp == null || corsoSceltoTmp!.codice == 0)) {
+
+  void mostraConferma(BuildContext context, String giorno, String ora) {
+    if (docenteSceltoTmp != null &&
+        docenteSceltoTmp!.matricola != 0 &&
+        (corsoSceltoTmp == null || corsoSceltoTmp!.codice == 0)) {
       confermaPrenotazioneDoc(context, giorno, ora);
-    } else if(corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0 && (docenteSceltoTmp == null || docenteSceltoTmp!.matricola == 0)) {
+    } else if (corsoSceltoTmp != null &&
+        corsoSceltoTmp!.codice != 0 &&
+        (docenteSceltoTmp == null || docenteSceltoTmp!.matricola == 0)) {
       confermaPrenotazioneCor(context, giorno, ora);
-    } else if(corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0 && docenteSceltoTmp != null  && docenteSceltoTmp!.matricola != 0){
+    } else if (corsoSceltoTmp != null &&
+        corsoSceltoTmp!.codice != 0 &&
+        docenteSceltoTmp != null &&
+        docenteSceltoTmp!.matricola != 0) {
       confermaPrenotazioneDocCor(context, giorno, ora);
     }
   }

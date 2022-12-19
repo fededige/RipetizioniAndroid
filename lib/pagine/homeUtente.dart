@@ -5,12 +5,17 @@ class PaginaHomeUtente extends StatefulWidget {
   @override
   State<PaginaHomeUtente> createState() => _PaginaHomeUtenteState();
 }
-
+bool _isAdmin=true;
+bool _isClient=false;
 class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
   String? presentazione = '';
   @override
   Widget build(BuildContext context) {
     Utente utente = ModalRoute.of(context)!.settings.arguments as Utente;
+    if(utente.ruolo== 'cliente'){
+      _isAdmin=false;
+      _isClient=true;
+    }
     presentazione = utente.nomeutente;
     return Scaffold(
         appBar: AppBar(
