@@ -349,40 +349,24 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   void _PrenotazioniDisp() {
-    String ora = '';
     for (int i = 0; i < 4; i++) {
-      ora = '';
       for (int j = 0; j < 5; j++) {
         if (prenotazioni.elementAt(i).elementAt(j) == 0) {
-          switch (i) {
-            case 0:
-              ora = '15:00:00';
-              break;
-            case 1:
-              ora = '16:00:00';
-              break;
-            case 2:
-              ora = '17:00:00';
-              break;
-            case 3:
-              ora = '18:00:00';
-              break;
-          }
           switch (j) {
             case 0:
-              ripetizioniDispLun.add(ora);
+              ripetizioniDispLun.add(indexToHour(i));
               break;
             case 1:
-              ripetizioniDispMar.add(ora);
+              ripetizioniDispMar.add(indexToHour(i));
               break;
             case 2:
-              ripetizioniDispMer.add(ora);
+              ripetizioniDispMer.add(indexToHour(i));
               break;
             case 3:
-              ripetizioniDispGio.add(ora);
+              ripetizioniDispGio.add(indexToHour(i));
               break;
             case 4:
-              ripetizioniDispVen.add(ora);
+              ripetizioniDispVen.add(indexToHour(i));
               break;
           }
         }
@@ -589,14 +573,14 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 Visibility(
                   visible: _isVisibile,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0.005 * larghezzaSchermo, 0),
                     child: IconButton(
                       onPressed: () {
                         setState(() {
                           carrelloPrenotazioni(context);
                         });
                       },
-                      iconSize: 35.0,
+                      iconSize: 0.08 * larghezzaSchermo,
                       icon: const Icon(
                         color: Colors.black,
                         Icons.shopping_cart_sharp,
@@ -621,10 +605,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   items: docentiL
                       .map((el) => "${el.matricola} ${el.cognome}")
                       .toList(),
-                  dropdownSearchDecoration: const InputDecoration(
-                    constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
-                    labelText: "Scegli Professore",
-                    contentPadding: EdgeInsets.all(8.0),
+                  dropdownSearchDecoration: InputDecoration(
+                    constraints: BoxConstraints(maxWidth: larghezzaSchermo/2.3, maxHeight: altezzaSchermo/10),
+                    label: responsiveText(
+                        text: "Scegli Professore",
+                        dim: 4,
+                        color: Colors.grey
+                    ),
                   ),
                   showSearchBox: true,
                   searchFieldProps: const TextFieldProps(
@@ -642,10 +629,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   items: corsiL
                       .map((el) => "${el.codice} ${el.titoloCorso}")
                       .toList(),
-                  dropdownSearchDecoration: const InputDecoration(
-                    constraints: BoxConstraints(maxWidth: 170, maxHeight: 50),
-                    labelText: "Scegli Materia",
-                    contentPadding: EdgeInsets.all(8.0),
+                  dropdownSearchDecoration: InputDecoration(
+                    constraints: BoxConstraints(maxWidth: larghezzaSchermo/2.5, maxHeight: altezzaSchermo/10),
+                    label: responsiveText(
+                        text: "Scegli Materia",
+                        dim: 4,
+                        color: Colors.grey
+                    ),
                   ),
                   //selectedItem: "",
                   showSearchBox: true,
@@ -654,6 +644,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: altezzaSchermo * 0.03,
             ),
             TextButton(
               onPressed: () => setState(() {
@@ -664,76 +657,104 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 }
               }),
               child: Container(
-                width: 100.0,
+                width: larghezzaSchermo / 3,
                 decoration: const BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.all(Radius.circular(50.0)),
                 ), //aggiungere navigazione alla Home
-                child: const Padding(
-                  padding: EdgeInsets.all(5.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
                   child: Align(
-                    child: Text(
-                      'Cerca',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
+                    child: responsiveText(
+                      text: 'Cerca',
+                      dim: 6,
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
             ),
-            Column(
+            SizedBox(
+              height: altezzaSchermo * 0.03,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    TextButton(
-                        child: Text('Lun'),
-                        onPressed: () {
-                          setState(() {
-                            visualizza = ripetizioniDispLun;
-                            giornoScelto = "Lunedì";
-                          });
-                        }),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          visualizza = ripetizioniDispMar;
-                          giornoScelto = "Martedì";
-                        });
-                      },
-                      child: Text('Mar'),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        visualizza = ripetizioniDispLun;
+                        giornoScelto = "Lunedì";
+                      });
+                    },
+                    child: responsiveText(
+                        text: "Lun",
+                        dim: 4.5,
+                        color: Colors.blue
                     ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          visualizza = ripetizioniDispMer;
-                          giornoScelto = "Mercoledì";
-                        });
-                      },
-                      child: Text('Mer'),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        visualizza = ripetizioniDispMar;
+                        giornoScelto = "Martedì";
+                      });
+                    },
+                    child: responsiveText(
+                      text: "Mar",
+                      dim: 4.5,
+                      color: Colors.blue
                     ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          visualizza = ripetizioniDispGio;
-                          giornoScelto = "Giovedì";
-                        });
-                      },
-                      child: Text('Gio'),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        visualizza = ripetizioniDispMer;
+                        giornoScelto = "Mercoledì";
+                      });
+                    },
+                    child: responsiveText(
+                        text: "Mar",
+                        dim: 4.5,
+                        color: Colors.blue
                     ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          visualizza = ripetizioniDispVen;
-                          giornoScelto = "Venerdì";
-                        });
-                      },
-                      child: Text('Ven'),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        visualizza = ripetizioniDispGio;
+                        giornoScelto = "Giovedì";
+                      });
+                    },
+                    child: responsiveText(
+                        text: "Gio",
+                        dim: 4.5,
+                        color: Colors.blue
                     ),
-                  ],
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        visualizza = ripetizioniDispVen;
+                        giornoScelto = "Venerdì";
+                      });
+                    },
+                    child: responsiveText(
+                        text: "Ven",
+                        dim: 4.5,
+                        color: Colors.blue
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -1364,6 +1385,16 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         docenteSceltoTmp!.matricola != 0) {
       confermaPrenotazioneDocCor(context, giorno, ora);
     }
+  }
+
+  responsiveText({required String text, required double dim, required Color color}) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: dim * (larghezzaSchermo / 100),
+        color: color
+      ),
+    );
   }
 }
 
