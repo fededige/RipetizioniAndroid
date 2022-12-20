@@ -381,103 +381,55 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         mostraConferma(context, giornoScelto, ripetizione);
       },
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         color: Colors.grey[200],
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 0.30 * larghezzaSchermo,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 0.13 * altezzaSchermo,
+                  width: 0.2 * larghezzaSchermo,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     color: Colors.blue,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            giornoScelto,
-                            style: TextStyle(
-                                fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                            ),
-                          ),
-                          Text(
-                            ripetizione, //ora della ripetizione
-                            style: TextStyle(
-                              fontSize: schermo == 'mobile' ? 0.025 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
-                ],
-              ),
-              SizedBox(
-                width: larghezzaSchermo  * 0.15,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Visibility(
-                        visible: docenteSceltoTmp != null,
-                        child: Text(
-                          docenteSceltoTmp != null ? "Docente" : "",
-                          style: TextStyle(
-                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Visibility(
-                        visible: docenteSceltoTmp != null,
-                        child: Text(
-                          docenteSceltoTmp!=null ? docenteSceltoTmp!.cognome : "",
-                          style: TextStyle(
-                            fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                          ),
-                        ),
-                      ),
+                      responsiveText(text: "${ripetizione.toString().split(':')[0]}:${ripetizione.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(
-                width: larghezzaSchermo  * 0.15 ,
-              ),
-              Column(
-                children: <Widget>[
-                  Visibility(
-                    visible: corsoSceltoTmp != null,
-                    child: Text(
-                      corsoSceltoTmp != null ? "Corso" : "",
-                      style:  TextStyle(
-                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                      ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: larghezzaSchermo  * 0.15,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: <Widget>[
+                    Visibility(
+                      visible: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0,
+                      child:
+                        responsiveText(text: "Docente: ${docenteSceltoTmp!.cognome}", dim: 5, color: Colors.black)
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Visibility(
-                    visible:  corsoSceltoTmp!=null,
-                    child: Text(
-                      corsoSceltoTmp!=null ? corsoSceltoTmp!.titoloCorso : "",
-                      style: TextStyle(
-                        fontSize: schermo == 'mobile' ? 0.03 * larghezzaSchermo : 0.05 * larghezzaSchermo,
-                      ),
+                    Visibility(
+                        visible: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0,
+                        child:
+                        responsiveText(text: "Corso: ${corsoSceltoTmp!.titoloCorso}", dim: 5, color: Colors.black)
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -595,9 +547,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               children: <Widget>[
                 DropdownSearch<String>(
                   onChanged: (value) => {
-                    docenteSceltoTmp = docentiL.firstWhere((element) =>
-                        element.matricola ==
-                        int.parse(value!.split(" ").first)),
+                    setState(() {
+                      docenteSceltoTmp = docentiL.firstWhere((element) =>
+                      element.matricola ==
+                      int.parse(value!.split(" ").first));
+                    }),
                     aggiornaCorsi(),
                   },
                   mode: Mode.MENU,
@@ -691,7 +645,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     },
                     child: responsiveText(
                         text: "Lun",
-                        dim: 4.5,
+                        dim: 5,
                         color: Colors.blue
                     ),
                   ),
@@ -706,7 +660,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     },
                     child: responsiveText(
                       text: "Mar",
-                      dim: 4.5,
+                      dim: 5,
                       color: Colors.blue
                     ),
                   ),
@@ -721,7 +675,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     },
                     child: responsiveText(
                         text: "Mar",
-                        dim: 4.5,
+                        dim: 5,
                         color: Colors.blue
                     ),
                   ),
@@ -736,7 +690,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     },
                     child: responsiveText(
                         text: "Gio",
-                        dim: 4.5,
+                        dim: 5,
                         color: Colors.blue
                     ),
                   ),
@@ -751,16 +705,17 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     },
                     child: responsiveText(
                         text: "Ven",
-                        dim: 4.5,
+                        dim: 5,
                         color: Colors.blue
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 0.6 * altezzaSchermo, // Change as per your requirement
-              width: 0.85 * larghezzaSchermo, // Change as per your requirement
+            Expanded(
+              // color: Colors.pink,
+              // height: 0.50 * altezzaSchermo, // Change as per your requirement
+              // width: 0.85 * larghezzaSchermo, // Change as per your requirement
               child: ListView(
                 shrinkWrap: true,
                 children: visualizza

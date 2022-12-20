@@ -32,9 +32,9 @@ class CaricaInsegnamentiAPI {
     print(usr!.ruolo);
     if (usr!.ruolo == 'cliente') {
       print("34 okok");
-      url += "?utente=" + (usr.nomeutente)!;
+      url += "?utente=${(usr.nomeutente)!}";
     }
-    print("39 " + url);
+    print("39 $url");
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
