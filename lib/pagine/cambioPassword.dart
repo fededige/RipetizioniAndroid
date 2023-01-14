@@ -6,10 +6,19 @@ import 'package:ripetizioni/model/utente.dart';
 import 'package:http/http.dart' as http;
 
 class CambioPasswordAPI{
-  Future<bool> postCambioPassword(String nomeutente, String vecchiaPassword, String nuovaPassword, String confNuovaPassword) async {
-    final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletImpostazioni?nomeUtente=$nomeutente&vecchiaPassword=$vecchiaPassword&nuovaPassword=$nuovaPassword&confermaNuovaPassword=$confNuovaPassword';
-    final response = await http.get(Uri.parse(url));
-    print("12");
+  Future<bool> postCambioPassword(String session, String vecchiaPassword, String nuovaPassword) async {
+    const url1 = 'http://localhost:8081/Ripetizioni_war_exploded/ServletImpostazioni';
+    print("session in cambioPassword" + session);
+    final response = await http.post(Uri.parse(url1),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "vecchiaPassword": vecchiaPassword,
+        "nuovaPassword": nuovaPassword,
+        "session": session,
+      })
+    );
     print(response.body);
     if (response.statusCode == 200) {
       if(response.body == "true") {
@@ -37,9 +46,9 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
   String errore = "";
   Utente? user;
 
-  void _callCambioPassword(String nomeutente, String vecchiaPassword, String nuovaPassword, String confNuovaPassword) {
+  void _callCambioPassword(String session, String vecchiaPassword, String nuovaPassword) {
     var api = CambioPasswordAPI();
-    api.postCambioPassword(nomeutente, vecchiaPassword, nuovaPassword, confNuovaPassword).then((risultato) {
+    api.postCambioPassword(session, vecchiaPassword, nuovaPassword).then((risultato) {
       if(risultato == true) {
         final user = this.user;
         if(user != null) {
@@ -170,14 +179,13 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                       if(nuovaPController.text == confnuovaPController.text){
                         if(vecchiaPController.text == user?.password){
                           if(user?.nomeutente != null) {
-                            _callCambioPassword((user?.nomeutente)!, vecchiaPController.text,  nuovaPController.text,  confnuovaPController.text);
+                            _callCambioPassword((user?.session)!, vecchiaPController.text,  nuovaPController.text);
                           }
                         } else {
                           setState(() {
                             errore = "Vecchia Password errata";
                           });
                         }
-
                       } else {
                         setState(() {
                           errore = "Le due nuove password non corrispondono";

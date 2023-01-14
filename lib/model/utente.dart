@@ -4,8 +4,9 @@ class Utente {
   String? password;
   String? ruolo;
   bool stato;
+  String? session;
 
-  Utente({ this.nomeutente, this.password, this.ruolo , required this.stato});
+  Utente({ this.nomeutente, this.password, this.ruolo , required this.stato, this.session});
 
   factory Utente.fromJson(Map<String, dynamic> json) {
     return Utente(
@@ -13,7 +14,7 @@ class Utente {
       password: json['password'],
       ruolo: json['ruolo'],
       stato: json['stato'],
+      session: json['session'],
     );
   }
-
 }

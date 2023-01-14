@@ -1,11 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
 import 'package:http/http.dart' as http;
 
 class LogOutAPI{
-  Future<bool> postLogOut() async {
+  Future<bool> postLogOut(String session) async {
     const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletLogOut';
-    final response = await http.get(Uri.parse(url));
+    final response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "session": session,
+        })
+    );
     if (response.statusCode == 200) {
       if(response.body == "true") {
         return true;
@@ -25,9 +34,9 @@ class PaginaImpostazioni extends StatefulWidget {
 class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
   String? presentazione = '';
 
-  void _callLogOutAPI() {
+  void _callLogOutAPI(String session) {
     var api = LogOutAPI();
-    api.postLogOut().then((res) {
+    api.postLogOut(session).then((res) {
       if(res == true) {
         print("sessione invalidata");
       }
@@ -108,7 +117,7 @@ class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      _callLogOutAPI();
+                      _callLogOutAPI((utente.session)!);
                       Navigator.pushNamed(context, '/login');
                     },
                     child: const Text(

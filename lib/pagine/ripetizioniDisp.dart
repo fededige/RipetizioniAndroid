@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
+import 'package:ripetizioni/pagine/ripetizioniDisp.dart';
 import '../model/insegnamenti.dart';
 import '../model/corso.dart';
 
@@ -31,18 +33,18 @@ class CaricaInsegnamentiAPI {
 }
 
 class InserisciPrenotazioniAPI {
-  Future<bool> postInserisciPrenotazioni(List<Ripetizioni> prenotazioni) async {
+  Future<bool> postInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletInserimentoRipetizioni';
-    String jsonP =
-        jsonEncode(prenotazioni.map((el) => el.toJson()).toList()).toString();
-    print(jsonP);
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: jsonP,
+      body: jsonEncode(<String, dynamic>{
+        "prenotazione": prenotazioni.map((el) => el.toJson()).toList(),
+        "session": session,
+      })
     );
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
@@ -76,11 +78,18 @@ class CaricaDocentiAPI {
 
 class CaricaPrenotazioneAPI {
   Future<List<List<int>>> getCaricaPrenotazioni(
-      int? c, int? doc, String? usr) async {
-    final url =
-        'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni?corso=$c&docente=$doc&utente=$usr';
-    print(url);
-    final response = await http.get(Uri.parse(url));
+      int? c, int? doc, String session) async {
+    const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni';
+    final response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "corso": c,
+          "docente": doc,
+          "session": session,
+        })
+    );
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       /*print("list: $list");
@@ -151,15 +160,16 @@ String giornoScelto = "";
 double larghezzaSchermo=0;
 double altezzaSchermo=0;
 String schermo='';
+List<bool> giornoCliccato = [];
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
     prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
   }
 
-  void _callInserisciPrenotazioni(List<Ripetizioni> prenotazioni) {
+  void _callInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) {
     var api = InserisciPrenotazioniAPI();
-    api.postInserisciPrenotazioni(prenotazioni).then((flag) {
+    api.postInserisciPrenotazioni(session, prenotazioni).then((flag) {
       if (flag) {
         messaggioInserimento = "prenotazioni confermate";
       } else {
@@ -258,9 +268,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     } else {
       codCorso = null;
     }
-    String? usr;
-    if (utente != null) {
-      usr = (utente!.nomeutente);
+    String usr = "null";
+    if (utente?.nomeutente != "") {
+      usr = (utente?.session)!;
     }
     var api = CaricaPrenotazioneAPI();
     api.getCaricaPrenotazioni(codCorso, matricolaDoce, usr).then((list) {
@@ -372,6 +382,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         }
       }
     }
+    for(int i = 1; i < 5; i++){
+      giornoCliccato[i] = false;
+    }
+    giornoCliccato[0] = true;
     visualizza = ripetizioniDispLun;
   }
 
@@ -388,44 +402,31 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 0.13 * altezzaSchermo,
-                  width: 0.2 * larghezzaSchermo,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    color: Colors.blue,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      responsiveText(text: "${ripetizione.toString().split(':')[0]}:${ripetizione.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
-                    ],
-                  ),
-                ),
-              ],
+            Container(
+              height: 0.13 * altezzaSchermo,
+              width: 0.2 * larghezzaSchermo,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: Colors.blue,
+              ),
+              child: Align(
+                child: responsiveText(text: "${ripetizione.toString().split(':')[0]}:${ripetizione.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
+              ),
             ),
             SizedBox(
               width: larghezzaSchermo  * 0.15,
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: <Widget>[
-                    Visibility(
-                      visible: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0,
-                      child:
-                        responsiveText(text: "Docente: ${docenteSceltoTmp!.cognome}", dim: 5, color: Colors.black)
-                    ),
-                    Visibility(
-                        visible: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0,
-                        child:
-                        responsiveText(text: "Corso: ${corsoSceltoTmp!.titoloCorso}", dim: 5, color: Colors.black)
-                    ),
-                  ],
+              children: <Widget>[
+                Visibility(
+                  visible: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0,
+                  child:
+                    responsiveText(text: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0 ? "Docente: ${docenteSceltoTmp!.cognome}" : "", dim: 5, color: Colors.black)
+                ),
+                Visibility(
+                    visible: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0,
+                    child:
+                    responsiveText(text: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0 ? "Corso: ${corsoSceltoTmp!.titoloCorso}" : "", dim: 5, color: Colors.black)
                 ),
               ],
             ),
@@ -474,6 +475,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     bool ricarica = arg["ricarica"];
     altezzaSchermo = MediaQuery.of(context).size.height;
     larghezzaSchermo = MediaQuery.of(context).size.width;
+    giornoCliccato.add(true);
+    for(int i = 0; i < 4; i++){
+      giornoCliccato.add(false);
+    }
     if (ricarica == true && nuovo == true) {
       docenti.removeRange(1, docenti.length);
       corsi.removeRange(1, corsi.length);
@@ -639,6 +644,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
+                        for(int i = 0; i < 5; i++){
+                          giornoCliccato[i] = false;
+                        }
+                        giornoCliccato[0] = true;
                         visualizza = ripetizioniDispLun;
                         giornoScelto = "Lunedì";
                       });
@@ -646,7 +655,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Lun",
                         dim: 5,
-                        color: Colors.blue
+                        color: Colors.blue,
+                        bold: giornoCliccato[0]
                     ),
                   ),
                 ),
@@ -654,6 +664,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
+                        for(int i = 0; i < 5; i++){
+                          giornoCliccato[i] = false;
+                        }
+                        giornoCliccato[1] = true;
                         visualizza = ripetizioniDispMar;
                         giornoScelto = "Martedì";
                       });
@@ -661,7 +675,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                       text: "Mar",
                       dim: 5,
-                      color: Colors.blue
+                      color: Colors.blue,
+                      bold: giornoCliccato[1]
                     ),
                   ),
                 ),
@@ -669,6 +684,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
+                        for(int i = 0; i < 5; i++){
+                          giornoCliccato[i] = false;
+                        }
+                        giornoCliccato[2] = true;
                         visualizza = ripetizioniDispMer;
                         giornoScelto = "Mercoledì";
                       });
@@ -676,7 +695,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Mar",
                         dim: 5,
-                        color: Colors.blue
+                        color: Colors.blue,
+                        bold: giornoCliccato[2]
                     ),
                   ),
                 ),
@@ -684,6 +704,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
+                        for(int i = 0; i < 5; i++){
+                          giornoCliccato[i] = false;
+                        }
+                        giornoCliccato[3] = true;
                         visualizza = ripetizioniDispGio;
                         giornoScelto = "Giovedì";
                       });
@@ -691,7 +715,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Gio",
                         dim: 5,
-                        color: Colors.blue
+                        color: Colors.blue,
+                        bold: giornoCliccato[3]
                     ),
                   ),
                 ),
@@ -699,6 +724,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
+                        for(int i = 0; i < 5; i++){
+                          giornoCliccato[i] = false;
+                        }
+                        giornoCliccato[4] = true;
                         visualizza = ripetizioniDispVen;
                         giornoScelto = "Venerdì";
                       });
@@ -706,7 +735,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Ven",
                         dim: 5,
-                        color: Colors.blue
+                        color: Colors.blue,
+                        bold: giornoCliccato[4]
                     ),
                   ),
                 ),
@@ -731,8 +761,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   Widget setupAlertDialoadContainer() {
     return SizedBox(
-      height: 400.0, // Change as per your requirement
-      width: 400.0, // Change as per your requirement
+      height: altezzaSchermo * 0.7, // Change as per your requirement
+      width: larghezzaSchermo * 0.7, // Change as per your requirement
       child: ListView(
         shrinkWrap: true,
         children: ripetizioni
@@ -820,52 +850,38 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   }
 
   Widget ripetizioneTemplate(ripetizione) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
+    return SizedBox(
+      height: 0.2 * larghezzaSchermo,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: Colors.grey[200],
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              width: 110,
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      ripetizione.giorno,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      ripetizione.ora,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
+              height: 0.2 * larghezzaSchermo,
+              width: 0.2 * larghezzaSchermo,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: Colors.blue,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    ripetizione.docente.cognome,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    ripetizione.corso.titoloCorso,
-                    style: const TextStyle(fontSize: 20),
-                  ),
+                  responsiveText(text: ripetizione.giorno, dim: 5.5, color: Colors.white),
+                  responsiveText(text: "${ripetizione.ora.split(':')[0]}:${ripetizione.ora.split(':')[1]}", dim: 5.5, color: Colors.white),
                 ],
               ),
             ),
-            const Expanded(
-              child: SizedBox(
-                width: 0,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                responsiveText(text: "${ripetizione.docente.matricola} ${ripetizione.docente.cognome}", dim: 5, color: Colors.black),
+                responsiveText(text: "${ripetizione.corso.codice} ${ripetizione.corso.titoloCorso}", dim: 5, color: Colors.black),
+              ],
             ),
             IconButton(
               onPressed: () {
@@ -875,7 +891,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   carrelloPrenotazioni(context);
                 });
               },
-              icon: const Icon(
+              icon: Icon(
+                size: larghezzaSchermo * 0.05,
                 Icons.delete,
                 color: Colors.grey,
               ),
@@ -884,162 +901,175 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         ),
       ),
     );
+    // Card(
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(10.0),
+    //   ),
+    //   color: Colors.grey[200],
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+    //     children: <Widget>[
+    //       Container(
+    //         height: 0.13 * altezzaSchermo,
+    //         width: 0.2 * larghezzaSchermo,
+    //         decoration: const BoxDecoration(
+    //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    //           color: Colors.blue,
+    //         ),
+    //         child: Align(
+    //           child: responsiveText(text: "${ripetizione.toString().split(':')[0]}:${ripetizione.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
+    //         ),
+    //       ),
+    //       SizedBox(
+    //         width: larghezzaSchermo  * 0.15,
+    //       ),
+    //       Column(
+    //         children: <Widget>[
+    //           Visibility(
+    //               visible: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0,
+    //               child:
+    //               responsiveText(text: docenteSceltoTmp != null && docenteSceltoTmp?.matricola != 0 ? "Docente: ${docenteSceltoTmp!.cognome}" : "", dim: 5, color: Colors.black)
+    //           ),
+    //           Visibility(
+    //               visible: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0,
+    //               child:
+    //               responsiveText(text: corsoSceltoTmp != null && corsoSceltoTmp?.codice != 0 ? "Corso: ${corsoSceltoTmp!.titoloCorso}" : "", dim: 5, color: Colors.black)
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // ),
   }
 
   void carrelloPrenotazioni(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Carrello ripetizioni'),
-            content: setupAlertDialoadContainer(),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: Container(
-                  width: 100.0,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.rectangle,
-                    borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 3.0,
-                    ),
-                  ), //aggiungere navigazione alla Home
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: const <Widget>[
-                        Text(
-                          "Aggiungi",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        Icon(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Carrello'),
+          insetPadding: const EdgeInsets.all(10),
+          content: setupAlertDialoadContainer(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: Container(
+                width: 100.0,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.rectangle,
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 3.0,
+                  ),
+                ), //aggiungere navigazione alla Home
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: const <Widget>[
+                      Text(
+                        "Aggiungi",
+                        style: TextStyle(
                           color: Colors.white,
-                          Icons.add_shopping_cart,
                         ),
-                      ],
-                    ),
+                      ),
+                      Icon(
+                        color: Colors.white,
+                        Icons.add_shopping_cart,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () => {
-                  if (ripetizioni.isNotEmpty)
-                    {
-                      _callInserisciPrenotazioni(ripetizioni),
-                    }
-                  else
-                    {
-                      _showToast(
-                          context, "Non ci sono prenotazioni nel carrello"),
-                    },
-                  Navigator.pop(context, 'Cancel'),
-                },
-                child: Container(
-                  width: 105.0,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.rectangle,
-                    borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 3.0,
-                    ),
+            ),
+            TextButton(
+              onPressed: () => {
+                if (ripetizioni.isNotEmpty)
+                  {
+                    _callInserisciPrenotazioni((utente?.session)!, ripetizioni),
+                  }
+                else
+                  {
+                    _showToast(
+                        context, "Non ci sono prenotazioni nel carrello"),
+                  },
+                Navigator.pop(context, 'Cancel'),
+              },
+              child: Container(
+                width: 105.0,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.rectangle,
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 3.0,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Align(
-                      child: Text(
-                        'Prenota',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                        ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Align(
+                    child: Text(
+                      'Prenota',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          );
-        });
+            ),
+          ],
+        );
+      });
   }
 
-  void confermaPrenotazioneDocCor(
-      BuildContext context, String giorno, String ora) {
+  void confermaPrenotazioneDocCor(BuildContext context, String giorno, String ora) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: const Text('Riepilogo'),
+        title: responsiveText(text: "Aggiungi al carrello", dim: 5, color: Colors.blue, bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              'Giorno: $giorno',
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
+            responsiveText(text: "Giorno: $giorno", dim: 4.5, color: Colors.black),
+            SizedBox(
+              height: altezzaSchermo * 0.02,
             ),
-            const SizedBox(
-              height: 10.0,
+            responsiveText(text: "Ora: ${ora.split(":")[0]}:${ora.split(":")[1]}", dim: 4.5, color: Colors.black),
+            SizedBox(
+              height: altezzaSchermo * 0.02,
             ),
-            Text(
-              'Ora: $ora',
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
+            responsiveText(text: "${docenteSceltoTmp!.matricola} ${docenteSceltoTmp!.cognome}", dim: 4.5, color: Colors.black),
+            SizedBox(
+              height: altezzaSchermo * 0.02,
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "${docenteSceltoTmp!.matricola} ${docenteSceltoTmp!.cognome}",
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "${corsoSceltoTmp!.codice} ${corsoSceltoTmp!.titoloCorso}",
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
+            responsiveText(text: "${corsoSceltoTmp!.codice} ${corsoSceltoTmp!.titoloCorso}", dim: 4.5, color: Colors.black),
           ],
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
             child: Container(
-              width: 100.0,
+              width: larghezzaSchermo / 4.5,
               decoration: BoxDecoration(
                 color: Colors.red,
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
                   color: Colors.black,
-                  width: 3.0,
+                  width: larghezzaSchermo/400,
                 ),
               ), //aggiungere navigazione alla Home
-              child: const Padding(
-                padding: EdgeInsets.all(5.0),
+              child: Padding(
+                padding: EdgeInsets.all(larghezzaSchermo/100),
                 child: Align(
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: responsiveText(text: "Cancel", dim: 4.5, color: Colors.white, bold: true),
                 ),
               ),
             ),
@@ -1048,26 +1078,20 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             onPressed: () => pushToCart(
                 context, giorno, ora, corsoSceltoTmp!, docenteSceltoTmp!),
             child: Container(
-              width: 105.0,
+              width: larghezzaSchermo / 4,
               decoration: BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
                   color: Colors.black,
-                  width: 3.0,
+                  width: larghezzaSchermo/400,
                 ),
-              ), //aggiungere navigazione alla Home
-              child: const Padding(
-                padding: EdgeInsets.all(5.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(larghezzaSchermo/100),
                 child: Align(
-                  child: Text(
-                    'Aggiungi al carrello',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: responsiveText(text: "Aggiungi", dim: 4.5, color: Colors.white, bold: true)
                 ),
               ),
             ),
@@ -1114,9 +1138,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               },
               mode: Mode.MENU,
               showSelectedItems: true,
-              items: docentiNonOccu
-                  .map((el) => "${el.matricola} ${el.cognome}")
-                  .toList(),
+              items: docentiL.map((el) => "${el.matricola} ${el.cognome}").toList(),
               dropdownSearchDecoration: const InputDecoration(
                 constraints: BoxConstraints(maxWidth: 190, maxHeight: 50),
                 labelText: "Scegli Professore",
@@ -1342,12 +1364,13 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     }
   }
 
-  responsiveText({required String text, required double dim, required Color color}) {
+  responsiveText({required String text, required double dim, required Color color, bool? bold}) {
     return Text(
       text,
       style: TextStyle(
-        fontSize: dim * (larghezzaSchermo / 100),
-        color: color
+        fontSize: bold != null && bold == true ? (dim + 0.5) * (larghezzaSchermo / 100) : dim * (larghezzaSchermo / 100),
+        color: color,
+        fontWeight: bold != null && bold == true ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }

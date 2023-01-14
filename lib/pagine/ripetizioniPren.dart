@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
+import 'package:ripetizioni/pagine/ripetizioniDisp.dart';
 import 'package:ripetizioni/pagine/ripetizioniPren.dart';
 import '../model/docente.dart';
 import '../model/corso.dart';
@@ -26,16 +27,18 @@ class PaginaRipetizioniPren extends StatefulWidget {
 }
 
 class CaricaInsegnamentiAPI {
-  Future<List<Ripetizioni>> getCaricaRipetizioni(Utente usr) async {
+  Future<List<Ripetizioni>> getCaricaRipetizioni(String session) async {
     String url =
         "http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizionieff";
-    print(usr!.ruolo);
-    if (usr!.ruolo == 'cliente') {
-      print("34 okok");
-      url += "?utente=${(usr.nomeutente)!}";
-    }
-    print("39 $url");
-    final response = await http.get(Uri.parse(url));
+    print("getCaricaRipetizioni" + url);
+    final response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "session": session,
+        })
+    );
     if (response.statusCode == 200) {
       //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
       List<dynamic> list = json.decode(response.body);
@@ -54,16 +57,19 @@ class CaricaInsegnamentiAPI {
 }
 
 class RipetizioneEffettuataAPI {
-  Future<bool> postInserisciPrenotazioneEff(Ripetizioni r) async {
+  Future<bool> postInserisciPrenotazioneEff(String session, Ripetizioni r) async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioniEffettuate';
     //print(url);
-    String RipetEff = jsonEncode(r);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: RipetEff);
+        body: jsonEncode(<String, dynamic>{
+          "ripetizione": r,
+          "session": session,
+        })
+    );
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -73,16 +79,19 @@ class RipetizioneEffettuataAPI {
 }
 
 class RipetizioneCancellataAPI {
-  Future<bool> postInserisciPrenotazioneCanc(Ripetizioni r) async {
+  Future<bool> postInserisciPrenotazioneCanc(String session, Ripetizioni r) async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioneCancellata';
     //print(url);
-    String RipetEff = jsonEncode(r);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: RipetEff);
+        body: <String, dynamic>{
+          "ripetizioni": r,
+          "session": session
+        }
+    );
     print(response.statusCode);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -93,9 +102,9 @@ class RipetizioneCancellataAPI {
 }
 
 class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
-  void _callCaricaRipetizioni() {
+  void _callCaricaRipetizioni(String session) {
     var api = CaricaInsegnamentiAPI();
-    api.getCaricaRipetizioni(user!).then((list) {
+    api.getCaricaRipetizioni(session).then((list) {
       ripetizioni.removeRange(0, ripetizioni.length);
       ripetizioniEff.removeRange(0, ripetizioni.length);
       ripetizioniCanc.removeRange(0, ripetizioni.length);
@@ -126,9 +135,9 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
     });
   }
 
-  void _callPostRipetizioneEff(Ripetizioni r) {
+  void _callPostRipetizioneEff(String session, Ripetizioni r) {
     var api = RipetizioneEffettuataAPI();
-    api.postInserisciPrenotazioneEff(r).then((list) {
+    api.postInserisciPrenotazioneEff(session, r).then((list) {
       setState(() {
         if (list == true) {
           ripetizioni.remove(r);
@@ -142,9 +151,9 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
     });
   }
 
-  void _callPostRipetizioneCanc(Ripetizioni r) {
+  void _callPostRipetizioneCanc(String session, Ripetizioni r) {
     var api = RipetizioneCancellataAPI();
-    api.postInserisciPrenotazioneCanc(r).then((list) {
+    api.postInserisciPrenotazioneCanc(session, r).then((list) {
       setState(() {
         if (list == true) {
           ripetizioni.remove(r);
@@ -171,7 +180,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
       ripetizioniCanc.removeRange(0, ripetizioniCanc.length);
       ripetizioniEff.removeRange(0, ripetizioniEff.length);
       nuovo = false;
-      _callCaricaRipetizioni();
+      _callCaricaRipetizioni((user?.session)!);
     }
     return Scaffold(
       backgroundColor: Colors.grey[400],
@@ -338,7 +347,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      _callPostRipetizioneCanc(ripetizione);
+                      _callPostRipetizioneCanc((user?.session)!, ripetizione);
                     });
                   },
                   icon: const Icon(
@@ -352,7 +361,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      _callPostRipetizioneEff(ripetizione);
+                      _callPostRipetizioneEff((user?.session)!, ripetizione);
                     });
                   },
                   icon: const Icon(

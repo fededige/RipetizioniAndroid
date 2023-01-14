@@ -1,18 +1,30 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ripetizioni/model/session.dart';
 import 'package:ripetizioni/model/utente.dart';
 import 'package:http/http.dart' as http;
 
 class AuthenticationAPI{
   Future<Utente> getAuthentication(String nomeutente, String password) async {
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
-    final urlEmul = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
+    //final urlEmul = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
     final response = await http.get(Uri.parse(url));
-    print(response.body);
+
     if (response.statusCode == 200) {
-      return Utente.fromJson(jsonDecode(response.body));
+      if(response.body == "UtenteInesistente"){
+        return Utente(nomeutente: null, password: null, ruolo: null, stato: false, session: null);
+      } else if(response.body == "PasswordErrata"){
+        return Utente(nomeutente: null, password: null, ruolo: null, stato: true, session: null);
+      } else{
+        //Session session = Session.fromJson(json.decode(response.body)); //provo
+
+        print("${response.body.split(";")[1].replaceAll("\"", "")} ${response.body.split(";")[0].replaceAll("\"", "")}");
+        return Utente(nomeutente: nomeutente, password: password, ruolo: response.body.split(";")[1].replaceAll("\"", ""), stato: true, session: response.body.split(";")[0].replaceAll("\"", ""));
+      }
     } else {
       throw Exception('Failed to load utente');
     }

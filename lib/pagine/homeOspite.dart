@@ -4,7 +4,7 @@ class PaginaHomeOspite extends StatefulWidget {
   @override
   State<PaginaHomeOspite> createState() => _PaginaHomeOspiteState();
 }
-Utente usr= new Utente(stato:false);
+Utente usr = Utente(stato:false);
 class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
   String? presentazione = '';
   @override
