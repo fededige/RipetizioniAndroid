@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
@@ -136,7 +137,6 @@ List<String> ripetizioniDispMer = <String>[];
 List<String> ripetizioniDispGio = <String>[];
 List<String> ripetizioniDispVen = <String>[];
 
-List<List<Color>> prenotazioniDispC = <List<Color>>[];
 List<Ripetizioni> ripetizioni = [];
 List<Ripetizioni> ripetizioniDisponibili = [];
 List<String> visualizza = ["prova"];
@@ -159,10 +159,15 @@ double larghezzaSchermo=0;
 double altezzaSchermo=0;
 String schermo='';
 List<bool> giornoCliccato = [];
+List<List<Color>> cardBackGroundColors = <List<Color>>[[Colors.blue, Colors.blue, Colors.blue, Colors.blue],
+                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
+                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
+                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
+                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue]];
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
-    prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
+    //prenotazioniDispC.removeRange(0, prenotazioniDispC.length);
   }
 
   void _callInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) {
@@ -197,9 +202,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             docentiNonOccu.add(element);
           }
         });
-        docentiNonOccu.forEach((element) {
-          print(element.matricola);
-        });
+        // for (var element in docentiNonOccu) {
+        //   print(element.matricola);
+        // }
         mostraConferma(context, giorno, ora);
       }
     });
@@ -393,6 +398,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   Widget creaCard(ripetizione, context) {
     return GestureDetector(
       onTap: () {
+        print("click" + ripetizione);
         mostraConferma(context, giornoScelto, ripetizione);
       },
       child: Card(
@@ -406,9 +412,9 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             Container(
               height: 0.13 * altezzaSchermo,
               width: 0.2 * larghezzaSchermo,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                color: Colors.blue,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                color: cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione)],
               ),
               child: Align(
                 child: responsiveText(text: "${ripetizione.toString().split(':')[0]}:${ripetizione.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
@@ -531,8 +537,24 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 Visibility(
                   visible: _isVisibile,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0.005 * larghezzaSchermo, 0),
-                    child: IconButton(
+                    padding: EdgeInsets.fromLTRB(0, 0.005 * altezzaSchermo, 0.005 * larghezzaSchermo, 0),
+                    child: ripetizioni.isNotEmpty ?
+                    Badge(
+                      badgeContent: Text(ripetizioni.length.toString()),
+                      position: BadgePosition.topStart(),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            carrelloPrenotazioni(context);
+                          });
+                        },
+                        iconSize: 0.08 * larghezzaSchermo,
+                        icon: const Icon(
+                          color: Colors.black,
+                          Icons.shopping_cart_sharp,
+                        ),
+                      ),
+                    ) : IconButton(
                       onPressed: () {
                         setState(() {
                           carrelloPrenotazioni(context);
@@ -694,7 +716,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                       });
                     },
                     child: responsiveText(
-                        text: "Mar",
+                        text: "Mer",
                         dim: 5,
                         color: Colors.blue,
                         bold: giornoCliccato[2]
@@ -773,42 +795,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     );
   }
 
-  Widget tile(int x, int y) {
-    return GestureDetector(
-      onTap: () {
-        if (prenotazioni.elementAt(x).elementAt(y) == 0 &&
-            _isVisibile == true) {
-          setState(() {
-            if (docenteScelto != null && docenteScelto!.matricola != 0) {
-              mostraConferma(context, indexToDay(y), indexToHour(x));
-            } else if (corsoScelto != null && corsoScelto!.codice != 0) {
-              _callCaricaDocenti(
-                  corsoScelto!.codice, indexToDay(x), indexToHour(y));
-            }
-          });
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: prenotazioniDispC.elementAt(x).elementAt(y),
-            border: const Border(
-              left: BorderSide(color: Colors.black),
-              right: BorderSide(color: Colors.black),
-              top: BorderSide(color: Colors.black),
-              bottom: BorderSide(color: Colors.black),
-            )),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 45, 15, 45),
-          child: Align(
-            child: Text(
-              prenotazioniDisp.elementAt(x).elementAt(y),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   String indexToDay(int indice) {
     String giorno = "";
     switch (indice) {
@@ -850,6 +836,51 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     return orario;
   }
 
+  int hourToIndex(String orario) {
+    int indice = -1;
+    orario = orario.toLowerCase();
+    print(orario);
+    switch (orario) {
+      case "15:00:00":
+        indice = 0;
+        break;
+      case "16:00:00":
+        indice = 1;
+        break;
+      case "17:00:00":
+        indice = 2;
+        break;
+      case "18:00:00":
+        indice = 3;
+        break;
+    }
+    return indice;
+  }
+
+  int dayToIndex(String giorno) {
+    int indice = -1;
+    print(giorno);
+    giorno = giorno.toLowerCase();
+    switch (giorno) {
+      case "lunedì":
+        indice = 0;
+        break;
+      case "martedì":
+        indice = 1;
+        break;
+      case "mercoledì":
+        indice = 2;
+        break;
+      case "giovedì":
+        indice = 3;
+        break;
+      case "venerdì":
+        indice = 4;
+        break;
+    }
+    return indice;
+  }
+
   Widget ripetizioneTemplate(ripetizione) {
     return SizedBox(
       height: 0.2 * larghezzaSchermo,
@@ -887,6 +918,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             IconButton(
               onPressed: () {
                 setState(() {
+                  cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione.ora)] = Colors.blue;
                   ripetizioni.remove(ripetizione);
                   Navigator.pop(context, 'Cancel');
                   carrelloPrenotazioni(context);
@@ -993,7 +1025,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Aggiungi al carrello", dim: 5, color: Colors.blue, bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1037,8 +1069,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(
-                context, giorno, ora, corsoScelto!, docenteScelto!),
+            onPressed: (){
+              cardBackGroundColors[dayToIndex(giorno)][hourToIndex(ora)] = Colors.lightGreen[900]!;
+              pushToCart(context, giorno, ora, corsoScelto!, docenteScelto!);
+            },
             child: Container(
               width: larghezzaSchermo / 4,
               decoration: BoxDecoration(
@@ -1069,7 +1103,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: const Text('Riepilogo'),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1155,8 +1189,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(
-                context, giorno, ora, corsoScelto!, docenteToCart!),
+            onPressed: (){
+              cardBackGroundColors[dayToIndex(giorno)][hourToIndex(ora)] = Colors.lightGreen[900]!;
+              pushToCart(context, giorno, ora, corsoScelto!, docenteScelto!);
+            },
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1172,7 +1208,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 padding: EdgeInsets.all(5.0),
                 child: Align(
                   child: Text(
-                    'Aggiungi al carrello',
+                    'Aggiungi',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.white,
@@ -1193,7 +1229,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: const Text('Riepilogo'),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1277,8 +1313,10 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
           ),
           TextButton(
-            onPressed: () => pushToCart(
-                context, giorno, ora, corsoToCart!, docenteScelto!),
+            onPressed: (){
+              cardBackGroundColors[dayToIndex(giorno)][hourToIndex(ora)] = Colors.lightGreen[900]!;
+              pushToCart(context, giorno, ora, corsoScelto!, docenteScelto!);
+            },
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
@@ -1294,7 +1332,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 padding: EdgeInsets.all(5.0),
                 child: Align(
                   child: Text(
-                    'Aggiungi al carrello',
+                    'Aggiungi',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.white,

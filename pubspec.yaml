@@ -31,9 +31,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  badges: ^2.0.2
   dropdown_search: ^3.0.1
-  cart_item: ^0.0.1
   http: ^0.13.5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
