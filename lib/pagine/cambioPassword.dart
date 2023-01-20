@@ -64,6 +64,19 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
   Widget build(BuildContext context) {
     user = ModalRoute.of(context)!.settings.arguments as Utente;
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+        title: const Text(
+          'Cambio Password',
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => {
+            Navigator.pop(context, false),
+          },
+        ),
+      ),
       body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -84,8 +97,10 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                           visible = !visible;
                         });
                       },
-                      icon: const Icon(
-                        Icons.remove_red_eye,
+                      icon: visible ? const Icon(
+                        Icons.visibility,
+                      ) : const Icon(
+                        Icons.visibility_off,
                       ),
                       color: Colors.grey[600],
                     ),
@@ -111,8 +126,10 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                           visible2 = !visible2;
                         });
                       },
-                      icon: const Icon(
-                        Icons.remove_red_eye,
+                      icon: visible2 ? const Icon(
+                        Icons.visibility,
+                      ) : const Icon(
+                        Icons.visibility_off,
                       ),
                       color: Colors.grey[600],
                     ),
@@ -141,8 +158,10 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                           visible3 = !visible3;
                         });
                       },
-                      icon: const Icon(
-                        Icons.remove_red_eye,
+                      icon: visible3 ? const Icon(
+                        Icons.visibility,
+                      ) : const Icon(
+                        Icons.visibility_off,
                       ),
                       color: Colors.grey[600],
                     ),

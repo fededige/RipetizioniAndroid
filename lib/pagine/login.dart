@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ripetizioni/model/session.dart';
 import 'package:ripetizioni/model/utente.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,16 +9,12 @@ class AuthenticationAPI{
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
     //final urlEmul = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
     final response = await http.get(Uri.parse(url));
-
     if (response.statusCode == 200) {
       if(response.body == "UtenteInesistente"){
         return Utente(nomeutente: null, password: null, ruolo: null, stato: false, session: null);
       } else if(response.body == "PasswordErrata"){
         return Utente(nomeutente: null, password: null, ruolo: null, stato: true, session: null);
       } else{
-        //Session session = Session.fromJson(json.decode(response.body)); //provo
-
-        print("${response.body.split(";")[1].replaceAll("\"", "")} ${response.body.split(";")[0].replaceAll("\"", "")}");
         return Utente(nomeutente: nomeutente, password: password, ruolo: response.body.split(";")[1].replaceAll("\"", ""), stato: true, session: response.body.split(";")[0].replaceAll("\"", ""));
       }
     } else {
@@ -60,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
           }
         });
       }
-
     }, onError: (error) {
       setState(() {
         errore = "errore richiesta";
@@ -150,8 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                             visible = !visible;
                           });
                         },
-                        icon: const Icon(
-                          Icons.remove_red_eye,
+                        icon: visible ? const Icon(
+                          Icons.visibility,
+                        ) : const Icon(
+                          Icons.visibility_off,
                         ),
                         color: Colors.grey[600],
                       ),
