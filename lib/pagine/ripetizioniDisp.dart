@@ -31,7 +31,7 @@ class CaricaInsegnamentiAPI {
 }
 
 class InserisciPrenotazioniAPI {
-  Future<bool> postInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) async {
+  Future<List<dynamic>> postInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletInserimentoRipetizioni';
     final response = await http.post(
@@ -45,9 +45,8 @@ class InserisciPrenotazioniAPI {
       })
     );
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      return jsonDecode(response.body);
+      List<dynamic> res = jsonDecode(response.body);
+      return res;
     } else {
       throw Exception('Failed to insert ripetizioni in cart.');
     }
@@ -172,20 +171,33 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void _callInserisciPrenotazioni(String session, List<Ripetizioni> prenotazioni) {
     var api = InserisciPrenotazioniAPI();
-    api.postInserisciPrenotazioni(session, prenotazioni).then((flag) {
-      if (flag) {
+    api.postInserisciPrenotazioni(session, prenotazioni).then((res) {
+      if (res.isEmpty){
         messaggioInserimento = "prenotazioni confermate";
       } else {
-        messaggioInserimento = "prenotazione non andata a buonfine riprova";
+        messaggioInserimento = "La ripetizione rimasta nel carrello non poteva essere prenotata";
       }
       _showToast(context, messaggioInserimento!);
-      ripetizioni.removeRange(0, ripetizioni.length);
+      if(res.isEmpty){
+        ripetizioni.removeRange(0, ripetizioni.length);
+      }else{
+        res.sort();
+        for(int i = ripetizioni.length - 1; i >= 0; i--){
+          if(!res.contains(i)){
+            print("non contiene: ${i}");
+            ripetizioni.removeAt(i);
+          }
+        }
+      }
       if ((corsoScelto != null && corsoScelto!.codice != 0) ||
           (docenteScelto != null && docenteScelto!.matricola != 0)) {
         setState(() {
           _callCaricaPrenotazione();
         });
       }
+    }, onError: (error) {
+      print(error);
+      _showToast(context, "Errore durante la fase di prenotazione, riprova");
     });
   }
 
