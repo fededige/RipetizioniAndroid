@@ -102,6 +102,16 @@ class RipetizioneCancellataAPI {
 }
 
 class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
+  responsiveText({required String text, required double dim, required Color color, bool? bold}) { //spostare giù
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: bold != null && bold == true ? (dim + 0.5) * (MediaQuery.of(context).size.height / 100) : dim * (MediaQuery.of(context).size.width / 100),
+        color: color,
+        fontWeight: bold != null && bold == true ? FontWeight.bold : FontWeight.normal,
+      ),
+    );
+  }
   void _callCaricaRipetizioni(String session) {
     var api = CaricaInsegnamentiAPI();
     api.getCaricaRipetizioni(session).then((list) {
@@ -172,7 +182,8 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     user = arg["utente"];
     bool ricarica = arg["ricarica"];
-    if (user!.ruolo == 'client') {
+    print(user!.ruolo);
+    if (user!.ruolo == 'cliente') {
       _isAdmin = false;
     }
     if (ricarica == true && nuovo == true) {
@@ -255,10 +266,55 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
   Widget metodo(ripetizione) {
     if (_selectedIndex == 0) {
       DaFare = true;
-      return ripetizioneEffettuateT(ripetizione);
+      return creaCard(ripetizione);
     }
     DaFare = false;
-    return ripetizioneEffettuateT(ripetizione);
+    return creaCard(ripetizione);
+  }
+
+  Widget creaCard(ripetizione) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: Colors.grey[200],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+        children: <Widget>[
+          Container(
+            height: 0.13 * MediaQuery.of(context).size.height,
+            width: 0.2 * MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              color: Colors.blue,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                responsiveText(text: ripetizione.giorno, dim: 5.5, color: Colors.white),
+                responsiveText(text: "${ripetizione.ora.toString().split(':')[0]}:${ripetizione.ora.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 0.15 * MediaQuery.of(context).size.width,
+          ),
+          Column(
+            children: <Widget>[
+              responsiveText(text: "Docente: ${ripetizione.docente.cognome}", dim: 5, color: Colors.black),
+              responsiveText(text: "Corso: ${ripetizione.corso.titoloCorso}", dim: 5, color: Colors.black),
+              Visibility(
+                visible: _isAdmin,
+                child: Text(
+                  "Utente: ${ripetizione.utente}",
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget ripetizioneEffettuateT(ripetizione) {

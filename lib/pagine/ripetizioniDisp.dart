@@ -914,8 +914,8 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  responsiveText(text: ripetizione.giorno, dim: 5.5, color: Colors.white),
-                  responsiveText(text: "${ripetizione.ora.split(':')[0]}:${ripetizione.ora.split(':')[1]}", dim: 5.5, color: Colors.white),
+                  responsiveText(text: ripetizione.giorno, dim: 4.5, color: Colors.white),
+                  responsiveText(text: "${ripetizione.ora.split(':')[0]}:${ripetizione.ora.split(':')[1]}", dim: 5, color: Colors.white),
                 ],
               ),
             ),
