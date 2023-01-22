@@ -2,6 +2,7 @@ import './corso.dart';
 import './docente.dart';
 
 class Ripetizioni {
+  int? codice;
   String utente;
   String giorno;
   String ora;
@@ -10,10 +11,11 @@ class Ripetizioni {
   bool stato;
   bool effettuata;
 
-  Ripetizioni({ required this.giorno, required this.ora, required this.docente, required this.corso, required this.stato,required this.effettuata,required this.utente });
+  Ripetizioni({ this.codice, required this.giorno, required this.ora, required this.docente, required this.corso, required this.stato,required this.effettuata,required this.utente });
 
   factory Ripetizioni.fromJson(Map<String, dynamic> json) {
     return Ripetizioni(
+      codice: json['codice'],
       utente : json['utente'],
       giorno: json['giorno'],
       ora: json['ora'],
@@ -26,6 +28,7 @@ class Ripetizioni {
 
   Map<String, dynamic> toJson(){
     return {
+      "codice": codice,
       "giorno": giorno,
       "ora": ora,
       "docente": docente,

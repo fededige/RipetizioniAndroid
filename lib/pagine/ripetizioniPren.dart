@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ripetizioni/model/utente.dart';
@@ -27,7 +28,7 @@ class PaginaRipetizioniPren extends StatefulWidget {
 }
 
 class CaricaInsegnamentiAPI {
-  Future<List<Ripetizioni>> getCaricaRipetizioni(String session) async {
+  Future<List<Ripetizioni>> getCaricaRipetizioni(String session, int id) async {
     String url =
         "http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizionieff";
     print("getCaricaRipetizioni" + url);
@@ -37,10 +38,10 @@ class CaricaInsegnamentiAPI {
         },
         body: jsonEncode(<String, dynamic>{
           "session": session,
+          "id": id
         })
     );
     if (response.statusCode == 200) {
-      //List<Insegnamenti> ls = json.decode(response.body)['results'].map((data) => Insegnamenti.fromJson(data)).toList();
       List<dynamic> list = json.decode(response.body);
       List<Ripetizioni> liRipetizioni = <Ripetizioni>[];
       print("list: $list");
@@ -114,10 +115,27 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
   }
   void _callCaricaRipetizioni(String session) {
     var api = CaricaInsegnamentiAPI();
-    api.getCaricaRipetizioni(session).then((list) {
-      ripetizioni.removeRange(0, ripetizioni.length);
-      ripetizioniEff.removeRange(0, ripetizioni.length);
-      ripetizioniCanc.removeRange(0, ripetizioni.length);
+    int id;
+    print("_callCaricaRipetizioni");
+    if(ripetizioni.isEmpty && ripetizioniEff.isEmpty && ripetizioniCanc.isEmpty ){
+      id = 0;
+    } else{
+      int lenRipetizioni = 0;
+      int lenRipetizioniEff = 0;
+      int lenRipetizioniCanc = 0;
+      if(ripetizioni.isNotEmpty){
+        lenRipetizioni = (ripetizioni.last.codice)!;
+      }
+      if(ripetizioniEff.isNotEmpty){
+        lenRipetizioniEff = (ripetizioniEff.last.codice)!;
+      }
+      if(ripetizioniCanc.isNotEmpty){
+        lenRipetizioniCanc = (ripetizioniCanc.last.codice)!;
+      }
+      id = max(max(lenRipetizioni, lenRipetizioniEff), lenRipetizioniCanc);
+    }
+    print("id: $id");
+    api.getCaricaRipetizioni(session, id).then((list) {
       setState(() {
         if (list.isNotEmpty) {
           for (int i = 0; i < list.length; i++) {
@@ -131,11 +149,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                 list.elementAt(i).effettuata == false) {
               ripetizioniCanc.add(list.elementAt(i));
             }
-            /*print("73" );
-        print(ripetizioni.elementAt(0).corso.codice);*/
           }
-          // print("corsi: ");
-          // print(corsi);
         } else {
           print("errore, non ci sono insegnamenti");
         }

@@ -12,17 +12,18 @@ import '../model/ripetizioni.dart';
 import 'package:http/http.dart' as http;
 
 class CaricaInsegnamentiAPI {
-  Future<List<Insegnamenti>> getCaricaInsegnamenti() async {
-    const url =
-        'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti';
+  Future<List<Insegnamenti>> getCaricaInsegnamenti(int length) async {
+    String url =
+        'http://localhost:8081/Ripetizioni_war_exploded/ServletInsegnamenti?id=$length';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       List<Insegnamenti> li = <Insegnamenti>[];
-      for (int i = 0; i < list.length; i++) {
-        li.add(Insegnamenti.fromJson(list.elementAt(i)));
+      if(list.isNotEmpty){
+        for (int i = 0; i < list.length; i++) {
+          li.add(Insegnamenti.fromJson(list.elementAt(i)));
+        }
       }
-      print(li);
       return li;
     } else {
       throw Exception('Errore in getCaricaInsegnamenti');
@@ -224,7 +225,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   void _callCaricaInsegnamenti() {
     var api = CaricaInsegnamentiAPI();
-    api.getCaricaInsegnamenti().then((list) {
+    api.getCaricaInsegnamenti(insegnamenti.length).then((list) {
       if (list.isNotEmpty) {
         insegnamenti = list; //TODO: mettere nella dichiarazione
         setState(() {
@@ -261,7 +262,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           }
         });
       } else {
-        print("non ci sono insegnamenti");
+        print("non ci sono insegnamenti da aggiungere");
       }
     }, onError: (error) {});
   }
