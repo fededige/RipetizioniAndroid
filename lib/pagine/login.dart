@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                   errore,
                   style: const TextStyle(
                     fontSize: 15.0,
-                    color: Colors.red,
+                    color: Color(0xFFE91B0C),
                   ),
                 ),
                 const SizedBox(
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: 136.0,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xff0073e6),
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                     border: Border.all(
@@ -215,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                     'Join as Guest',
                     style: TextStyle(
                       fontSize: 20.0,
-                      color: Colors.blue,
+                      color: Color(0xff0073e6),
                     ),
                   ),
                 ),

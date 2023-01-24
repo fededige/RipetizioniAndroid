@@ -66,7 +66,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xff0073e6),
         title: const Text(
           'Cambio Password',
         ),
@@ -175,7 +175,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
                 errore,
                 style: const TextStyle(
                   fontSize: 15.0,
-                  color: Colors.red,
+                  color: Color(0xFFE91B0C),
                 ),
               ),
               const SizedBox(
@@ -184,7 +184,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
               Container(
                 width: 136.0,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xff0073e6),
                   shape: BoxShape.rectangle,
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                   border: Border.all(
@@ -237,7 +237,7 @@ void _showToast(BuildContext context) {
   scaffold.showSnackBar(
     const SnackBar(
       content: Text('Password cambiata correttamente'),
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xff0073e6),
       shape: StadiumBorder(),
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.all(50),

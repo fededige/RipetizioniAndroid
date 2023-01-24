@@ -8,6 +8,16 @@ class PaginaHomeUtente extends StatefulWidget {
 bool _isAdmin=true;
 bool _isClient=false;
 class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
+  Text responsiveText({required String text, required double dim, required Color color, bool? bold}) { //spostare giù
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: (dim) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
+        color: color,
+        fontWeight: bold != null && bold == true ? FontWeight.bold : FontWeight.normal,
+      ),
+    );
+  }
   String? presentazione = '';
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(0xff0073e6),
           title: const Text(
             'Ripetizioni',
           ),
@@ -37,7 +47,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/impostazioni', arguments: utente);
                   },
-                  iconSize: 50.0,
+                  iconSize: (1.5) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
                   icon: const Icon(
                     color: Colors.black,
                     Icons.settings,
@@ -45,13 +55,7 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
-                  child: Text(
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    ),
-                    'Ciao $presentazione' //variabile
-                  ),
+                  child: responsiveText(text: "Ciao $presentazione", dim: 1, color: Colors.black, bold: true),
                 ),
               ],
             ),
@@ -74,23 +78,15 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 15.0),
                         child: Column(
-                          children: const <Widget>[
+                          children: <Widget>[
                             Icon(
                               color: Colors.black,
                               Icons.calendar_month,
-                              size: 50.0,
+                              size: (1.5) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
                             ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                ),
-                                'Calendario \n Prenotazioni',
-                                textAlign: TextAlign.center,
-                              ),
+                              child: responsiveText(text: "Calendario \n Prenotazioni", dim: 0.8, color: Colors.black, bold: true),
                             ),
                           ],
                         ),
@@ -113,23 +109,15 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
                         child: Column(
-                          children: const <Widget>[
+                          children: <Widget>[
                             Icon(
                               color: Colors.black,
                               Icons.menu_book,
-                              size: 50.0,
+                              size: (1.5) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
                             ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                              child: Text(
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                ),
-                                'Ripetizioni \n Prenotate',
-                                textAlign: TextAlign.center,
-                              ),
+                              child: responsiveText(text: "Ripetizioni \n Prenotate", dim: 0.8, color: Colors.black, bold: true),
                             ),
                           ],
                         ),

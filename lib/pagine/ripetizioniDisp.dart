@@ -159,11 +159,11 @@ double larghezzaSchermo=0;
 double altezzaSchermo=0;
 String schermo='';
 List<bool> giornoCliccato = [];
-List<List<Color>> cardBackGroundColors = <List<Color>>[[Colors.blue, Colors.blue, Colors.blue, Colors.blue],
-                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
-                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
-                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue],
-                                                    [Colors.blue, Colors.blue, Colors.blue, Colors.blue]];
+List<List<Color>> cardBackGroundColors = <List<Color>>[[Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
+                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
+                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
+                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
+                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)]];
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
@@ -528,7 +528,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xff0073e6),
         title: const Text(
           'Ripetizioni Disponibili',
         ),
@@ -610,7 +610,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   ),
                   showSearchBox: true,
                   searchFieldProps: const TextFieldProps(
-                    cursorColor: Colors.blue,
+                    cursorColor: Color(0xff0073e6),
                   ),
                 ),
                 DropdownSearch<String>(
@@ -635,7 +635,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                   //selectedItem: "",
                   showSearchBox: true,
                   searchFieldProps: const TextFieldProps(
-                    cursorColor: Colors.blue,
+                    cursorColor: Color(0xff0073e6),
                   ),
                 ),
               ],
@@ -654,7 +654,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               child: Container(
                 width: larghezzaSchermo / 3,
                 decoration: const BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xff0073e6),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.all(Radius.circular(50.0)),
                 ), //aggiungere navigazione alla Home
@@ -691,7 +691,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Lun",
                         dim: 5,
-                        color: Colors.blue,
+                        color: Color(0xff0073e6),
                         bold: giornoCliccato[0]
                     ),
                   ),
@@ -711,7 +711,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                       text: "Mar",
                       dim: 5,
-                      color: Colors.blue,
+                      color: Color(0xff0073e6),
                       bold: giornoCliccato[1]
                     ),
                   ),
@@ -731,7 +731,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Mer",
                         dim: 5,
-                        color: Colors.blue,
+                        color: Color(0xff0073e6),
                         bold: giornoCliccato[2]
                     ),
                   ),
@@ -751,7 +751,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Gio",
                         dim: 5,
-                        color: Colors.blue,
+                        color: Color(0xff0073e6),
                         bold: giornoCliccato[3]
                     ),
                   ),
@@ -771,7 +771,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Ven",
                         dim: 5,
-                        color: Colors.blue,
+                        color: Color(0xff0073e6),
                         bold: giornoCliccato[4]
                     ),
                   ),
@@ -910,7 +910,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               width: 0.2 * larghezzaSchermo,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                color: Colors.blue,
+                color: Color(0xff0073e6),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -931,7 +931,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione.ora)] = Colors.blue;
+                  cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione.ora)] = Color(0xff0073e6);
                   ripetizioni.remove(ripetizione);
                   Navigator.pop(context, 'Cancel');
                   carrelloPrenotazioni(context);
@@ -1006,7 +1006,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               child: Container(
                 width: 105.0,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xff0073e6),
                   shape: BoxShape.rectangle,
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                   border: Border.all(
@@ -1038,7 +1038,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1089,7 +1089,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             child: Container(
               width: larghezzaSchermo / 4,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1116,7 +1116,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1156,7 +1156,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               //selectedItem: "",
               showSearchBox: true,
               searchFieldProps: const TextFieldProps(
-                cursorColor: Colors.blue,
+                cursorColor: Color(0xff0073e6),
               ),
             ),
             const SizedBox(
@@ -1209,7 +1209,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1242,7 +1242,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Colors.blue, bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1292,7 +1292,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               //selectedItem: "",
               showSearchBox: true,
               searchFieldProps: const TextFieldProps(
-                cursorColor: Colors.blue,
+                cursorColor: Color(0xff0073e6),
               ),
             ),
           ],
@@ -1333,7 +1333,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1394,7 +1394,7 @@ void _showToast(BuildContext context, String str) {
   scaffold.showSnackBar(
     SnackBar(
       content: Text(str),
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xff0073e6),
       shape: const StadiumBorder(),
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(50),

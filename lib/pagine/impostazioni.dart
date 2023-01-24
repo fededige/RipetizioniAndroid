@@ -54,7 +54,7 @@ class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xff0073e6),
         title: const Text(
           'Impostazioni',
         ),

@@ -14,6 +14,7 @@ import 'pagine/ripetizioniPren.dart';
 void main() {
       HttpOverrides.global = MyHttpOverrides();
       runApp(MaterialApp(
+          debugShowCheckedModeBanner: false,
           initialRoute: '/login',
           routes: {
                 '/login': (context) => LoginPage(),

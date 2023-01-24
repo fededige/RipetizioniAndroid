@@ -6,6 +6,16 @@ class PaginaHomeOspite extends StatefulWidget {
 }
 Utente usr = Utente(stato:false);
 class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
+  Text responsiveText({required String text, required double dim, required Color color, bool? bold}) { //spostare giù
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: (dim) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
+        color: color,
+        fontWeight: bold != null && bold == true ? FontWeight.bold : FontWeight.normal,
+      ),
+    );
+  }
   String? presentazione = '';
   @override
   Widget build(BuildContext context) {
@@ -15,7 +25,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xff0073e6),
         title: const Text(
           'Ripetizioni',
         ),
@@ -23,17 +33,11 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          const Align(
+          Align(
             alignment: Alignment.topRight,
             child: Padding(
               padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
-              child: Text(
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                ),
-                "Ciao Ospite",
-              ),
+              child: responsiveText(text: "Ciao Ospite", dim: 1, color: Colors.black, bold: true),
             ),
           ),
           TextButton(
@@ -52,23 +56,15 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Icon(
-                      size: 100,
+                      size: (4) * ((MediaQuery.of(context).size.height * MediaQuery.of(context).size.width) / 10000),
                       color: Colors.black,
                       Icons.calendar_month,
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
-                      child: Text(
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                          color: Colors.black,
-                        ),
-                        'Calendario \n Prenotazioni',
-                        textAlign: TextAlign.center,
-                      ),
+                      child: responsiveText(text: "Calendario \n Prenotazioni", dim: 1, color: Colors.black, bold: true),
                     ),
                   ],
                 ),
@@ -81,13 +77,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
               onPressed: () {
                 Navigator.pushNamed(context, '/login');
               },
-              child: const Text(
-                'Log in',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.black,
-                ),
-              ),
+              child: responsiveText(text: "Log in", dim: 1, color: Colors.black, bold: false),
             ),
           ),
         ],

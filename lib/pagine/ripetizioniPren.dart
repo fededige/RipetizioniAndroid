@@ -15,7 +15,8 @@ List<Ripetizioni> ripetizioni = [];
 List<Ripetizioni> ripetizioniEff = <Ripetizioni>[];
 List<Ripetizioni> ripetizioniCanc = <Ripetizioni>[];
 List<Ripetizioni> visualizza = ripetizioni;
-Color colore = Colors.green;
+Color colore = Color(0xff0073e6);
+String titolo = "Ripetizioni Da Fare";
 Utente? user;
 bool nuovo = true;
 bool _isAdmin = true;
@@ -67,7 +68,7 @@ class RipetizioneEffettuataAPI {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          "ripetizione": r,
+          "prenotazione": r,
           "session": session,
         })
     );
@@ -82,16 +83,16 @@ class RipetizioneEffettuataAPI {
 class RipetizioneCancellataAPI {
   Future<bool> postInserisciPrenotazioneCanc(String session, Ripetizioni r) async {
     const url =
-        'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioneCancellata';
-    //print(url);
+      'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioneCancellata';
+    print(url);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: <String, dynamic>{
-          "ripetizioni": r,
+        body: jsonEncode(<String, dynamic>{
+          "prenotazione": r,
           "session": session
-        }
+        })
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
@@ -171,7 +172,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
         }
       });
     }, onError: (error) {
-      print('errore in _callPostRipetizione');
+      print('errore in _callPostRipetizioneEff');
     });
   }
 
@@ -183,11 +184,11 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
           ripetizioni.remove(r);
           ripetizioniCanc.add(r);
         } else {
-          print('errore in _callRipetizioneEff');
+          print('list == false in _callPostRipetizioneCanc');
         }
       });
     }, onError: (error) {
-      print('errore in _callPostRipetizione');
+      print('errore in _callPostRipetizioneCanc');
     });
   }
 
@@ -210,14 +211,17 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
     return Scaffold(
       backgroundColor: Colors.grey[400],
       appBar: AppBar(
-        title: const Text('Ripetizioni Prenotate'),
+        title: Text(titolo),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: colore,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => {
             print("backbutton"),
             nuovo = true,
+            colore = Color(0xff0073e6),
+            titolo = "Ripetizioni Da Fare",
+            visualizza = ripetizioni,
             Navigator.pop(context, false),
           },
         ),
@@ -264,15 +268,18 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
       _selectedIndex = index;
       if (index == 0) {
         visualizza = ripetizioni;
-        colore = Colors.green;
+        colore = Color(0xff0073e6);
+        titolo = "Ripetizioni Da Fare";
       }
       if (index == 1) {
         visualizza = ripetizioniEff;
-        colore = Colors.lightGreen;
+        colore = Color(0xFF2B842A);
+        titolo = "Ripetizioni Effettuate";
       }
       if (index == 2) {
         visualizza = ripetizioniCanc;
-        colore = Colors.red;
+        colore = Color(0xFFE91B0C);
+        titolo = "Ripetizioni Cancellate";
       }
     });
   }
@@ -298,9 +305,9 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
           Container(
             height: 0.13 * MediaQuery.of(context).size.height,
             width: 0.2 * MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              color: Colors.blue,
+              color: colore,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -311,7 +318,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
             ),
           ),
           SizedBox(
-            width: 0.15 * MediaQuery.of(context).size.width,
+            width: 0.05 * MediaQuery.of(context).size.width,
           ),
           Column(
             children: <Widget>[
@@ -325,6 +332,36 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                 ),
               ),
             ],
+          ),
+          Visibility(
+            visible: DaFare,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _callPostRipetizioneCanc((user?.session)!, ripetizione);
+                });
+              },
+              icon: Icon(
+                size: MediaQuery.of(context).size.width * 0.08,
+                Icons.delete,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: DaFare,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _callPostRipetizioneEff((user?.session)!, ripetizione);
+                });
+              },
+              icon: Icon(
+                size: MediaQuery.of(context).size.width * 0.08,
+                Icons.done_outline_sharp,
+                color: Color(0xFF2B842A),
+              ),
+            ),
           ),
         ],
       ),
@@ -342,7 +379,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
             children: <Widget>[
               Container(
                 width: 110,
-                color: Colors.blue,
+                color: Color(0xff0073e6),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -436,7 +473,7 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
                   },
                   icon: const Icon(
                     Icons.done_outline_sharp,
-                    color: Colors.green,
+                    color: Color(0xFF2B842A),
                   ),
                 ),
               ),
