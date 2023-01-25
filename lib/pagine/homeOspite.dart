@@ -25,7 +25,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff0073e6),
+        backgroundColor: const Color(0xff0073e6),
         title: const Text(
           'Ripetizioni',
         ),
@@ -36,7 +36,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0),
               child: responsiveText(text: "Ciao Ospite", dim: 1, color: Colors.black, bold: true),
             ),
           ),
@@ -47,7 +47,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 border: Border.all(
                   color: Colors.black,
                   width: 3.0,
@@ -63,7 +63,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
                       Icons.calendar_month,
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
+                      padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
                       child: responsiveText(text: "Calendario \n Prenotazioni", dim: 1, color: Colors.black, bold: true),
                     ),
                   ],
@@ -72,7 +72,7 @@ class _PaginaHomeOspiteState extends State<PaginaHomeOspite> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/login');

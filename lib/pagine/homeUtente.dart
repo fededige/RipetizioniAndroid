@@ -5,8 +5,7 @@ class PaginaHomeUtente extends StatefulWidget {
   @override
   State<PaginaHomeUtente> createState() => _PaginaHomeUtenteState();
 }
-bool _isAdmin=true;
-bool _isClient=false;
+
 class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
   Text responsiveText({required String text, required double dim, required Color color, bool? bold}) { //spostare giù
     return Text(
@@ -19,6 +18,8 @@ class _PaginaHomeUtenteState extends State<PaginaHomeUtente> {
     );
   }
   String? presentazione = '';
+  bool _isAdmin=true;
+  bool _isClient=false;
   @override
   Widget build(BuildContext context) {
     Utente utente = ModalRoute.of(context)!.settings.arguments as Utente;

@@ -32,7 +32,6 @@ class CaricaInsegnamentiAPI {
   Future<List<Ripetizioni>> getCaricaRipetizioni(String session, int id) async {
     String url =
         "http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizionieff";
-    print("getCaricaRipetizioni" + url);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -45,12 +44,9 @@ class CaricaInsegnamentiAPI {
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       List<Ripetizioni> liRipetizioni = <Ripetizioni>[];
-      print("list: $list");
       for (int i = 0; i < list.length; i++) {
-        print(Ripetizioni.fromJson(list.elementAt(i)));
         liRipetizioni.add(Ripetizioni.fromJson(list.elementAt(i)));
       }
-      print("50 $liRipetizioni");
       return liRipetizioni;
     } else {
       throw Exception('Failed to load getCaricaRipetizioni');
@@ -62,7 +58,6 @@ class RipetizioneEffettuataAPI {
   Future<bool> postInserisciPrenotazioneEff(String session, Ripetizioni r) async {
     const url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioniEffettuate';
-    //print(url);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -84,7 +79,6 @@ class RipetizioneCancellataAPI {
   Future<bool> postInserisciPrenotazioneCanc(String session, Ripetizioni r) async {
     const url =
       'http://localhost:8081/Ripetizioni_war_exploded/ServletRipetizioneCancellata';
-    print(url);
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -94,7 +88,6 @@ class RipetizioneCancellataAPI {
           "session": session
         })
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -117,7 +110,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
   void _callCaricaRipetizioni(String session) {
     var api = CaricaInsegnamentiAPI();
     int id;
-    print("_callCaricaRipetizioni");
     if(ripetizioni.isEmpty && ripetizioniEff.isEmpty && ripetizioniCanc.isEmpty ){
       id = 0;
     } else{
@@ -135,7 +127,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
       }
       id = max(max(lenRipetizioni, lenRipetizioniEff), lenRipetizioniCanc);
     }
-    print("id: $id");
     api.getCaricaRipetizioni(session, id).then((list) {
       setState(() {
         if (list.isNotEmpty) {
@@ -151,8 +142,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
               ripetizioniCanc.add(list.elementAt(i));
             }
           }
-        } else {
-          print("errore, non ci sono insegnamenti");
         }
       });
     }, onError: (error) {
@@ -167,8 +156,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
         if (list == true) {
           ripetizioni.remove(r);
           ripetizioniEff.add(r);
-        } else {
-          print('errore in _callRipetizioneEff');
         }
       });
     }, onError: (error) {
@@ -183,8 +170,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
         if (list == true) {
           ripetizioni.remove(r);
           ripetizioniCanc.add(r);
-        } else {
-          print('list == false in _callPostRipetizioneCanc');
         }
       });
     }, onError: (error) {
@@ -197,7 +182,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     user = arg["utente"];
     bool ricarica = arg["ricarica"];
-    print(user!.ruolo);
     if (user!.ruolo == 'cliente') {
       _isAdmin = false;
     }
@@ -217,7 +201,6 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => {
-            print("backbutton"),
             nuovo = true,
             colore = Color(0xff0073e6),
             titolo = "Ripetizioni Da Fare",
@@ -300,27 +283,26 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
       ),
       color: Colors.grey[200],
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, //spaceEvenly
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, //spaceEvenly
         children: <Widget>[
           Container(
             height: 0.13 * MediaQuery.of(context).size.height,
-            width: 0.2 * MediaQuery.of(context).size.width,
+            width: 0.25 * MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               color: colore,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                responsiveText(text: ripetizione.giorno, dim: 5.5, color: Colors.white),
+                responsiveText(text: ripetizione.giorno.toString().substring(0, 1).toUpperCase() + ripetizione.giorno.toString().substring(1, 3), dim: 5.5, color: Colors.white),
                 responsiveText(text: "${ripetizione.ora.toString().split(':')[0]}:${ripetizione.ora.toString().split(':')[1]}", dim: 5.5, color: Colors.white),
               ],
             ),
           ),
-          SizedBox(
-            width: 0.05 * MediaQuery.of(context).size.width,
-          ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               responsiveText(text: "Docente: ${ripetizione.docente.cognome}", dim: 5, color: Colors.black),
               responsiveText(text: "Corso: ${ripetizione.corso.titoloCorso}", dim: 5, color: Colors.black),
@@ -333,36 +315,43 @@ class _PaginaRipetizioniPrenState extends State<PaginaRipetizioniPren> {
               ),
             ],
           ),
-          Visibility(
-            visible: DaFare,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _callPostRipetizioneCanc((user?.session)!, ripetizione);
-                });
-              },
-              icon: Icon(
-                size: MediaQuery.of(context).size.width * 0.08,
-                Icons.delete,
-                color: Colors.black,
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Row(
+              children: <Widget>[
+                Visibility(
+                  visible: DaFare,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _callPostRipetizioneCanc((user?.session)!, ripetizione);
+                      });
+                    },
+                    icon: Icon(
+                      size: MediaQuery.of(context).size.width * 0.08,
+                      Icons.delete,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: DaFare,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _callPostRipetizioneEff((user?.session)!, ripetizione);
+                      });
+                    },
+                    icon: Icon(
+                      size: MediaQuery.of(context).size.width * 0.08,
+                      Icons.done_outline_sharp,
+                      color: Color(0xFF2B842A),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Visibility(
-            visible: DaFare,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _callPostRipetizioneEff((user?.session)!, ripetizione);
-                });
-              },
-              icon: Icon(
-                size: MediaQuery.of(context).size.width * 0.08,
-                Icons.done_outline_sharp,
-                color: Color(0xFF2B842A),
-              ),
-            ),
-          ),
+          )
         ],
       ),
     );

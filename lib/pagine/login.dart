@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 class AuthenticationAPI{
   Future<Utente> getAuthentication(String nomeutente, String password) async {
     final url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
-    //final urlEmul = 'http://10.0.2.2:8081/Ripetizioni_war_exploded/ServletAuth?login=$nomeutente&password=$password';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       if(response.body == "UtenteInesistente"){
@@ -167,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: 136.0,
                   decoration: BoxDecoration(
-                    color: Color(0xff0073e6),
+                    color: const Color(0xff0073e6),
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                     border: Border.all(

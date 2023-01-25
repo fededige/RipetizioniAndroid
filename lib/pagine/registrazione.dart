@@ -68,7 +68,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                     width: 260.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: Colors.black,
                         width: 3.0,
@@ -98,7 +98,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                     width: 260.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: Colors.black,
                         width: 3.0,
@@ -140,7 +140,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                     width: 260.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: Colors.black,
                         width: 3.0,
@@ -193,7 +193,7 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: Colors.black,
                         width: 3.0,
@@ -202,9 +202,9 @@ class _PaginaRegistrazioneState extends State<PaginaRegistrazione> {
                     child: TextButton(
                       onPressed: () {
                         if(nomeutenteController.text.isNotEmpty && passwordController.text.isNotEmpty && confpasswordController.text.isNotEmpty) {
-                          if(passwordController.text == confpasswordController.text)
+                          if(passwordController.text == confpasswordController.text) {
                             _callRegistrazione(nomeutenteController.text, passwordController.text, confpasswordController.text);
-                          else {
+                          } else {
                             setState(() {
                               errore = "Le password non corrispondono";
                             });

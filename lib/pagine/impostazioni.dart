@@ -37,9 +37,6 @@ class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
   void _callLogOutAPI(String session) {
     var api = LogOutAPI();
     api.postLogOut(session).then((res) {
-      if(res == true) {
-        print("sessione invalidata");
-      }
     }, onError: (error) {
       print("logout errore");
     });
@@ -54,7 +51,7 @@ class _PaginaImpostazioniState extends State<PaginaImpostazioni> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff0073e6),
+        backgroundColor: const Color(0xff0073e6),
         title: const Text(
           'Impostazioni',
         ),

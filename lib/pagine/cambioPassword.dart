@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 class CambioPasswordAPI{
   Future<bool> postCambioPassword(String session, String vecchiaPassword, String nuovaPassword) async {
     const url1 = 'http://localhost:8081/Ripetizioni_war_exploded/ServletImpostazioni';
-    print("session in cambioPassword" + session);
     final response = await http.post(Uri.parse(url1),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -19,7 +18,6 @@ class CambioPasswordAPI{
         "session": session,
       })
     );
-    print(response.body);
     if (response.statusCode == 200) {
       if(response.body == "true") {
         return true;
@@ -66,7 +64,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff0073e6),
+        backgroundColor: const Color(0xff0073e6),
         title: const Text(
           'Cambio Password',
         ),
@@ -81,7 +79,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 260.0,
                 child: TextField(
                   controller: vecchiaPController,
@@ -110,7 +108,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
               const SizedBox(
                 height: 18.0,
               ),
-              Container(
+              SizedBox(
                 width: 260.0,
                 child: TextField(
                   controller: nuovaPController,
@@ -139,7 +137,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
               const SizedBox(
                 height: 18.0,
               ),
-              Container(
+              SizedBox(
                 width: 260.0,
                 child: TextField(
                   controller: confnuovaPController,
@@ -184,7 +182,7 @@ class _PaginaCambioPasswordState extends State<PaginaCambioPassword> {
               Container(
                 width: 136.0,
                 decoration: BoxDecoration(
-                  color: Color(0xff0073e6),
+                  color: const Color(0xff0073e6),
                   shape: BoxShape.rectangle,
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                   border: Border.all(

@@ -59,7 +59,6 @@ class CaricaDocentiAPI {
       int corso, String giorno, String ora) async {
     final url =
         'http://localhost:8081/Ripetizioni_war_exploded/ServletDocentiDisp?corso=$corso&giorno=$giorno&ora=$ora';
-    print(url);
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
@@ -78,7 +77,6 @@ class CaricaPrenotazioneAPI {
   Future<List<List<int>>> getCaricaPrenotazioni(
       int? c, int? doc, String session) async {
     const url = 'http://localhost:8081/Ripetizioni_war_exploded/ServletPrenotazioni';
-    print("prePost");
     final response = await http.post(Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -89,7 +87,6 @@ class CaricaPrenotazioneAPI {
         "session": session,
       })
     );
-    print("StatusCode: ${response.statusCode}");
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       List<List<int>> liPrenotazione = <List<int>>[];
@@ -159,11 +156,11 @@ double larghezzaSchermo=0;
 double altezzaSchermo=0;
 String schermo='';
 List<bool> giornoCliccato = [];
-List<List<Color>> cardBackGroundColors = <List<Color>>[[Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
-                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
-                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
-                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)],
-                                                    [Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6), Color(0xff0073e6)]];
+List<List<Color>> cardBackGroundColors = <List<Color>>[[const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)]];
 class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   void riempiTab() {
     prenotazioniDisp.removeRange(0, prenotazioniDisp.length);
@@ -185,7 +182,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         res.sort();
         for(int i = ripetizioni.length - 1; i >= 0; i--){
           if(!res.contains(i)){
-            print("non contiene: ${i}");
             ripetizioni.removeAt(i);
           }
         }
@@ -197,29 +193,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         });
       }
     }, onError: (error) {
-      print(error);
       _showToast(context, "Errore durante la fase di prenotazione, riprova");
-    });
-  }
-
-  void _callCaricaDocenti(int corso, String giorno, String ora) {
-    var api = CaricaDocentiAPI();
-    if (docentiNonOccu.isNotEmpty) {
-      docentiNonOccu.removeRange(0, docentiNonOccu.length);
-    }
-    api.getCaricaDocenti(corso, giorno, ora).then((list) {
-      if (list.isNotEmpty) {
-        print("ciao");
-        setState(() {
-          for (var element in list) {
-            docentiNonOccu.add(element);
-          }
-        });
-        // for (var element in docentiNonOccu) {
-        //   print(element.matricola);
-        // }
-        mostraConferma(context, giorno, ora);
-      }
     });
   }
 
@@ -227,7 +201,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     var api = CaricaInsegnamentiAPI();
     api.getCaricaInsegnamenti(insegnamenti.length).then((list) {
       if (list.isNotEmpty) {
-        insegnamenti = list; //TODO: mettere nella dichiarazione
+        insegnamenti = list;
         setState(() {
           for (int i = 0; i < list.length; i++) {
             bool flag = true;
@@ -238,7 +212,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                 break;
               }
             }
-
             if (flag) {
               docenti.add(list.elementAt(i).docente);
             }
@@ -295,7 +268,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       if (list.isNotEmpty) {
         prenotazioni = list;
         setState(() {
-          _PrenotazioniDisp();
+          _prenotazioniDisp();
         });
       } else {
         print("non ci sono prenotazioni");
@@ -359,7 +332,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         setState(() {
           corsoScelto = null;
           for (int i = 0; i < docenti.length; i++) {
-            print("docente: ${docenti.elementAt(i).matricola}");
             bool flag = true;
             for (int j = 0; j < docentiL.length; j++) {
               if (docentiL.elementAt(j).matricola ==
@@ -377,7 +349,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
     }
   }
 
-  void _PrenotazioniDisp() {
+  void _prenotazioniDisp() {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 5; j++) {
         if (prenotazioni.elementAt(i).elementAt(j) == 0) {
@@ -411,7 +383,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   Widget creaCard(ripetizione, context) {
     return GestureDetector(
       onTap: () {
-        print("click" + ripetizione);
         mostraConferma(context, giornoScelto, ripetizione);
       },
       child: Card(
@@ -470,10 +441,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
         effettuata: false);
     setState(() {
       bool flag = true;
+      /*
+      * ripetizioni.elementAt(j).corso.codice == r.corso.codice &&
+            ripetizioni.elementAt(j).docente.matricola == r.docente.matricola &&*/
       for (int j = 0; j < ripetizioni.length; j++) {
-        if (ripetizioni.elementAt(j).corso.codice == r.corso.codice &&
-            ripetizioni.elementAt(j).docente.matricola == r.docente.matricola &&
-            ripetizioni.elementAt(j).giorno == r.giorno &&
+        if (ripetizioni.elementAt(j).giorno == r.giorno &&
             ripetizioni.elementAt(j).ora == r.ora) {
           flag = false;
           break;
@@ -528,7 +500,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff0073e6),
+        backgroundColor: const Color(0xff0073e6),
         title: const Text(
           'Ripetizioni Disponibili',
         ),
@@ -645,6 +617,11 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             ),
             TextButton(
               onPressed: () => setState(() {
+                cardBackGroundColors = <List<Color>>[[const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)],
+                                                    [const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6), const Color(0xff0073e6)]];
                 if ((corsoSceltoTmp != null && corsoSceltoTmp!.codice != 0) ||
                     (docenteSceltoTmp != null &&
                         docenteSceltoTmp!.matricola != 0)) {
@@ -691,7 +668,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Lun",
                         dim: 5,
-                        color: Color(0xff0073e6),
+                        color: const Color(0xff0073e6),
                         bold: giornoCliccato[0]
                     ),
                   ),
@@ -711,7 +688,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                       text: "Mar",
                       dim: 5,
-                      color: Color(0xff0073e6),
+                      color: const Color(0xff0073e6),
                       bold: giornoCliccato[1]
                     ),
                   ),
@@ -731,7 +708,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Mer",
                         dim: 5,
-                        color: Color(0xff0073e6),
+                        color: const Color(0xff0073e6),
                         bold: giornoCliccato[2]
                     ),
                   ),
@@ -751,7 +728,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Gio",
                         dim: 5,
-                        color: Color(0xff0073e6),
+                        color: const Color(0xff0073e6),
                         bold: giornoCliccato[3]
                     ),
                   ),
@@ -771,7 +748,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
                     child: responsiveText(
                         text: "Ven",
                         dim: 5,
-                        color: Color(0xff0073e6),
+                        color: const Color(0xff0073e6),
                         bold: giornoCliccato[4]
                     ),
                   ),
@@ -852,7 +829,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
   int hourToIndex(String orario) {
     int indice = -1;
     orario = orario.toLowerCase();
-    print(orario);
     switch (orario) {
       case "15:00:00":
         indice = 0;
@@ -872,7 +848,6 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
 
   int dayToIndex(String giorno) {
     int indice = -1;
-    print(giorno);
     giorno = giorno.toLowerCase();
     switch (giorno) {
       case "lunedì":
@@ -931,7 +906,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione.ora)] = Color(0xff0073e6);
+                  cardBackGroundColors[dayToIndex(giornoScelto)][hourToIndex(ripetizione.ora)] = const Color(0xff0073e6);
                   ripetizioni.remove(ripetizione);
                   Navigator.pop(context, 'Cancel');
                   carrelloPrenotazioni(context);
@@ -1006,7 +981,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
               child: Container(
                 width: 105.0,
                 decoration: BoxDecoration(
-                  color: Color(0xff0073e6),
+                  color: const Color(0xff0073e6),
                   shape: BoxShape.rectangle,
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                   border: Border.all(
@@ -1038,7 +1013,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: const Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1089,7 +1064,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
             child: Container(
               width: larghezzaSchermo / 4,
               decoration: BoxDecoration(
-                color: Color(0xff0073e6),
+                color: const Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1116,7 +1091,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: const Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1204,12 +1179,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           TextButton(
             onPressed: (){
               cardBackGroundColors[dayToIndex(giorno)][hourToIndex(ora)] = Colors.lightGreen[900]!;
-              pushToCart(context, giorno, ora, corsoScelto!, docenteScelto!);
+              pushToCart(context, giorno, ora, corsoScelto!, docenteToCart!);
             },
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
-                color: Color(0xff0073e6),
+                color: const Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1242,7 +1217,7 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        title: responsiveText(text: "Riepilogo", dim: 5, color: Color(0xff0073e6), bold: true),
+        title: responsiveText(text: "Riepilogo", dim: 5, color: const Color(0xff0073e6), bold: true),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1328,12 +1303,12 @@ class _PaginaRipetizioniState extends State<PaginaRipetizioni> {
           TextButton(
             onPressed: (){
               cardBackGroundColors[dayToIndex(giorno)][hourToIndex(ora)] = Colors.lightGreen[900]!;
-              pushToCart(context, giorno, ora, corsoScelto!, docenteScelto!);
+              pushToCart(context, giorno, ora, corsoToCart!, docenteScelto!);
             },
             child: Container(
               width: 105.0,
               decoration: BoxDecoration(
-                color: Color(0xff0073e6),
+                color: const Color(0xff0073e6),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                 border: Border.all(
@@ -1394,7 +1369,7 @@ void _showToast(BuildContext context, String str) {
   scaffold.showSnackBar(
     SnackBar(
       content: Text(str),
-      backgroundColor: Color(0xff0073e6),
+      backgroundColor: const Color(0xff0073e6),
       shape: const StadiumBorder(),
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(50),
